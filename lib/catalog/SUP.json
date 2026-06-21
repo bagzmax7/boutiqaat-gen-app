@@ -1,0 +1,56 @@
+{
+  "SUP-00003686": {
+    "sku": "SUP-00003686",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 17.9,
+    "widthCm": 18.8,
+    "heightCm": 3.8,
+    "weightG": 114.0,
+    "volumeMl": 1278.78
+  },
+  "SUP-00003673": {
+    "sku": "SUP-00003673",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 4.3,
+    "widthCm": 25.9,
+    "heightCm": 1.3,
+    "weightG": 36.0,
+    "volumeMl": 144.78
+  },
+  "SUP-00003526": {
+    "sku": "SUP-00003526",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 36.4,
+    "widthCm": 25.5,
+    "heightCm": 2.5,
+    "weightG": 174.0,
+    "volumeMl": 2320.5
+  },
+  "SUP-00001017": {
+    "sku": "SUP-00001017",
+    "dept": "SUPPLEMENTSFITNESS",
+    "lengthCm": 23.8,
+    "widthCm": 21.5,
+    "heightCm": 7.5,
+    "weightG": 920.0,
+    "volumeMl": 3837.75
+  },
+  "SUP-00000910": {
+    "sku": "SUP-00000910",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 67.3,
+    "widthCm": 17.1,
+    "heightCm": 16.5,
+    "weightG": 912.0,
+    "volumeMl": 18988.7
+  },
+  "SUP-00000909": {
+    "sku": "SUP-00000909",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 68.7,
+    "widthCm": 18.3,
+    "heightCm": 14.0,
+    "weightG": 850.0,
+    "volumeMl": 17600.94
+  }
+}

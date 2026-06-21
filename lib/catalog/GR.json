@@ -1,0 +1,317 @@
+{
+  "GR-0000119": {
+    "sku": "GR-0000119",
+    "dept": "BEAUTY",
+    "lengthCm": 9.4,
+    "widthCm": 7.4,
+    "heightCm": 18.0,
+    "weightG": 336.0,
+    "volumeMl": 1252.08
+  },
+  "GR-0000118": {
+    "sku": "GR-0000118",
+    "dept": "BEAUTY",
+    "lengthCm": 9.4,
+    "widthCm": 7.4,
+    "heightCm": 18.0,
+    "weightG": 336.0,
+    "volumeMl": 1252.08
+  },
+  "GR-0000117": {
+    "sku": "GR-0000117",
+    "dept": "BEAUTY",
+    "lengthCm": 9.4,
+    "widthCm": 7.4,
+    "heightCm": 18.0,
+    "weightG": 336.0,
+    "volumeMl": 1252.08
+  },
+  "GR-0000116": {
+    "sku": "GR-0000116",
+    "dept": "BEAUTY",
+    "lengthCm": 15.4,
+    "widthCm": 15.7,
+    "heightCm": 18.6,
+    "weightG": 598.0,
+    "volumeMl": 4497.11
+  },
+  "GR-0000115": {
+    "sku": "GR-0000115",
+    "dept": "BEAUTY",
+    "lengthCm": 10.7,
+    "widthCm": 3.9,
+    "heightCm": 13.6,
+    "weightG": 320000.0,
+    "volumeMl": 567.53
+  },
+  "GR-0000114": {
+    "sku": "GR-0000114",
+    "dept": "BEAUTY",
+    "lengthCm": 11.1,
+    "widthCm": 4.0,
+    "heightCm": 13.6,
+    "weightG": 320.0,
+    "volumeMl": 603.84
+  },
+  "GR-0000113": {
+    "sku": "GR-0000113",
+    "dept": "BEAUTY",
+    "lengthCm": 11.1,
+    "widthCm": 4.0,
+    "heightCm": 13.6,
+    "weightG": 320.0,
+    "volumeMl": 603.84
+  },
+  "GR-0000111": {
+    "sku": "GR-0000111",
+    "dept": "BEAUTY",
+    "lengthCm": 14.9,
+    "widthCm": 21.0,
+    "heightCm": 6.6,
+    "weightG": 116.0,
+    "volumeMl": 2065.14
+  },
+  "GR-0000110": {
+    "sku": "GR-0000110",
+    "dept": "BEAUTY",
+    "lengthCm": 20.5,
+    "widthCm": 15.5,
+    "heightCm": 5.8,
+    "weightG": 124.0,
+    "volumeMl": 1842.95
+  },
+  "GR-0000109": {
+    "sku": "GR-0000109",
+    "dept": "BEAUTY",
+    "lengthCm": 12.8,
+    "widthCm": 21.3,
+    "heightCm": 6.6,
+    "weightG": 112.0,
+    "volumeMl": 1799.42
+  },
+  "GR-0000108": {
+    "sku": "GR-0000108",
+    "dept": "BEAUTY",
+    "lengthCm": 15.8,
+    "widthCm": 33.9,
+    "heightCm": 5.8,
+    "weightG": 236.0,
+    "volumeMl": 3106.6
+  },
+  "GR-0000107": {
+    "sku": "GR-0000107",
+    "dept": "BEAUTY",
+    "lengthCm": 10.7,
+    "widthCm": 30.5,
+    "heightCm": 27.1,
+    "weightG": 374.0,
+    "volumeMl": 8844.08
+  },
+  "GR-0000106": {
+    "sku": "GR-0000106",
+    "dept": "BEAUTY",
+    "lengthCm": 11.3,
+    "widthCm": 10.1,
+    "heightCm": 19.3,
+    "weightG": 484.0,
+    "volumeMl": 2202.71
+  },
+  "GR-0000105": {
+    "sku": "GR-0000105",
+    "dept": "BEAUTY",
+    "lengthCm": 10.8,
+    "widthCm": 18.4,
+    "heightCm": 19.3,
+    "weightG": 500.0,
+    "volumeMl": 3835.3
+  },
+  "GR-0000103": {
+    "sku": "GR-0000103",
+    "dept": "BEAUTY",
+    "lengthCm": 34.2,
+    "widthCm": 41.1,
+    "heightCm": 5.9,
+    "weightG": 586.0,
+    "volumeMl": 8293.16
+  },
+  "GR-0000102": {
+    "sku": "GR-0000102",
+    "dept": "BEAUTY",
+    "lengthCm": 9.5,
+    "widthCm": 17.9,
+    "heightCm": 7.5,
+    "weightG": 322.0,
+    "volumeMl": 1275.37
+  },
+  "GR-0000101": {
+    "sku": "GR-0000101",
+    "dept": "BEAUTY",
+    "lengthCm": 34.2,
+    "widthCm": 41.1,
+    "heightCm": 5.9,
+    "weightG": 586.0,
+    "volumeMl": 8293.16
+  },
+  "GR-0000099": {
+    "sku": "GR-0000099",
+    "dept": "BEAUTY",
+    "lengthCm": 14.1,
+    "widthCm": 6.1,
+    "heightCm": 6.2,
+    "weightG": 238.0,
+    "volumeMl": 533.26
+  },
+  "GR-0000097": {
+    "sku": "GR-0000097",
+    "dept": "BEAUTY",
+    "lengthCm": 21.4,
+    "widthCm": 8.7,
+    "heightCm": 4.1,
+    "weightG": 30.0,
+    "volumeMl": 763.34
+  },
+  "GR-0000096": {
+    "sku": "GR-0000096",
+    "dept": "BEAUTY",
+    "lengthCm": 6.9,
+    "widthCm": 8.1,
+    "heightCm": 25.6,
+    "weightG": 250.0,
+    "volumeMl": 1430.78
+  },
+  "GR-0000095": {
+    "sku": "GR-0000095",
+    "dept": "BEAUTY",
+    "lengthCm": 5.6,
+    "widthCm": 13.9,
+    "heightCm": 5.1,
+    "weightG": 82.0,
+    "volumeMl": 396.98
+  },
+  "GR-0000093": {
+    "sku": "GR-0000093",
+    "dept": "BEAUTY",
+    "lengthCm": 26.7,
+    "widthCm": 14.4,
+    "heightCm": 21.3,
+    "weightG": 312.0,
+    "volumeMl": 8189.42
+  },
+  "GR-0000091": {
+    "sku": "GR-0000091",
+    "dept": "BEAUTY",
+    "lengthCm": 12.9,
+    "widthCm": 11.0,
+    "heightCm": 4.4,
+    "weightG": 302.0,
+    "volumeMl": 624.36
+  },
+  "GR-0000090": {
+    "sku": "GR-0000090",
+    "dept": "BEAUTY",
+    "lengthCm": 13.4,
+    "widthCm": 16.5,
+    "heightCm": 5.0,
+    "weightG": 314.0,
+    "volumeMl": 1105.5
+  },
+  "GR-0000089": {
+    "sku": "GR-0000089",
+    "dept": "BEAUTY",
+    "lengthCm": 22.1,
+    "widthCm": 10.4,
+    "heightCm": 4.7,
+    "weightG": 186.0,
+    "volumeMl": 1080.25
+  },
+  "GR-0000088": {
+    "sku": "GR-0000088",
+    "dept": "BEAUTY",
+    "lengthCm": 4.2,
+    "widthCm": 12.5,
+    "heightCm": 12.7,
+    "weightG": 310.0,
+    "volumeMl": 666.75
+  },
+  "GR-0000087": {
+    "sku": "GR-0000087",
+    "dept": "BEAUTY",
+    "lengthCm": 9.7,
+    "widthCm": 21.5,
+    "heightCm": 4.6,
+    "weightG": 186.0,
+    "volumeMl": 959.33
+  },
+  "GR-0000086": {
+    "sku": "GR-0000086",
+    "dept": "BEAUTY",
+    "lengthCm": 9.3,
+    "widthCm": 16.9,
+    "heightCm": 4.5,
+    "weightG": 312.0,
+    "volumeMl": 707.26
+  },
+  "GR-0000083": {
+    "sku": "GR-0000083",
+    "dept": "BEAUTY",
+    "lengthCm": 17.4,
+    "widthCm": 10.9,
+    "heightCm": 3.3,
+    "weightG": 26.0,
+    "volumeMl": 625.88
+  },
+  "GR-0000082": {
+    "sku": "GR-0000082",
+    "dept": "BEAUTY",
+    "lengthCm": 9.9,
+    "widthCm": 15.6,
+    "heightCm": 1.1,
+    "weightG": 28.0,
+    "volumeMl": 169.88
+  },
+  "GR-0000081": {
+    "sku": "GR-0000081",
+    "dept": "BEAUTY",
+    "lengthCm": 12.8,
+    "widthCm": 14.4,
+    "heightCm": 2.1,
+    "weightG": 40.0,
+    "volumeMl": 387.07
+  },
+  "GR-0000080": {
+    "sku": "GR-0000080",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 24.6,
+    "heightCm": 0.9,
+    "weightG": 32.0,
+    "volumeMl": 216.97
+  },
+  "GR-0000040": {
+    "sku": "GR-0000040",
+    "dept": "BEAUTY",
+    "lengthCm": 22.8,
+    "widthCm": 4.9,
+    "heightCm": 1.4,
+    "weightG": 36.0,
+    "volumeMl": 156.41
+  },
+  "GR-0000019": {
+    "sku": "GR-0000019",
+    "dept": "BEAUTY",
+    "lengthCm": 7.8,
+    "widthCm": 15.4,
+    "heightCm": 4.6,
+    "weightG": 940.0,
+    "volumeMl": 552.55
+  },
+  "GR-0000018": {
+    "sku": "GR-0000018",
+    "dept": "BEAUTY",
+    "lengthCm": 17.0,
+    "widthCm": 23.0,
+    "heightCm": 5.2,
+    "weightG": 172.0,
+    "volumeMl": 2033.2
+  }
+}

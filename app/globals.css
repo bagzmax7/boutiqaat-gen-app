@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-primary: #08080E;
+  --bg-secondary: #0F0F1A;
+  --bg-card: #13131F;
+  --border: #1E1E30;
+  --accent-gold: #F59E0B;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+}
+
+/* GPU-accelerated scroll containers */
+.overflow-y-auto,
+.overflow-y-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  overscroll-behavior-y: contain;
+  transform: translateZ(0);
+  will-change: scroll-position;
+}
+
+/* Lazy image optimizations */
+img[loading="lazy"] {
+  image-rendering: auto;
+  backface-visibility: hidden;
+}
+
+/* Reduce transition cost during scroll */
+@media (prefers-reduced-motion: no-preference) {
+  .group:not(:hover) img {
+    transition: none;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0F0F1A;
+}
+::-webkit-scrollbar-thumb {
+  background: #2A2A40;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #F59E0B66;
+}
+
+/* Gold glow effect */
+.glow-gold {
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.25),
+              0 0 40px rgba(245, 158, 11, 0.1);
+}
+
+/* Glass card */
+.glass-card {
+  background: rgba(19, 19, 31, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(30, 30, 48, 0.8);
+}
+
+/* Shimmer loading effect */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(30, 30, 48, 0) 0%,
+    rgba(245, 158, 11, 0.05) 50%,
+    rgba(30, 30, 48, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Status pulse animation */
+.pulse-running {
+  animation: pulseRing 2s ease-in-out infinite;
+}
+
+@keyframes pulseRing {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(59, 130, 246, 0); }
+}
+
+/* Gradient text */
+.gradient-text-gold {
+  background: linear-gradient(135deg, #F59E0B, #FCD34D);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Input focus gold ring */
+.input-gold:focus {
+  outline: none;
+  border-color: #F59E0B;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+}
+
+/* Button hover lift */
+.btn-lift {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn-lift:hover {
+  transform: translateY(-1px);
+}
+.btn-lift:active {
+  transform: translateY(0);
+}

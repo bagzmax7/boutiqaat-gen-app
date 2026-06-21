@@ -1,0 +1,9371 @@
+{
+  "999404": {
+    "sku": "999404",
+    "dept": "BEAUTY",
+    "lengthCm": 7.7,
+    "widthCm": 9.8,
+    "heightCm": 4.0,
+    "weightG": 56.0,
+    "volumeMl": 301.84
+  },
+  "999244": {
+    "sku": "999244",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.5,
+    "widthCm": 8.9,
+    "heightCm": 3.3,
+    "weightG": 40.0,
+    "volumeMl": 337.75
+  },
+  "998412": {
+    "sku": "998412",
+    "dept": "BEAUTY",
+    "lengthCm": 9.9,
+    "widthCm": 12.3,
+    "heightCm": 6.3,
+    "weightG": 100.0,
+    "volumeMl": 767.15
+  },
+  "998409": {
+    "sku": "998409",
+    "dept": "BEAUTY",
+    "lengthCm": 9.4,
+    "widthCm": 14.1,
+    "heightCm": 4.4,
+    "weightG": 62.0,
+    "volumeMl": 583.18
+  },
+  "997550": {
+    "sku": "997550",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "993165": {
+    "sku": "993165",
+    "dept": "BEAUTY",
+    "lengthCm": 4.3,
+    "widthCm": 4.2,
+    "heightCm": 11.5,
+    "weightG": 70.0,
+    "volumeMl": 207.69
+  },
+  "990822": {
+    "sku": "990822",
+    "dept": "BEAUTY",
+    "lengthCm": 46.5,
+    "widthCm": 18.5,
+    "heightCm": 9.4,
+    "weightG": 1104.0,
+    "volumeMl": 8086.35
+  },
+  "986490": {
+    "sku": "986490",
+    "dept": "BEAUTY",
+    "lengthCm": 4.7,
+    "widthCm": 12.2,
+    "heightCm": 15.6,
+    "weightG": 462.0,
+    "volumeMl": 894.5
+  },
+  "985057": {
+    "sku": "985057",
+    "dept": "BEAUTY",
+    "lengthCm": 8.3,
+    "widthCm": 2.7,
+    "heightCm": 2.7,
+    "weightG": 32.0,
+    "volumeMl": 60.51
+  },
+  "984475": {
+    "sku": "984475",
+    "dept": "BEAUTY",
+    "lengthCm": 9.2,
+    "widthCm": 9.7,
+    "heightCm": 2.5,
+    "weightG": 106.0,
+    "volumeMl": 223.1
+  },
+  "980530": {
+    "sku": "980530",
+    "dept": "BEAUTY",
+    "lengthCm": 12.3,
+    "widthCm": 4.3,
+    "heightCm": 2.2,
+    "weightG": 28.0,
+    "volumeMl": 116.36
+  },
+  "977697": {
+    "sku": "977697",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.6,
+    "heightCm": 3.1,
+    "weightG": 34.0,
+    "volumeMl": 351.54
+  },
+  "976345": {
+    "sku": "976345",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 12.9,
+    "widthCm": 11.1,
+    "heightCm": 4.0,
+    "weightG": 100.0,
+    "volumeMl": 572.76
+  },
+  "972087": {
+    "sku": "972087",
+    "dept": "BEAUTY",
+    "lengthCm": 5.9,
+    "widthCm": 18.1,
+    "heightCm": 5.2,
+    "weightG": 190.0,
+    "volumeMl": 555.31
+  },
+  "965076": {
+    "sku": "965076",
+    "dept": "BEAUTY",
+    "lengthCm": 6.5,
+    "widthCm": 15.8,
+    "heightCm": 2.1,
+    "weightG": 14.0,
+    "volumeMl": 215.67
+  },
+  "964701": {
+    "sku": "964701",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 15.5,
+    "widthCm": 8.7,
+    "heightCm": 3.9,
+    "weightG": 76.0,
+    "volumeMl": 525.91
+  },
+  "962968": {
+    "sku": "962968",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 18.3,
+    "widthCm": 10.5,
+    "heightCm": 4.4,
+    "weightG": 164.0,
+    "volumeMl": 845.46
+  },
+  "962965": {
+    "sku": "962965",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 8.1,
+    "widthCm": 16.0,
+    "heightCm": 4.4,
+    "weightG": 66.0,
+    "volumeMl": 570.24
+  },
+  "962964": {
+    "sku": "962964",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 18.3,
+    "widthCm": 10.5,
+    "heightCm": 4.4,
+    "weightG": 164.0,
+    "volumeMl": 845.46
+  },
+  "962963": {
+    "sku": "962963",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 8.7,
+    "widthCm": 15.5,
+    "heightCm": 3.9,
+    "weightG": 62.0,
+    "volumeMl": 525.91
+  },
+  "962962": {
+    "sku": "962962",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 6.1,
+    "widthCm": 12.8,
+    "heightCm": 16.3,
+    "weightG": 280.0,
+    "volumeMl": 1272.7
+  },
+  "962956": {
+    "sku": "962956",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 16.6,
+    "widthCm": 8.6,
+    "heightCm": 4.0,
+    "weightG": 64.0,
+    "volumeMl": 571.04
+  },
+  "962955": {
+    "sku": "962955",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 19.7,
+    "widthCm": 10.8,
+    "heightCm": 4.3,
+    "weightG": 254.0,
+    "volumeMl": 914.87
+  },
+  "962954": {
+    "sku": "962954",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 14.1,
+    "widthCm": 6.8,
+    "heightCm": 3.3,
+    "weightG": 28.0,
+    "volumeMl": 316.4
+  },
+  "962953": {
+    "sku": "962953",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 5.0,
+    "widthCm": 11.3,
+    "heightCm": 20.4,
+    "weightG": 250.0,
+    "volumeMl": 1152.6
+  },
+  "962119": {
+    "sku": "962119",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "961466": {
+    "sku": "961466",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.3,
+    "widthCm": 8.1,
+    "heightCm": 3.1,
+    "weightG": 28.0,
+    "volumeMl": 183.3
+  },
+  "953783": {
+    "sku": "953783",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 15.0,
+    "widthCm": 5.8,
+    "heightCm": 4.1,
+    "weightG": 130.0,
+    "volumeMl": 356.7
+  },
+  "950152": {
+    "sku": "950152",
+    "dept": "BEAUTY",
+    "lengthCm": 7.1,
+    "widthCm": 15.9,
+    "heightCm": 1.1,
+    "weightG": 8.0,
+    "volumeMl": 124.18
+  },
+  "949961": {
+    "sku": "949961",
+    "dept": "BEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 9.3,
+    "heightCm": 3.1,
+    "weightG": 58.0,
+    "volumeMl": 147.03
+  },
+  "944505": {
+    "sku": "944505",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 11.2,
+    "widthCm": 12.0,
+    "heightCm": 2.9,
+    "weightG": 92.0,
+    "volumeMl": 389.76
+  },
+  "943738": {
+    "sku": "943738",
+    "dept": "BEAUTY",
+    "lengthCm": 3.7,
+    "widthCm": 6.0,
+    "heightCm": 14.9,
+    "weightG": 82.0,
+    "volumeMl": 330.78
+  },
+  "943737": {
+    "sku": "943737",
+    "dept": "BEAUTY",
+    "lengthCm": 18.9,
+    "widthCm": 10.0,
+    "heightCm": 5.2,
+    "weightG": 234.0,
+    "volumeMl": 982.8
+  },
+  "943733": {
+    "sku": "943733",
+    "dept": "BEAUTY",
+    "lengthCm": 26.8,
+    "widthCm": 29.8,
+    "heightCm": 4.4,
+    "weightG": 80.0,
+    "volumeMl": 3514.02
+  },
+  "943658": {
+    "sku": "943658",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.1,
+    "widthCm": 8.5,
+    "heightCm": 2.8,
+    "weightG": 50.0,
+    "volumeMl": 240.38
+  },
+  "938944": {
+    "sku": "938944",
+    "dept": "BEAUTY",
+    "lengthCm": 5.8,
+    "widthCm": 11.0,
+    "heightCm": 13.0,
+    "weightG": 182.0,
+    "volumeMl": 829.4
+  },
+  "937506": {
+    "sku": "937506",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 6.4,
+    "widthCm": 6.4,
+    "heightCm": 22.4,
+    "weightG": 544.0,
+    "volumeMl": 917.5
+  },
+  "937129": {
+    "sku": "937129",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 18.3,
+    "widthCm": 12.2,
+    "heightCm": 2.5,
+    "weightG": 45.0,
+    "volumeMl": 558.15
+  },
+  "934584": {
+    "sku": "934584",
+    "dept": "BEAUTY",
+    "lengthCm": 8.5,
+    "widthCm": 14.9,
+    "heightCm": 25.0,
+    "weightG": 512.0,
+    "volumeMl": 3166.25
+  },
+  "934542": {
+    "sku": "934542",
+    "dept": "BEAUTY",
+    "lengthCm": 5.7,
+    "widthCm": 14.5,
+    "heightCm": 3.6,
+    "weightG": 92.0,
+    "volumeMl": 297.54
+  },
+  "932340": {
+    "sku": "932340",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.9,
+    "widthCm": 11.1,
+    "heightCm": 3.1,
+    "weightG": 42.0,
+    "volumeMl": 306.25
+  },
+  "924404": {
+    "sku": "924404",
+    "dept": "BEAUTY",
+    "lengthCm": 8.0,
+    "widthCm": 11.2,
+    "heightCm": 17.5,
+    "weightG": 578.0,
+    "volumeMl": 1568.0
+  },
+  "922653": {
+    "sku": "922653",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.2,
+    "widthCm": 12.0,
+    "heightCm": 3.4,
+    "weightG": 34.0,
+    "volumeMl": 375.36
+  },
+  "917683": {
+    "sku": "917683",
+    "dept": "BEAUTY",
+    "lengthCm": 9.5,
+    "widthCm": 21.1,
+    "heightCm": 5.0,
+    "weightG": 168.0,
+    "volumeMl": 1002.25
+  },
+  "916388": {
+    "sku": "916388",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 18.0,
+    "widthCm": 19.1,
+    "heightCm": 5.7,
+    "weightG": 496.0,
+    "volumeMl": 1959.66
+  },
+  "914052": {
+    "sku": "914052",
+    "dept": "BEAUTY",
+    "lengthCm": 8.7,
+    "widthCm": 13.5,
+    "heightCm": 3.8,
+    "weightG": 68.0,
+    "volumeMl": 446.31
+  },
+  "914050": {
+    "sku": "914050",
+    "dept": "BEAUTY",
+    "lengthCm": 14.5,
+    "widthCm": 7.4,
+    "heightCm": 3.0,
+    "weightG": 62.0,
+    "volumeMl": 321.9
+  },
+  "911985": {
+    "sku": "911985",
+    "dept": "BEAUTY",
+    "lengthCm": 6.9,
+    "widthCm": 9.2,
+    "heightCm": 2.5,
+    "weightG": 18.0,
+    "volumeMl": 158.7
+  },
+  "911194": {
+    "sku": "911194",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.1,
+    "widthCm": 9.3,
+    "heightCm": 2.4,
+    "weightG": 24.0,
+    "volumeMl": 203.11
+  },
+  "911130": {
+    "sku": "911130",
+    "dept": "BEAUTY",
+    "lengthCm": 5.6,
+    "widthCm": 10.4,
+    "heightCm": 1.4,
+    "weightG": 66.0,
+    "volumeMl": 81.54
+  },
+  "910098": {
+    "sku": "910098",
+    "dept": "BEAUTY",
+    "lengthCm": 5.8,
+    "widthCm": 8.6,
+    "heightCm": 2.6,
+    "weightG": 32.0,
+    "volumeMl": 129.69
+  },
+  "906665": {
+    "sku": "906665",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 18.3,
+    "widthCm": 12.2,
+    "heightCm": 2.5,
+    "weightG": 45.0,
+    "volumeMl": 558.15
+  },
+  "905306": {
+    "sku": "905306",
+    "dept": "BEAUTY",
+    "lengthCm": 6.3,
+    "widthCm": 15.5,
+    "heightCm": 4.1,
+    "weightG": 120.0,
+    "volumeMl": 400.36
+  },
+  "896776": {
+    "sku": "896776",
+    "dept": "BEAUTY",
+    "lengthCm": 8.0,
+    "widthCm": 16.2,
+    "heightCm": 5.1,
+    "weightG": 296.0,
+    "volumeMl": 660.96
+  },
+  "896296": {
+    "sku": "896296",
+    "dept": "BEAUTY",
+    "lengthCm": 10.4,
+    "widthCm": 17.6,
+    "heightCm": 22.2,
+    "weightG": 518.0,
+    "volumeMl": 4063.49
+  },
+  "896295": {
+    "sku": "896295",
+    "dept": "BEAUTY",
+    "lengthCm": 10.4,
+    "widthCm": 17.6,
+    "heightCm": 22.2,
+    "weightG": 518.0,
+    "volumeMl": 4063.49
+  },
+  "889730": {
+    "sku": "889730",
+    "dept": "BEAUTY",
+    "lengthCm": 10.7,
+    "widthCm": 7.1,
+    "heightCm": 2.6,
+    "weightG": 20.0,
+    "volumeMl": 197.52
+  },
+  "884347": {
+    "sku": "884347",
+    "dept": "BEAUTY",
+    "lengthCm": 10.0,
+    "widthCm": 10.7,
+    "heightCm": 9.2,
+    "weightG": 538.0,
+    "volumeMl": 984.4
+  },
+  "880413": {
+    "sku": "880413",
+    "dept": "BEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 8.2,
+    "heightCm": 1.6,
+    "weightG": 28.0,
+    "volumeMl": 66.91
+  },
+  "878059": {
+    "sku": "878059",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 8.2,
+    "widthCm": 8.3,
+    "heightCm": 10.6,
+    "weightG": 390.0,
+    "volumeMl": 721.44
+  },
+  "877980": {
+    "sku": "877980",
+    "dept": "BEAUTY",
+    "lengthCm": 14.5,
+    "widthCm": 13.8,
+    "heightCm": 8.9,
+    "weightG": 354.0,
+    "volumeMl": 1780.89
+  },
+  "877536": {
+    "sku": "877536",
+    "dept": "BEAUTY",
+    "lengthCm": 3.9,
+    "widthCm": 10.4,
+    "heightCm": 3.4,
+    "weightG": 20.0,
+    "volumeMl": 137.9
+  },
+  "876611": {
+    "sku": "876611",
+    "dept": "BEAUTY",
+    "lengthCm": 11.8,
+    "widthCm": 15.3,
+    "heightCm": 2.9,
+    "weightG": 680.0,
+    "volumeMl": 523.57
+  },
+  "876544": {
+    "sku": "876544",
+    "dept": "BEAUTY",
+    "lengthCm": 7.1,
+    "widthCm": 18.7,
+    "heightCm": 15.0,
+    "weightG": 372.0,
+    "volumeMl": 1991.55
+  },
+  "875421": {
+    "sku": "875421",
+    "dept": "BEAUTY",
+    "lengthCm": 12.5,
+    "widthCm": 11.1,
+    "heightCm": 11.8,
+    "weightG": 518.0,
+    "volumeMl": 1637.25
+  },
+  "875407": {
+    "sku": "875407",
+    "dept": "BEAUTY",
+    "lengthCm": 5.8,
+    "widthCm": 8.7,
+    "heightCm": 21.0,
+    "weightG": 334.0,
+    "volumeMl": 1059.66
+  },
+  "875401": {
+    "sku": "875401",
+    "dept": "BEAUTY",
+    "lengthCm": 6.4,
+    "widthCm": 8.4,
+    "heightCm": 21.0,
+    "weightG": 342.0,
+    "volumeMl": 1128.96
+  },
+  "875399": {
+    "sku": "875399",
+    "dept": "BEAUTY",
+    "lengthCm": 5.6,
+    "widthCm": 8.5,
+    "heightCm": 21.0,
+    "weightG": 334000.0,
+    "volumeMl": 999.6
+  },
+  "872622": {
+    "sku": "872622",
+    "dept": "PVTLABEL",
+    "lengthCm": 5.0,
+    "widthCm": 6.8,
+    "heightCm": 11.2,
+    "weightG": 228.0,
+    "volumeMl": 380.8
+  },
+  "872402": {
+    "sku": "872402",
+    "dept": "BEAUTY",
+    "lengthCm": 9.3,
+    "widthCm": 8.8,
+    "heightCm": 1.7,
+    "weightG": 46.0,
+    "volumeMl": 139.13
+  },
+  "870992": {
+    "sku": "870992",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 6.1,
+    "widthCm": 21.4,
+    "heightCm": 6.1,
+    "weightG": 272.0,
+    "volumeMl": 796.29
+  },
+  "857440": {
+    "sku": "857440",
+    "dept": "BEAUTY",
+    "lengthCm": 6.5,
+    "widthCm": 5.6,
+    "heightCm": 3.7,
+    "weightG": 31.0,
+    "volumeMl": 134.68
+  },
+  "854432": {
+    "sku": "854432",
+    "dept": "BEAUTY",
+    "lengthCm": 8.9,
+    "widthCm": 19.7,
+    "heightCm": 3.1,
+    "weightG": 54.0,
+    "volumeMl": 543.52
+  },
+  "851845": {
+    "sku": "851845",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 12.3,
+    "widthCm": 9.0,
+    "heightCm": 3.8,
+    "weightG": 36.0,
+    "volumeMl": 420.66
+  },
+  "851684": {
+    "sku": "851684",
+    "dept": "BEAUTY",
+    "lengthCm": 6.6,
+    "widthCm": 5.6,
+    "heightCm": 3.6,
+    "weightG": 25.0,
+    "volumeMl": 133.06
+  },
+  "846642": {
+    "sku": "846642",
+    "dept": "BEAUTY",
+    "lengthCm": 18.2,
+    "widthCm": 7.3,
+    "heightCm": 4.8,
+    "weightG": 160.0,
+    "volumeMl": 637.73
+  },
+  "845799": {
+    "sku": "845799",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 17.0,
+    "widthCm": 14.7,
+    "heightCm": 3.7,
+    "weightG": 110.0,
+    "volumeMl": 924.63
+  },
+  "838166": {
+    "sku": "838166",
+    "dept": "BEAUTY",
+    "lengthCm": 16.0,
+    "widthCm": 6.3,
+    "heightCm": 2.2,
+    "weightG": 12.0,
+    "volumeMl": 221.76
+  },
+  "837309": {
+    "sku": "837309",
+    "dept": "BEAUTY",
+    "lengthCm": 24.8,
+    "widthCm": 5.0,
+    "heightCm": 1.1,
+    "weightG": 16.0,
+    "volumeMl": 136.4
+  },
+  "836124": {
+    "sku": "836124",
+    "dept": "BEAUTY",
+    "lengthCm": 3.9,
+    "widthCm": 6.1,
+    "heightCm": 3.9,
+    "weightG": 14.0,
+    "volumeMl": 92.78
+  },
+  "834830": {
+    "sku": "834830",
+    "dept": "BEAUTY",
+    "lengthCm": 7.8,
+    "widthCm": 13.2,
+    "heightCm": 13.0,
+    "weightG": 292.0,
+    "volumeMl": 1338.48
+  },
+  "834551": {
+    "sku": "834551",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 6.2,
+    "widthCm": 6.2,
+    "heightCm": 17.4,
+    "weightG": 558.0,
+    "volumeMl": 668.86
+  },
+  "834389": {
+    "sku": "834389",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 15.8,
+    "widthCm": 4.3,
+    "heightCm": 4.4,
+    "weightG": 146.0,
+    "volumeMl": 298.94
+  },
+  "831436": {
+    "sku": "831436",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.4,
+    "widthCm": 10.0,
+    "heightCm": 1.6,
+    "weightG": 20.0,
+    "volumeMl": 150.4
+  },
+  "828265": {
+    "sku": "828265",
+    "dept": "BEAUTY",
+    "lengthCm": 5.8,
+    "widthCm": 11.0,
+    "heightCm": 13.0,
+    "weightG": 182.0,
+    "volumeMl": 829.4
+  },
+  "825363": {
+    "sku": "825363",
+    "dept": "BEAUTY",
+    "lengthCm": 4.8,
+    "widthCm": 15.0,
+    "heightCm": 2.8,
+    "weightG": 26.0,
+    "volumeMl": 201.6
+  },
+  "821573": {
+    "sku": "821573",
+    "dept": "BEAUTY",
+    "lengthCm": 16.7,
+    "widthCm": 16.3,
+    "heightCm": 2.8,
+    "weightG": 20.0,
+    "volumeMl": 762.19
+  },
+  "820423": {
+    "sku": "820423",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.5,
+    "widthCm": 10.3,
+    "heightCm": 3.4,
+    "weightG": 61.0,
+    "volumeMl": 402.73
+  },
+  "816888": {
+    "sku": "816888",
+    "dept": "BEAUTY",
+    "lengthCm": 5.0,
+    "widthCm": 8.1,
+    "heightCm": 18.1,
+    "weightG": 156.0,
+    "volumeMl": 733.05
+  },
+  "815908": {
+    "sku": "815908",
+    "dept": "BEAUTY",
+    "lengthCm": 6.1,
+    "widthCm": 9.7,
+    "heightCm": 13.2,
+    "weightG": 176.0,
+    "volumeMl": 781.04
+  },
+  "815097": {
+    "sku": "815097",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.4,
+    "widthCm": 10.0,
+    "heightCm": 1.6,
+    "weightG": 20.0,
+    "volumeMl": 150.4
+  },
+  "809759": {
+    "sku": "809759",
+    "dept": "BEAUTY",
+    "lengthCm": 5.6,
+    "widthCm": 12.4,
+    "heightCm": 3.7,
+    "weightG": 28.0,
+    "volumeMl": 256.93
+  },
+  "809758": {
+    "sku": "809758",
+    "dept": "BEAUTY",
+    "lengthCm": 24.4,
+    "widthCm": 7.2,
+    "heightCm": 3.3,
+    "weightG": 20.0,
+    "volumeMl": 579.74
+  },
+  "809757": {
+    "sku": "809757",
+    "dept": "BEAUTY",
+    "lengthCm": 24.4,
+    "widthCm": 7.2,
+    "heightCm": 3.3,
+    "weightG": 20.0,
+    "volumeMl": 579.74
+  },
+  "809756": {
+    "sku": "809756",
+    "dept": "BEAUTY",
+    "lengthCm": 9.6,
+    "widthCm": 6.8,
+    "heightCm": 3.7,
+    "weightG": 28.0,
+    "volumeMl": 241.54
+  },
+  "809706": {
+    "sku": "809706",
+    "dept": "BEAUTY",
+    "lengthCm": 8.8,
+    "widthCm": 9.3,
+    "heightCm": 3.3,
+    "weightG": 76.0,
+    "volumeMl": 270.07
+  },
+  "809703": {
+    "sku": "809703",
+    "dept": "BEAUTY",
+    "lengthCm": 7.4,
+    "widthCm": 9.3,
+    "heightCm": 2.5,
+    "weightG": 46.0,
+    "volumeMl": 172.05
+  },
+  "808790": {
+    "sku": "808790",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.3,
+    "widthCm": 9.4,
+    "heightCm": 2.2,
+    "weightG": 22.0,
+    "volumeMl": 192.32
+  },
+  "794862": {
+    "sku": "794862",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 7.6,
+    "widthCm": 11.3,
+    "heightCm": 3.9,
+    "weightG": 88.0,
+    "volumeMl": 334.93
+  },
+  "790880": {
+    "sku": "790880",
+    "dept": "BEAUTY",
+    "lengthCm": 11.7,
+    "widthCm": 11.3,
+    "heightCm": 2.6,
+    "weightG": 32.0,
+    "volumeMl": 343.75
+  },
+  "790860": {
+    "sku": "790860",
+    "dept": "BEAUTY",
+    "lengthCm": 15.6,
+    "widthCm": 15.1,
+    "heightCm": 8.2,
+    "weightG": 476000.0,
+    "volumeMl": 1931.59
+  },
+  "790859": {
+    "sku": "790859",
+    "dept": "BEAUTY",
+    "lengthCm": 10.6,
+    "widthCm": 17.8,
+    "heightCm": 4.8,
+    "weightG": 306.0,
+    "volumeMl": 905.66
+  },
+  "790858": {
+    "sku": "790858",
+    "dept": "BEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 10.9,
+    "heightCm": 16.9,
+    "weightG": 280.0,
+    "volumeMl": 939.47
+  },
+  "790857": {
+    "sku": "790857",
+    "dept": "BEAUTY",
+    "lengthCm": 8.4,
+    "widthCm": 18.7,
+    "heightCm": 5.1,
+    "weightG": 234.0,
+    "volumeMl": 801.11
+  },
+  "790855": {
+    "sku": "790855",
+    "dept": "BEAUTY",
+    "lengthCm": 10.6,
+    "widthCm": 12.4,
+    "heightCm": 3.9,
+    "weightG": 144.0,
+    "volumeMl": 512.62
+  },
+  "787418": {
+    "sku": "787418",
+    "dept": "BEAUTY",
+    "lengthCm": 8.1,
+    "widthCm": 17.3,
+    "heightCm": 5.9,
+    "weightG": 228.0,
+    "volumeMl": 826.77
+  },
+  "783072": {
+    "sku": "783072",
+    "dept": "BEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 5.3,
+    "heightCm": 16.4,
+    "weightG": 160.0,
+    "volumeMl": 443.29
+  },
+  "778255": {
+    "sku": "778255",
+    "dept": "BEAUTY",
+    "lengthCm": 7.7,
+    "widthCm": 11.7,
+    "heightCm": 15.6,
+    "weightG": 218.0,
+    "volumeMl": 1405.4
+  },
+  "773480": {
+    "sku": "773480",
+    "dept": "BEAUTY",
+    "lengthCm": 19.3,
+    "widthCm": 8.4,
+    "heightCm": 2.9,
+    "weightG": 26.0,
+    "volumeMl": 470.15
+  },
+  "773477": {
+    "sku": "773477",
+    "dept": "BEAUTY",
+    "lengthCm": 19.5,
+    "widthCm": 9.1,
+    "heightCm": 4.5,
+    "weightG": 30.0,
+    "volumeMl": 798.52
+  },
+  "773466": {
+    "sku": "773466",
+    "dept": "BEAUTY",
+    "lengthCm": 12.1,
+    "widthCm": 6.9,
+    "heightCm": 4.0,
+    "weightG": 14.0,
+    "volumeMl": 333.96
+  },
+  "773463": {
+    "sku": "773463",
+    "dept": "BEAUTY",
+    "lengthCm": 15.5,
+    "widthCm": 8.5,
+    "heightCm": 4.1,
+    "weightG": 52.0,
+    "volumeMl": 540.17
+  },
+  "773457": {
+    "sku": "773457",
+    "dept": "BEAUTY",
+    "lengthCm": 19.6,
+    "widthCm": 6.7,
+    "heightCm": 2.5,
+    "weightG": 48.0,
+    "volumeMl": 328.3
+  },
+  "766221": {
+    "sku": "766221",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.3,
+    "widthCm": 11.1,
+    "heightCm": 3.3,
+    "weightG": 36.0,
+    "volumeMl": 340.66
+  },
+  "765002": {
+    "sku": "765002",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.1,
+    "widthCm": 8.6,
+    "heightCm": 2.8,
+    "weightG": 56.0,
+    "volumeMl": 243.21
+  },
+  "763909": {
+    "sku": "763909",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.6,
+    "widthCm": 12.1,
+    "heightCm": 3.0,
+    "weightG": 34.0,
+    "volumeMl": 348.48
+  },
+  "763486": {
+    "sku": "763486",
+    "dept": "BEAUTY",
+    "lengthCm": 9.0,
+    "widthCm": 12.5,
+    "heightCm": 3.1,
+    "weightG": 52.0,
+    "volumeMl": 348.75
+  },
+  "761777": {
+    "sku": "761777",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 17.0,
+    "widthCm": 11.6,
+    "heightCm": 8.4,
+    "weightG": 580.0,
+    "volumeMl": 1656.48
+  },
+  "758923": {
+    "sku": "758923",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.6,
+    "heightCm": 3.1,
+    "weightG": 34.0,
+    "volumeMl": 351.54
+  },
+  "757405": {
+    "sku": "757405",
+    "dept": "BEAUTY",
+    "lengthCm": 5.3,
+    "widthCm": 11.5,
+    "heightCm": 15.1,
+    "weightG": 288.0,
+    "volumeMl": 920.34
+  },
+  "755400": {
+    "sku": "755400",
+    "dept": "BEAUTY",
+    "lengthCm": 3.7,
+    "widthCm": 6.2,
+    "heightCm": 16.3,
+    "weightG": 108.0,
+    "volumeMl": 373.92
+  },
+  "754199": {
+    "sku": "754199",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.1,
+    "widthCm": 8.5,
+    "heightCm": 2.8,
+    "weightG": 50.0,
+    "volumeMl": 240.38
+  },
+  "745340": {
+    "sku": "745340",
+    "dept": "BEAUTY",
+    "lengthCm": 7.5,
+    "widthCm": 5.1,
+    "heightCm": 3.0,
+    "weightG": 34.0,
+    "volumeMl": 114.75
+  },
+  "739082": {
+    "sku": "739082",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.3,
+    "widthCm": 8.1,
+    "heightCm": 3.1,
+    "weightG": 28.0,
+    "volumeMl": 183.3
+  },
+  "734324": {
+    "sku": "734324",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.6,
+    "heightCm": 3.1,
+    "weightG": 34.0,
+    "volumeMl": 351.54
+  },
+  "733940": {
+    "sku": "733940",
+    "dept": "BEAUTY",
+    "lengthCm": 5.8,
+    "widthCm": 15.0,
+    "heightCm": 19.0,
+    "weightG": 264.0,
+    "volumeMl": 1653.0
+  },
+  "724598": {
+    "sku": "724598",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 6.5,
+    "widthCm": 12.4,
+    "heightCm": 4.8,
+    "weightG": 102.0,
+    "volumeMl": 386.88
+  },
+  "721006": {
+    "sku": "721006",
+    "dept": "BEAUTY",
+    "lengthCm": 4.4,
+    "widthCm": 24.9,
+    "heightCm": 8.4,
+    "weightG": 42.0,
+    "volumeMl": 920.3
+  },
+  "719011": {
+    "sku": "719011",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.6,
+    "heightCm": 3.1,
+    "weightG": 34.0,
+    "volumeMl": 351.54
+  },
+  "710749": {
+    "sku": "710749",
+    "dept": "BEAUTY",
+    "lengthCm": 7.1,
+    "widthCm": 30.6,
+    "heightCm": 15.7,
+    "weightG": 292.0,
+    "volumeMl": 3410.98
+  },
+  "705161": {
+    "sku": "705161",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 18.3,
+    "widthCm": 16.9,
+    "heightCm": 5.7,
+    "weightG": 496.0,
+    "volumeMl": 1762.84
+  },
+  "704900": {
+    "sku": "704900",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.3,
+    "widthCm": 9.4,
+    "heightCm": 2.2,
+    "weightG": 22.0,
+    "volumeMl": 192.32
+  },
+  "700746": {
+    "sku": "700746",
+    "dept": "BOUTIQAATBRANDS",
+    "lengthCm": 34.6,
+    "widthCm": 14.7,
+    "heightCm": 10.7,
+    "weightG": 555.0,
+    "volumeMl": 5442.23
+  },
+  "699204": {
+    "sku": "699204",
+    "dept": "BEAUTY",
+    "lengthCm": 10.1,
+    "widthCm": 21.7,
+    "heightCm": 18.2,
+    "weightG": 854.0,
+    "volumeMl": 3988.89
+  },
+  "697815": {
+    "sku": "697815",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 7.7,
+    "heightCm": 19.0,
+    "weightG": 244.0,
+    "volumeMl": 746.13
+  },
+  "697062": {
+    "sku": "697062",
+    "dept": "BEAUTY",
+    "lengthCm": 6.7,
+    "widthCm": 19.3,
+    "heightCm": 3.4,
+    "weightG": 50.0,
+    "volumeMl": 439.65
+  },
+  "692778": {
+    "sku": "692778",
+    "dept": "BEAUTY",
+    "lengthCm": 4.0,
+    "widthCm": 8.6,
+    "heightCm": 2.1,
+    "weightG": 18.0,
+    "volumeMl": 72.24
+  },
+  "687470": {
+    "sku": "687470",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 4.2,
+    "widthCm": 13.9,
+    "heightCm": 4.4,
+    "weightG": 250.0,
+    "volumeMl": 256.87
+  },
+  "681779": {
+    "sku": "681779",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 5.3,
+    "widthCm": 5.4,
+    "heightCm": 18.8,
+    "weightG": 402.0,
+    "volumeMl": 538.06
+  },
+  "681478": {
+    "sku": "681478",
+    "dept": "BEAUTY",
+    "lengthCm": 13.0,
+    "widthCm": 8.8,
+    "heightCm": 4.1,
+    "weightG": 10.0,
+    "volumeMl": 469.04
+  },
+  "681114": {
+    "sku": "681114",
+    "dept": "PVTLABEL",
+    "lengthCm": 6.5,
+    "widthCm": 10.0,
+    "heightCm": 4.4,
+    "weightG": 76.0,
+    "volumeMl": 286.0
+  },
+  "679879": {
+    "sku": "679879",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 5.4,
+    "widthCm": 10.7,
+    "heightCm": 17.1,
+    "weightG": 104.0,
+    "volumeMl": 988.04
+  },
+  "679559": {
+    "sku": "679559",
+    "dept": "BEAUTY",
+    "lengthCm": 6.6,
+    "widthCm": 13.4,
+    "heightCm": 3.6,
+    "weightG": 90.0,
+    "volumeMl": 318.38
+  },
+  "678587": {
+    "sku": "678587",
+    "dept": "BEAUTY",
+    "lengthCm": 10.5,
+    "widthCm": 29.6,
+    "heightCm": 7.4,
+    "weightG": 80.0,
+    "volumeMl": 2299.92
+  },
+  "670538": {
+    "sku": "670538",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 24.8,
+    "widthCm": 30.9,
+    "heightCm": 8.8,
+    "weightG": 234.0,
+    "volumeMl": 6743.62
+  },
+  "667040": {
+    "sku": "667040",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 5.9,
+    "widthCm": 9.5,
+    "heightCm": 2.8,
+    "weightG": 8.0,
+    "volumeMl": 156.94
+  },
+  "665732": {
+    "sku": "665732",
+    "dept": "BEAUTY",
+    "lengthCm": 10.1,
+    "widthCm": 21.4,
+    "heightCm": 10.6,
+    "weightG": 470.0,
+    "volumeMl": 2291.08
+  },
+  "664657": {
+    "sku": "664657",
+    "dept": "BEAUTY",
+    "lengthCm": 11.5,
+    "widthCm": 32.8,
+    "heightCm": 1.2,
+    "weightG": 4.0,
+    "volumeMl": 452.64
+  },
+  "662765": {
+    "sku": "662765",
+    "dept": "BEAUTY",
+    "lengthCm": 8.7,
+    "widthCm": 21.9,
+    "heightCm": 6.4,
+    "weightG": 322.0,
+    "volumeMl": 1219.39
+  },
+  "662488": {
+    "sku": "662488",
+    "dept": "PVTLABEL",
+    "lengthCm": 8.5,
+    "widthCm": 13.0,
+    "heightCm": 18.8,
+    "weightG": 706.0,
+    "volumeMl": 2077.4
+  },
+  "656921": {
+    "sku": "656921",
+    "dept": "BEAUTY",
+    "lengthCm": 5.7,
+    "widthCm": 14.5,
+    "heightCm": 3.6,
+    "weightG": 92.0,
+    "volumeMl": 297.54
+  },
+  "653383": {
+    "sku": "653383",
+    "dept": "BEAUTY",
+    "lengthCm": 12.4,
+    "widthCm": 4.8,
+    "heightCm": 1.9,
+    "weightG": 10.0,
+    "volumeMl": 113.09
+  },
+  "650349": {
+    "sku": "650349",
+    "dept": "BEAUTY",
+    "lengthCm": 3.2,
+    "widthCm": 7.4,
+    "heightCm": 20.3,
+    "weightG": 204.0,
+    "volumeMl": 480.7
+  },
+  "649052": {
+    "sku": "649052",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 9.6,
+    "widthCm": 23.1,
+    "heightCm": 5.2,
+    "weightG": 246.0,
+    "volumeMl": 1153.15
+  },
+  "644071": {
+    "sku": "644071",
+    "dept": "PVTLABEL",
+    "lengthCm": 5.3,
+    "widthCm": 7.4,
+    "heightCm": 13.6,
+    "weightG": 358.0,
+    "volumeMl": 533.39
+  },
+  "642374": {
+    "sku": "642374",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.3,
+    "widthCm": 8.1,
+    "heightCm": 3.1,
+    "weightG": 28.0,
+    "volumeMl": 183.3
+  },
+  "638936": {
+    "sku": "638936",
+    "dept": "BEAUTY",
+    "lengthCm": 12.9,
+    "widthCm": 14.2,
+    "heightCm": 1.5,
+    "weightG": 6.0,
+    "volumeMl": 274.77
+  },
+  "635412": {
+    "sku": "635412",
+    "dept": "BOUTIQAATBRANDS",
+    "lengthCm": 12.2,
+    "widthCm": 15.2,
+    "heightCm": 34.7,
+    "weightG": 546.0,
+    "volumeMl": 6434.77
+  },
+  "634653": {
+    "sku": "634653",
+    "dept": "BEAUTY",
+    "lengthCm": 5.0,
+    "widthCm": 6.9,
+    "heightCm": 3.0,
+    "weightG": 44.0,
+    "volumeMl": 103.5
+  },
+  "634652": {
+    "sku": "634652",
+    "dept": "BEAUTY",
+    "lengthCm": 6.5,
+    "widthCm": 13.2,
+    "heightCm": 2.6,
+    "weightG": 28.0,
+    "volumeMl": 223.08
+  },
+  "634651": {
+    "sku": "634651",
+    "dept": "BEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 13.1,
+    "heightCm": 2.1,
+    "weightG": 18.0,
+    "volumeMl": 140.3
+  },
+  "634612": {
+    "sku": "634612",
+    "dept": "BEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 12.3,
+    "heightCm": 2.1,
+    "weightG": 10.0,
+    "volumeMl": 131.73
+  },
+  "634610": {
+    "sku": "634610",
+    "dept": "BEAUTY",
+    "lengthCm": 7.0,
+    "widthCm": 11.5,
+    "heightCm": 2.5,
+    "weightG": 38.0,
+    "volumeMl": 201.25
+  },
+  "634608": {
+    "sku": "634608",
+    "dept": "BEAUTY",
+    "lengthCm": 27.8,
+    "widthCm": 9.6,
+    "heightCm": 5.2,
+    "weightG": 138.0,
+    "volumeMl": 1387.78
+  },
+  "634606": {
+    "sku": "634606",
+    "dept": "BEAUTY",
+    "lengthCm": 6.5,
+    "widthCm": 13.2,
+    "heightCm": 2.6,
+    "weightG": 28.0,
+    "volumeMl": 223.08
+  },
+  "634605": {
+    "sku": "634605",
+    "dept": "BEAUTY",
+    "lengthCm": 13.2,
+    "widthCm": 5.8,
+    "heightCm": 2.8,
+    "weightG": 30.0,
+    "volumeMl": 214.37
+  },
+  "634602": {
+    "sku": "634602",
+    "dept": "BEAUTY",
+    "lengthCm": 27.8,
+    "widthCm": 9.6,
+    "heightCm": 5.2,
+    "weightG": 138.0,
+    "volumeMl": 1387.78
+  },
+  "634599": {
+    "sku": "634599",
+    "dept": "BEAUTY",
+    "lengthCm": 5.0,
+    "widthCm": 6.9,
+    "heightCm": 3.0,
+    "weightG": 44.0,
+    "volumeMl": 103.5
+  },
+  "634597": {
+    "sku": "634597",
+    "dept": "BEAUTY",
+    "lengthCm": 12.6,
+    "widthCm": 9.1,
+    "heightCm": 4.2,
+    "weightG": 142.0,
+    "volumeMl": 481.57
+  },
+  "634594": {
+    "sku": "634594",
+    "dept": "BEAUTY",
+    "lengthCm": 5.6,
+    "widthCm": 11.3,
+    "heightCm": 2.4,
+    "weightG": 42.0,
+    "volumeMl": 151.87
+  },
+  "634593": {
+    "sku": "634593",
+    "dept": "BEAUTY",
+    "lengthCm": 13.2,
+    "widthCm": 5.2,
+    "heightCm": 2.2,
+    "weightG": 30.0,
+    "volumeMl": 151.01
+  },
+  "634592": {
+    "sku": "634592",
+    "dept": "BEAUTY",
+    "lengthCm": 13.8,
+    "widthCm": 2.7,
+    "heightCm": 2.2,
+    "weightG": 32.0,
+    "volumeMl": 81.97
+  },
+  "634591": {
+    "sku": "634591",
+    "dept": "BEAUTY",
+    "lengthCm": 12.4,
+    "widthCm": 10.6,
+    "heightCm": 1.9,
+    "weightG": 24.0,
+    "volumeMl": 249.74
+  },
+  "634590": {
+    "sku": "634590",
+    "dept": "BEAUTY",
+    "lengthCm": 6.3,
+    "widthCm": 14.1,
+    "heightCm": 2.4,
+    "weightG": 32.0,
+    "volumeMl": 213.19
+  },
+  "628856": {
+    "sku": "628856",
+    "dept": "BEAUTY",
+    "lengthCm": 19.4,
+    "widthCm": 7.4,
+    "heightCm": 2.9,
+    "weightG": 460.0,
+    "volumeMl": 416.32
+  },
+  "625630": {
+    "sku": "625630",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 18.3,
+    "widthCm": 10.5,
+    "heightCm": 4.4,
+    "weightG": 164.0,
+    "volumeMl": 845.46
+  },
+  "625406": {
+    "sku": "625406",
+    "dept": "BEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 8.2,
+    "heightCm": 1.6,
+    "weightG": 28.0,
+    "volumeMl": 66.91
+  },
+  "624785": {
+    "sku": "624785",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.6,
+    "heightCm": 3.1,
+    "weightG": 34.0,
+    "volumeMl": 351.54
+  },
+  "624440": {
+    "sku": "624440",
+    "dept": "BEAUTY",
+    "lengthCm": 3.7,
+    "widthCm": 10.6,
+    "heightCm": 2.0,
+    "weightG": 26.0,
+    "volumeMl": 78.44
+  },
+  "622321": {
+    "sku": "622321",
+    "dept": "BEAUTY",
+    "lengthCm": 3.8,
+    "widthCm": 6.4,
+    "heightCm": 7.9,
+    "weightG": 58.0,
+    "volumeMl": 192.13
+  },
+  "622319": {
+    "sku": "622319",
+    "dept": "BEAUTY",
+    "lengthCm": 8.8,
+    "widthCm": 5.5,
+    "heightCm": 3.6,
+    "weightG": 61.0,
+    "volumeMl": 174.24
+  },
+  "622318": {
+    "sku": "622318",
+    "dept": "BEAUTY",
+    "lengthCm": 8.0,
+    "widthCm": 6.0,
+    "heightCm": 3.3,
+    "weightG": 62.0,
+    "volumeMl": 158.4
+  },
+  "621557": {
+    "sku": "621557",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.1,
+    "widthCm": 8.6,
+    "heightCm": 2.8,
+    "weightG": 56.0,
+    "volumeMl": 243.21
+  },
+  "620270": {
+    "sku": "620270",
+    "dept": "BEAUTY",
+    "lengthCm": 6.5,
+    "widthCm": 5.6,
+    "heightCm": 3.7,
+    "weightG": 31.0,
+    "volumeMl": 134.68
+  },
+  "613272": {
+    "sku": "613272",
+    "dept": "BEAUTY",
+    "lengthCm": 12.3,
+    "widthCm": 11.8,
+    "heightCm": 11.9,
+    "weightG": 594.0,
+    "volumeMl": 1727.17
+  },
+  "612795": {
+    "sku": "612795",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 5.8,
+    "widthCm": 11.6,
+    "heightCm": 15.7,
+    "weightG": 282.0,
+    "volumeMl": 1056.3
+  },
+  "611814": {
+    "sku": "611814",
+    "dept": "BEAUTY",
+    "lengthCm": 9.6,
+    "widthCm": 7.4,
+    "heightCm": 2.6,
+    "weightG": 21.0,
+    "volumeMl": 184.7
+  },
+  "611809": {
+    "sku": "611809",
+    "dept": "BEAUTY",
+    "lengthCm": 9.6,
+    "widthCm": 7.4,
+    "heightCm": 2.6,
+    "weightG": 21.0,
+    "volumeMl": 184.7
+  },
+  "605153": {
+    "sku": "605153",
+    "dept": "BEAUTY",
+    "lengthCm": 7.9,
+    "widthCm": 14.6,
+    "heightCm": 13.6,
+    "weightG": 39.0,
+    "volumeMl": 1568.62
+  },
+  "605152": {
+    "sku": "605152",
+    "dept": "BEAUTY",
+    "lengthCm": 6.6,
+    "widthCm": 12.0,
+    "heightCm": 12.5,
+    "weightG": 284.0,
+    "volumeMl": 990.0
+  },
+  "602221": {
+    "sku": "602221",
+    "dept": "BEAUTY",
+    "lengthCm": 6.8,
+    "widthCm": 8.3,
+    "heightCm": 3.0,
+    "weightG": 50.0,
+    "volumeMl": 169.32
+  },
+  "599595": {
+    "sku": "599595",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 10.5,
+    "widthCm": 11.0,
+    "heightCm": 13.5,
+    "weightG": 734.0,
+    "volumeMl": 1559.25
+  },
+  "597891": {
+    "sku": "597891",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.1,
+    "widthCm": 9.3,
+    "heightCm": 2.4,
+    "weightG": 24.0,
+    "volumeMl": 203.11
+  },
+  "592152": {
+    "sku": "592152",
+    "dept": "ASIANBEAUTY",
+    "lengthCm": 15.2,
+    "widthCm": 5.6,
+    "heightCm": 3.2,
+    "weightG": 31.0,
+    "volumeMl": 272.38
+  },
+  "588575": {
+    "sku": "588575",
+    "dept": "PVTLABEL",
+    "lengthCm": 8.5,
+    "widthCm": 13.1,
+    "heightCm": 19.1,
+    "weightG": 708.0,
+    "volumeMl": 2126.78
+  },
+  "587755": {
+    "sku": "587755",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.3,
+    "widthCm": 8.1,
+    "heightCm": 3.1,
+    "weightG": 28.0,
+    "volumeMl": 183.3
+  },
+  "585553": {
+    "sku": "585553",
+    "dept": "BEAUTY",
+    "lengthCm": 15.5,
+    "widthCm": 7.0,
+    "heightCm": 2.8,
+    "weightG": 10.0,
+    "volumeMl": 303.8
+  },
+  "584148": {
+    "sku": "584148",
+    "dept": "BEAUTY",
+    "lengthCm": 16.2,
+    "widthCm": 6.6,
+    "heightCm": 2.4,
+    "weightG": 8.0,
+    "volumeMl": 256.61
+  },
+  "576664": {
+    "sku": "576664",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.2,
+    "widthCm": 12.0,
+    "heightCm": 3.4,
+    "weightG": 34.0,
+    "volumeMl": 375.36
+  },
+  "574863": {
+    "sku": "574863",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 20.8,
+    "widthCm": 23.8,
+    "heightCm": 13.7,
+    "weightG": 396.0,
+    "volumeMl": 6782.05
+  },
+  "572622": {
+    "sku": "572622",
+    "dept": "BEAUTY",
+    "lengthCm": 14.0,
+    "widthCm": 43.5,
+    "heightCm": 8.0,
+    "weightG": 856.0,
+    "volumeMl": 4872.0
+  },
+  "570879": {
+    "sku": "570879",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.4,
+    "widthCm": 12.5,
+    "heightCm": 3.4,
+    "weightG": 40.0,
+    "volumeMl": 399.5
+  },
+  "570878": {
+    "sku": "570878",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "558618": {
+    "sku": "558618",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 9.7,
+    "widthCm": 21.3,
+    "heightCm": 10.8,
+    "weightG": 398.0,
+    "volumeMl": 2231.39
+  },
+  "552999": {
+    "sku": "552999",
+    "dept": "BOUTIQAATBRANDS",
+    "lengthCm": 8.5,
+    "widthCm": 11.5,
+    "heightCm": 29.6,
+    "weightG": 382.0,
+    "volumeMl": 2893.4
+  },
+  "550580": {
+    "sku": "550580",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.0,
+    "widthCm": 12.2,
+    "heightCm": 2.8,
+    "weightG": 46.0,
+    "volumeMl": 375.76
+  },
+  "547339": {
+    "sku": "547339",
+    "dept": "BEAUTY",
+    "lengthCm": 3.3,
+    "widthCm": 16.9,
+    "heightCm": 1.2,
+    "weightG": 4.0,
+    "volumeMl": 66.92
+  },
+  "547335": {
+    "sku": "547335",
+    "dept": "BEAUTY",
+    "lengthCm": 12.1,
+    "widthCm": 34.1,
+    "heightCm": 1.3,
+    "weightG": 8.0,
+    "volumeMl": 536.39
+  },
+  "547326": {
+    "sku": "547326",
+    "dept": "BEAUTY",
+    "lengthCm": 13.8,
+    "widthCm": 36.1,
+    "heightCm": 1.5,
+    "weightG": 8.0,
+    "volumeMl": 747.27
+  },
+  "547324": {
+    "sku": "547324",
+    "dept": "BEAUTY",
+    "lengthCm": 13.8,
+    "widthCm": 36.1,
+    "heightCm": 1.5,
+    "weightG": 8.0,
+    "volumeMl": 747.27
+  },
+  "545059": {
+    "sku": "545059",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.5,
+    "widthCm": 7.2,
+    "heightCm": 1.9,
+    "weightG": 18.0,
+    "volumeMl": 102.6
+  },
+  "544572": {
+    "sku": "544572",
+    "dept": "BEAUTY",
+    "lengthCm": 9.4,
+    "widthCm": 5.6,
+    "heightCm": 15.3,
+    "weightG": 170.0,
+    "volumeMl": 805.39
+  },
+  "542617": {
+    "sku": "542617",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.5,
+    "widthCm": 8.9,
+    "heightCm": 3.3,
+    "weightG": 40.0,
+    "volumeMl": 337.75
+  },
+  "542616": {
+    "sku": "542616",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.7,
+    "widthCm": 8.6,
+    "heightCm": 3.1,
+    "weightG": 35.0,
+    "volumeMl": 231.94
+  },
+  "542614": {
+    "sku": "542614",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 13.9,
+    "widthCm": 9.2,
+    "heightCm": 3.4,
+    "weightG": 40.0,
+    "volumeMl": 434.79
+  },
+  "542613": {
+    "sku": "542613",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.5,
+    "heightCm": 3.3,
+    "weightG": 34.0,
+    "volumeMl": 335.44
+  },
+  "542612": {
+    "sku": "542612",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 21.8,
+    "widthCm": 13.2,
+    "heightCm": 13.6,
+    "weightG": 40.0,
+    "volumeMl": 3913.54
+  },
+  "542611": {
+    "sku": "542611",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.5,
+    "heightCm": 3.3,
+    "weightG": 34.0,
+    "volumeMl": 335.44
+  },
+  "542610": {
+    "sku": "542610",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 21.8,
+    "widthCm": 13.2,
+    "heightCm": 13.6,
+    "weightG": 40.0,
+    "volumeMl": 3913.54
+  },
+  "542609": {
+    "sku": "542609",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.5,
+    "heightCm": 3.3,
+    "weightG": 34.0,
+    "volumeMl": 335.44
+  },
+  "542608": {
+    "sku": "542608",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.5,
+    "heightCm": 3.3,
+    "weightG": 34.0,
+    "volumeMl": 335.44
+  },
+  "542607": {
+    "sku": "542607",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.5,
+    "heightCm": 3.3,
+    "weightG": 34.0,
+    "volumeMl": 335.44
+  },
+  "542606": {
+    "sku": "542606",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.5,
+    "heightCm": 3.3,
+    "weightG": 34.0,
+    "volumeMl": 335.44
+  },
+  "542605": {
+    "sku": "542605",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.5,
+    "heightCm": 3.3,
+    "weightG": 34.0,
+    "volumeMl": 335.44
+  },
+  "542604": {
+    "sku": "542604",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 21.8,
+    "widthCm": 13.2,
+    "heightCm": 13.6,
+    "weightG": 40.0,
+    "volumeMl": 3913.54
+  },
+  "542603": {
+    "sku": "542603",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.5,
+    "heightCm": 3.3,
+    "weightG": 34.0,
+    "volumeMl": 335.44
+  },
+  "542602": {
+    "sku": "542602",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 21.8,
+    "widthCm": 13.2,
+    "heightCm": 13.6,
+    "weightG": 40.0,
+    "volumeMl": 3913.54
+  },
+  "542601": {
+    "sku": "542601",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.5,
+    "heightCm": 3.3,
+    "weightG": 34.0,
+    "volumeMl": 335.44
+  },
+  "542600": {
+    "sku": "542600",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 21.8,
+    "widthCm": 13.2,
+    "heightCm": 13.6,
+    "weightG": 40.0,
+    "volumeMl": 3913.54
+  },
+  "542592": {
+    "sku": "542592",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 12.4,
+    "widthCm": 8.7,
+    "heightCm": 3.0,
+    "weightG": 36.0,
+    "volumeMl": 323.64
+  },
+  "542578": {
+    "sku": "542578",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542576": {
+    "sku": "542576",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542575": {
+    "sku": "542575",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542572": {
+    "sku": "542572",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542569": {
+    "sku": "542569",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.5,
+    "heightCm": 3.3,
+    "weightG": 34.0,
+    "volumeMl": 335.44
+  },
+  "542568": {
+    "sku": "542568",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542565": {
+    "sku": "542565",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542564": {
+    "sku": "542564",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.5,
+    "widthCm": 8.9,
+    "heightCm": 3.3,
+    "weightG": 40.0,
+    "volumeMl": 337.75
+  },
+  "542563": {
+    "sku": "542563",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542562": {
+    "sku": "542562",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542561": {
+    "sku": "542561",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.5,
+    "heightCm": 3.3,
+    "weightG": 34.0,
+    "volumeMl": 335.44
+  },
+  "542557": {
+    "sku": "542557",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542553": {
+    "sku": "542553",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542552": {
+    "sku": "542552",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542551": {
+    "sku": "542551",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542550": {
+    "sku": "542550",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542549": {
+    "sku": "542549",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.0,
+    "widthCm": 11.4,
+    "heightCm": 3.1,
+    "weightG": 40.0,
+    "volumeMl": 353.4
+  },
+  "542546": {
+    "sku": "542546",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.0,
+    "widthCm": 11.4,
+    "heightCm": 3.1,
+    "weightG": 40.0,
+    "volumeMl": 353.4
+  },
+  "542545": {
+    "sku": "542545",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.6,
+    "widthCm": 8.8,
+    "heightCm": 3.0,
+    "weightG": 36.0,
+    "volumeMl": 306.24
+  },
+  "542544": {
+    "sku": "542544",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.0,
+    "widthCm": 11.4,
+    "heightCm": 3.1,
+    "weightG": 40.0,
+    "volumeMl": 353.4
+  },
+  "542543": {
+    "sku": "542543",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.0,
+    "widthCm": 11.4,
+    "heightCm": 3.1,
+    "weightG": 40.0,
+    "volumeMl": 353.4
+  },
+  "542542": {
+    "sku": "542542",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542541": {
+    "sku": "542541",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.0,
+    "widthCm": 11.4,
+    "heightCm": 3.1,
+    "weightG": 40.0,
+    "volumeMl": 353.4
+  },
+  "542540": {
+    "sku": "542540",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.0,
+    "widthCm": 11.4,
+    "heightCm": 3.1,
+    "weightG": 40.0,
+    "volumeMl": 353.4
+  },
+  "542536": {
+    "sku": "542536",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "542535": {
+    "sku": "542535",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "542533": {
+    "sku": "542533",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "542532": {
+    "sku": "542532",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 12.3,
+    "widthCm": 9.0,
+    "heightCm": 3.8,
+    "weightG": 36.0,
+    "volumeMl": 420.66
+  },
+  "542531": {
+    "sku": "542531",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "542530": {
+    "sku": "542530",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "542529": {
+    "sku": "542529",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "542528": {
+    "sku": "542528",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "542527": {
+    "sku": "542527",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "542526": {
+    "sku": "542526",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "542525": {
+    "sku": "542525",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "542524": {
+    "sku": "542524",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "542523": {
+    "sku": "542523",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "542522": {
+    "sku": "542522",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "542521": {
+    "sku": "542521",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 34.0,
+    "volumeMl": 331.47
+  },
+  "542520": {
+    "sku": "542520",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 0.0,
+    "volumeMl": 331.47
+  },
+  "542474": {
+    "sku": "542474",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542473": {
+    "sku": "542473",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542471": {
+    "sku": "542471",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.5,
+    "widthCm": 14.9,
+    "heightCm": 3.1,
+    "weightG": 40.0,
+    "volumeMl": 485.0
+  },
+  "542470": {
+    "sku": "542470",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542464": {
+    "sku": "542464",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.5,
+    "widthCm": 14.9,
+    "heightCm": 3.1,
+    "weightG": 40.0,
+    "volumeMl": 485.0
+  },
+  "542463": {
+    "sku": "542463",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.0,
+    "widthCm": 11.4,
+    "heightCm": 3.1,
+    "weightG": 40.0,
+    "volumeMl": 353.4
+  },
+  "542460": {
+    "sku": "542460",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542449": {
+    "sku": "542449",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.3,
+    "widthCm": 9.4,
+    "heightCm": 2.8,
+    "weightG": 38.0,
+    "volumeMl": 297.42
+  },
+  "542445": {
+    "sku": "542445",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.8,
+    "widthCm": 10.1,
+    "heightCm": 2.9,
+    "weightG": 36.0,
+    "volumeMl": 287.04
+  },
+  "542444": {
+    "sku": "542444",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.3,
+    "widthCm": 11.3,
+    "heightCm": 3.0,
+    "weightG": 34.0,
+    "volumeMl": 315.27
+  },
+  "542440": {
+    "sku": "542440",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.6,
+    "widthCm": 11.6,
+    "heightCm": 3.0,
+    "weightG": 30.0,
+    "volumeMl": 334.08
+  },
+  "542439": {
+    "sku": "542439",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.6,
+    "widthCm": 11.6,
+    "heightCm": 3.0,
+    "weightG": 30.0,
+    "volumeMl": 334.08
+  },
+  "542397": {
+    "sku": "542397",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.7,
+    "widthCm": 8.6,
+    "heightCm": 3.1,
+    "weightG": 35.0,
+    "volumeMl": 231.94
+  },
+  "542394": {
+    "sku": "542394",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.6,
+    "widthCm": 9.2,
+    "heightCm": 3.1,
+    "weightG": 35.0,
+    "volumeMl": 273.79
+  },
+  "542392": {
+    "sku": "542392",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542391": {
+    "sku": "542391",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542389": {
+    "sku": "542389",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.7,
+    "widthCm": 8.6,
+    "heightCm": 3.1,
+    "weightG": 35.0,
+    "volumeMl": 231.94
+  },
+  "542388": {
+    "sku": "542388",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.4,
+    "widthCm": 8.2,
+    "heightCm": 3.0,
+    "weightG": 35.0,
+    "volumeMl": 206.64
+  },
+  "542385": {
+    "sku": "542385",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.7,
+    "widthCm": 8.6,
+    "heightCm": 3.1,
+    "weightG": 35.0,
+    "volumeMl": 231.94
+  },
+  "542384": {
+    "sku": "542384",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 12.4,
+    "widthCm": 9.9,
+    "heightCm": 3.1,
+    "weightG": 45.0,
+    "volumeMl": 380.56
+  },
+  "542381": {
+    "sku": "542381",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.0,
+    "widthCm": 11.4,
+    "heightCm": 3.1,
+    "weightG": 40.0,
+    "volumeMl": 353.4
+  },
+  "542379": {
+    "sku": "542379",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.5,
+    "widthCm": 8.9,
+    "heightCm": 3.3,
+    "weightG": 40.0,
+    "volumeMl": 337.75
+  },
+  "540927": {
+    "sku": "540927",
+    "dept": "BEAUTY",
+    "lengthCm": 13.1,
+    "widthCm": 9.4,
+    "heightCm": 19.4,
+    "weightG": 230.0,
+    "volumeMl": 2388.92
+  },
+  "540926": {
+    "sku": "540926",
+    "dept": "BEAUTY",
+    "lengthCm": 12.3,
+    "widthCm": 11.3,
+    "heightCm": 8.6,
+    "weightG": 358.0,
+    "volumeMl": 1195.31
+  },
+  "540924": {
+    "sku": "540924",
+    "dept": "BEAUTY",
+    "lengthCm": 5.0,
+    "widthCm": 7.9,
+    "heightCm": 22.3,
+    "weightG": 344.0,
+    "volumeMl": 880.85
+  },
+  "540922": {
+    "sku": "540922",
+    "dept": "BEAUTY",
+    "lengthCm": 4.0,
+    "widthCm": 8.8,
+    "heightCm": 21.9,
+    "weightG": 342.0,
+    "volumeMl": 770.88
+  },
+  "540921": {
+    "sku": "540921",
+    "dept": "BEAUTY",
+    "lengthCm": 4.5,
+    "widthCm": 8.5,
+    "heightCm": 22.3,
+    "weightG": 348.0,
+    "volumeMl": 852.98
+  },
+  "540920": {
+    "sku": "540920",
+    "dept": "BEAUTY",
+    "lengthCm": 4.5,
+    "widthCm": 9.0,
+    "heightCm": 21.9,
+    "weightG": 340.0,
+    "volumeMl": 886.95
+  },
+  "540919": {
+    "sku": "540919",
+    "dept": "BEAUTY",
+    "lengthCm": 4.5,
+    "widthCm": 8.5,
+    "heightCm": 21.5,
+    "weightG": 342.0,
+    "volumeMl": 822.38
+  },
+  "540917": {
+    "sku": "540917",
+    "dept": "BEAUTY",
+    "lengthCm": 4.6,
+    "widthCm": 8.3,
+    "heightCm": 22.2,
+    "weightG": 348.0,
+    "volumeMl": 847.6
+  },
+  "540916": {
+    "sku": "540916",
+    "dept": "BEAUTY",
+    "lengthCm": 5.7,
+    "widthCm": 9.5,
+    "heightCm": 21.5,
+    "weightG": 348.0,
+    "volumeMl": 1164.22
+  },
+  "540912": {
+    "sku": "540912",
+    "dept": "BEAUTY",
+    "lengthCm": 12.1,
+    "widthCm": 6.2,
+    "heightCm": 21.9,
+    "weightG": 346.0,
+    "volumeMl": 1642.94
+  },
+  "540911": {
+    "sku": "540911",
+    "dept": "BEAUTY",
+    "lengthCm": 4.4,
+    "widthCm": 8.9,
+    "heightCm": 22.1,
+    "weightG": 336.0,
+    "volumeMl": 865.44
+  },
+  "540910": {
+    "sku": "540910",
+    "dept": "BEAUTY",
+    "lengthCm": 6.6,
+    "widthCm": 7.0,
+    "heightCm": 22.1,
+    "weightG": 342.0,
+    "volumeMl": 1021.02
+  },
+  "537824": {
+    "sku": "537824",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.2,
+    "widthCm": 9.1,
+    "heightCm": 2.8,
+    "weightG": 50.0,
+    "volumeMl": 285.38
+  },
+  "537655": {
+    "sku": "537655",
+    "dept": "BEAUTY",
+    "lengthCm": 3.9,
+    "widthCm": 10.4,
+    "heightCm": 3.4,
+    "weightG": 20.0,
+    "volumeMl": 137.9
+  },
+  "535278": {
+    "sku": "535278",
+    "dept": "BEAUTY",
+    "lengthCm": 4.2,
+    "widthCm": 13.0,
+    "heightCm": 1.6,
+    "weightG": 0.0,
+    "volumeMl": 87.36
+  },
+  "533612": {
+    "sku": "533612",
+    "dept": "BEAUTY",
+    "lengthCm": 4.4,
+    "widthCm": 24.9,
+    "heightCm": 8.4,
+    "weightG": 42.0,
+    "volumeMl": 920.3
+  },
+  "531849": {
+    "sku": "531849",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 10.6,
+    "widthCm": 12.3,
+    "heightCm": 4.3,
+    "weightG": 254.0,
+    "volumeMl": 560.63
+  },
+  "531848": {
+    "sku": "531848",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 10.6,
+    "widthCm": 12.3,
+    "heightCm": 4.3,
+    "weightG": 254.0,
+    "volumeMl": 560.63
+  },
+  "531847": {
+    "sku": "531847",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 6.7,
+    "widthCm": 12.3,
+    "heightCm": 3.9,
+    "weightG": 62.0,
+    "volumeMl": 321.4
+  },
+  "531846": {
+    "sku": "531846",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 1.9,
+    "widthCm": 2.4,
+    "heightCm": 7.6,
+    "weightG": 12.0,
+    "volumeMl": 34.66
+  },
+  "530139": {
+    "sku": "530139",
+    "dept": "BEAUTY",
+    "lengthCm": 5.6,
+    "widthCm": 12.4,
+    "heightCm": 17.0,
+    "weightG": 322.0,
+    "volumeMl": 1180.48
+  },
+  "529961": {
+    "sku": "529961",
+    "dept": "BEAUTY",
+    "lengthCm": 22.2,
+    "widthCm": 11.5,
+    "heightCm": 22.8,
+    "weightG": 740.0,
+    "volumeMl": 5820.84
+  },
+  "522655": {
+    "sku": "522655",
+    "dept": "BEAUTY",
+    "lengthCm": 6.4,
+    "widthCm": 7.7,
+    "heightCm": 3.5,
+    "weightG": 50.0,
+    "volumeMl": 172.48
+  },
+  "522653": {
+    "sku": "522653",
+    "dept": "BEAUTY",
+    "lengthCm": 4.4,
+    "widthCm": 24.9,
+    "heightCm": 8.4,
+    "weightG": 42.0,
+    "volumeMl": 920.3
+  },
+  "521634": {
+    "sku": "521634",
+    "dept": "BEAUTY",
+    "lengthCm": 16.6,
+    "widthCm": 6.8,
+    "heightCm": 6.6,
+    "weightG": 196.0,
+    "volumeMl": 745.01
+  },
+  "520688": {
+    "sku": "520688",
+    "dept": "BEAUTY",
+    "lengthCm": 7.2,
+    "widthCm": 8.1,
+    "heightCm": 3.0,
+    "weightG": 54.0,
+    "volumeMl": 174.96
+  },
+  "519255": {
+    "sku": "519255",
+    "dept": "BEAUTY",
+    "lengthCm": 19.5,
+    "widthCm": 9.4,
+    "heightCm": 1.9,
+    "weightG": 148.0,
+    "volumeMl": 348.27
+  },
+  "518543": {
+    "sku": "518543",
+    "dept": "BEAUTY",
+    "lengthCm": 8.0,
+    "widthCm": 16.2,
+    "heightCm": 5.1,
+    "weightG": 296.0,
+    "volumeMl": 660.96
+  },
+  "518110": {
+    "sku": "518110",
+    "dept": "BEAUTY",
+    "lengthCm": 3.5,
+    "widthCm": 14.4,
+    "heightCm": 1.6,
+    "weightG": 8.0,
+    "volumeMl": 80.64
+  },
+  "517259": {
+    "sku": "517259",
+    "dept": "BEAUTY",
+    "lengthCm": 14.0,
+    "widthCm": 2.3,
+    "heightCm": 1.6,
+    "weightG": 180.0,
+    "volumeMl": 51.52
+  },
+  "510634": {
+    "sku": "510634",
+    "dept": "BEAUTY",
+    "lengthCm": 10.1,
+    "widthCm": 19.9,
+    "heightCm": 2.4,
+    "weightG": 206.0,
+    "volumeMl": 482.38
+  },
+  "507897": {
+    "sku": "507897",
+    "dept": "BEAUTY",
+    "lengthCm": 4.8,
+    "widthCm": 8.3,
+    "heightCm": 2.7,
+    "weightG": 14.0,
+    "volumeMl": 107.57
+  },
+  "507896": {
+    "sku": "507896",
+    "dept": "BEAUTY",
+    "lengthCm": 9.6,
+    "widthCm": 4.7,
+    "heightCm": 3.3,
+    "weightG": 16.0,
+    "volumeMl": 148.9
+  },
+  "507894": {
+    "sku": "507894",
+    "dept": "BEAUTY",
+    "lengthCm": 8.4,
+    "widthCm": 3.2,
+    "heightCm": 2.6,
+    "weightG": 16.0,
+    "volumeMl": 69.89
+  },
+  "507893": {
+    "sku": "507893",
+    "dept": "BEAUTY",
+    "lengthCm": 8.3,
+    "widthCm": 6.1,
+    "heightCm": 2.6,
+    "weightG": 30.0,
+    "volumeMl": 131.64
+  },
+  "507891": {
+    "sku": "507891",
+    "dept": "BEAUTY",
+    "lengthCm": 11.6,
+    "widthCm": 5.4,
+    "heightCm": 2.5,
+    "weightG": 20.0,
+    "volumeMl": 156.6
+  },
+  "504875": {
+    "sku": "504875",
+    "dept": "BEAUTY",
+    "lengthCm": 6.7,
+    "widthCm": 14.6,
+    "heightCm": 1.2,
+    "weightG": 8.0,
+    "volumeMl": 117.38
+  },
+  "504873": {
+    "sku": "504873",
+    "dept": "BEAUTY",
+    "lengthCm": 6.4,
+    "widthCm": 10.1,
+    "heightCm": 3.4,
+    "weightG": 30.0,
+    "volumeMl": 219.78
+  },
+  "504872": {
+    "sku": "504872",
+    "dept": "BEAUTY",
+    "lengthCm": 3.6,
+    "widthCm": 11.4,
+    "heightCm": 2.8,
+    "weightG": 48.0,
+    "volumeMl": 114.91
+  },
+  "504870": {
+    "sku": "504870",
+    "dept": "BEAUTY",
+    "lengthCm": 6.6,
+    "widthCm": 20.4,
+    "heightCm": 2.6,
+    "weightG": 26.0,
+    "volumeMl": 350.06
+  },
+  "487828": {
+    "sku": "487828",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.6,
+    "heightCm": 3.1,
+    "weightG": 34.0,
+    "volumeMl": 351.54
+  },
+  "486485": {
+    "sku": "486485",
+    "dept": "BEAUTY",
+    "lengthCm": 8.9,
+    "widthCm": 14.5,
+    "heightCm": 5.8,
+    "weightG": 170.0,
+    "volumeMl": 748.49
+  },
+  "483635": {
+    "sku": "483635",
+    "dept": "BEAUTY",
+    "lengthCm": 10.4,
+    "widthCm": 6.9,
+    "heightCm": 4.8,
+    "weightG": 76.0,
+    "volumeMl": 344.45
+  },
+  "478926": {
+    "sku": "478926",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 5.0,
+    "widthCm": 7.0,
+    "heightCm": 1.8,
+    "weightG": 16.0,
+    "volumeMl": 63.0
+  },
+  "475896": {
+    "sku": "475896",
+    "dept": "BEAUTY",
+    "lengthCm": 10.3,
+    "widthCm": 6.5,
+    "heightCm": 16.8,
+    "weightG": 324.0,
+    "volumeMl": 1124.76
+  },
+  "474218": {
+    "sku": "474218",
+    "dept": "BEAUTY",
+    "lengthCm": 15.3,
+    "widthCm": 22.5,
+    "heightCm": 8.2,
+    "weightG": 1200.0,
+    "volumeMl": 2822.85
+  },
+  "470531": {
+    "sku": "470531",
+    "dept": "BEAUTY",
+    "lengthCm": 4.4,
+    "widthCm": 16.7,
+    "heightCm": 4.3,
+    "weightG": 132.0,
+    "volumeMl": 315.96
+  },
+  "470446": {
+    "sku": "470446",
+    "dept": "BEAUTY",
+    "lengthCm": 4.4,
+    "widthCm": 13.6,
+    "heightCm": 1.1,
+    "weightG": 10.0,
+    "volumeMl": 65.82
+  },
+  "470445": {
+    "sku": "470445",
+    "dept": "BEAUTY",
+    "lengthCm": 4.4,
+    "widthCm": 13.6,
+    "heightCm": 1.1,
+    "weightG": 10.0,
+    "volumeMl": 65.82
+  },
+  "469452": {
+    "sku": "469452",
+    "dept": "BEAUTY",
+    "lengthCm": 4.8,
+    "widthCm": 17.8,
+    "heightCm": 11.3,
+    "weightG": 186.0,
+    "volumeMl": 965.47
+  },
+  "466755": {
+    "sku": "466755",
+    "dept": "BEAUTY",
+    "lengthCm": 7.4,
+    "widthCm": 10.8,
+    "heightCm": 18.2,
+    "weightG": 644.0,
+    "volumeMl": 1454.54
+  },
+  "466339": {
+    "sku": "466339",
+    "dept": "BEAUTY",
+    "lengthCm": 2.9,
+    "widthCm": 16.3,
+    "heightCm": 1.4,
+    "weightG": 6.0,
+    "volumeMl": 66.18
+  },
+  "466338": {
+    "sku": "466338",
+    "dept": "BEAUTY",
+    "lengthCm": 3.2,
+    "widthCm": 15.3,
+    "heightCm": 1.2,
+    "weightG": 8.0,
+    "volumeMl": 58.75
+  },
+  "466333": {
+    "sku": "466333",
+    "dept": "BEAUTY",
+    "lengthCm": 6.8,
+    "widthCm": 12.4,
+    "heightCm": 1.9,
+    "weightG": 16.0,
+    "volumeMl": 160.21
+  },
+  "466332": {
+    "sku": "466332",
+    "dept": "BEAUTY",
+    "lengthCm": 2.7,
+    "widthCm": 12.0,
+    "heightCm": 2.0,
+    "weightG": 14.0,
+    "volumeMl": 64.8
+  },
+  "466322": {
+    "sku": "466322",
+    "dept": "BEAUTY",
+    "lengthCm": 8.6,
+    "widthCm": 12.6,
+    "heightCm": 3.3,
+    "weightG": 78.0,
+    "volumeMl": 357.59
+  },
+  "466321": {
+    "sku": "466321",
+    "dept": "BEAUTY",
+    "lengthCm": 20.5,
+    "widthCm": 17.5,
+    "heightCm": 3.6,
+    "weightG": 82.0,
+    "volumeMl": 1291.5
+  },
+  "466317": {
+    "sku": "466317",
+    "dept": "BEAUTY",
+    "lengthCm": 13.5,
+    "widthCm": 9.1,
+    "heightCm": 4.4,
+    "weightG": 84.0,
+    "volumeMl": 540.54
+  },
+  "465325": {
+    "sku": "465325",
+    "dept": "BEAUTY",
+    "lengthCm": 12.7,
+    "widthCm": 27.0,
+    "heightCm": 11.0,
+    "weightG": 254.0,
+    "volumeMl": 3771.9
+  },
+  "464646": {
+    "sku": "464646",
+    "dept": "BEAUTY",
+    "lengthCm": 8.3,
+    "widthCm": 16.4,
+    "heightCm": 20.0,
+    "weightG": 254.0,
+    "volumeMl": 2722.4
+  },
+  "463123": {
+    "sku": "463123",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.3,
+    "widthCm": 8.1,
+    "heightCm": 3.1,
+    "weightG": 28.0,
+    "volumeMl": 183.3
+  },
+  "461228": {
+    "sku": "461228",
+    "dept": "BEAUTY",
+    "lengthCm": 10.9,
+    "widthCm": 13.3,
+    "heightCm": 3.0,
+    "weightG": 18.0,
+    "volumeMl": 434.91
+  },
+  "454235": {
+    "sku": "454235",
+    "dept": "BEAUTY",
+    "lengthCm": 5.6,
+    "widthCm": 6.7,
+    "heightCm": 3.3,
+    "weightG": 26.0,
+    "volumeMl": 123.82
+  },
+  "453804": {
+    "sku": "453804",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 12.0,
+    "widthCm": 14.3,
+    "heightCm": 9.7,
+    "weightG": 62.0,
+    "volumeMl": 1664.52
+  },
+  "448737": {
+    "sku": "448737",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.1,
+    "widthCm": 9.7,
+    "heightCm": 2.0,
+    "weightG": 28.0,
+    "volumeMl": 176.54
+  },
+  "448693": {
+    "sku": "448693",
+    "dept": "BEAUTY",
+    "lengthCm": 16.1,
+    "widthCm": 25.6,
+    "heightCm": 18.0,
+    "weightG": 326.0,
+    "volumeMl": 7418.88
+  },
+  "446106": {
+    "sku": "446106",
+    "dept": "BEAUTY",
+    "lengthCm": 9.7,
+    "widthCm": 4.7,
+    "heightCm": 3.8,
+    "weightG": 360.0,
+    "volumeMl": 173.24
+  },
+  "442974": {
+    "sku": "442974",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 8.3,
+    "widthCm": 8.3,
+    "heightCm": 10.5,
+    "weightG": 396.0,
+    "volumeMl": 723.35
+  },
+  "436206": {
+    "sku": "436206",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 8.1,
+    "widthCm": 17.2,
+    "heightCm": 5.4,
+    "weightG": 174.0,
+    "volumeMl": 752.33
+  },
+  "432475": {
+    "sku": "432475",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 7.6,
+    "widthCm": 7.7,
+    "heightCm": 7.2,
+    "weightG": 266.0,
+    "volumeMl": 421.34
+  },
+  "431002": {
+    "sku": "431002",
+    "dept": "BEAUTY",
+    "lengthCm": 9.7,
+    "widthCm": 12.5,
+    "heightCm": 7.7,
+    "weightG": 208.0,
+    "volumeMl": 933.62
+  },
+  "430999": {
+    "sku": "430999",
+    "dept": "BEAUTY",
+    "lengthCm": 4.8,
+    "widthCm": 8.1,
+    "heightCm": 16.1,
+    "weightG": 218.0,
+    "volumeMl": 625.97
+  },
+  "430998": {
+    "sku": "430998",
+    "dept": "BEAUTY",
+    "lengthCm": 4.8,
+    "widthCm": 4.7,
+    "heightCm": 10.3,
+    "weightG": 78.0,
+    "volumeMl": 232.37
+  },
+  "430996": {
+    "sku": "430996",
+    "dept": "BEAUTY",
+    "lengthCm": 4.8,
+    "widthCm": 14.8,
+    "heightCm": 3.3,
+    "weightG": 32.0,
+    "volumeMl": 234.43
+  },
+  "430995": {
+    "sku": "430995",
+    "dept": "BEAUTY",
+    "lengthCm": 5.7,
+    "widthCm": 8.6,
+    "heightCm": 17.8,
+    "weightG": 220.0,
+    "volumeMl": 872.56
+  },
+  "426644": {
+    "sku": "426644",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 6.5,
+    "widthCm": 6.7,
+    "heightCm": 17.2,
+    "weightG": 178.0,
+    "volumeMl": 749.06
+  },
+  "421070": {
+    "sku": "421070",
+    "dept": "BEAUTY",
+    "lengthCm": 8.1,
+    "widthCm": 14.5,
+    "heightCm": 4.9,
+    "weightG": 126.0,
+    "volumeMl": 575.5
+  },
+  "421069": {
+    "sku": "421069",
+    "dept": "BEAUTY",
+    "lengthCm": 9.7,
+    "widthCm": 10.1,
+    "heightCm": 7.6,
+    "weightG": 270.0,
+    "volumeMl": 744.57
+  },
+  "421068": {
+    "sku": "421068",
+    "dept": "BEAUTY",
+    "lengthCm": 7.6,
+    "widthCm": 19.3,
+    "heightCm": 5.2,
+    "weightG": 222.0,
+    "volumeMl": 762.74
+  },
+  "417176": {
+    "sku": "417176",
+    "dept": "BEAUTY",
+    "lengthCm": 13.1,
+    "widthCm": 4.5,
+    "heightCm": 2.1,
+    "weightG": 18.0,
+    "volumeMl": 123.8
+  },
+  "416698": {
+    "sku": "416698",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 9.9,
+    "widthCm": 18.4,
+    "heightCm": 5.1,
+    "weightG": 532.0,
+    "volumeMl": 929.02
+  },
+  "414707": {
+    "sku": "414707",
+    "dept": "BEAUTY",
+    "lengthCm": 20.4,
+    "widthCm": 16.4,
+    "heightCm": 6.3,
+    "weightG": 470.0,
+    "volumeMl": 2107.73
+  },
+  "413725": {
+    "sku": "413725",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 9.9,
+    "widthCm": 10.4,
+    "heightCm": 8.0,
+    "weightG": 140.0,
+    "volumeMl": 823.68
+  },
+  "412183": {
+    "sku": "412183",
+    "dept": "BEAUTY",
+    "lengthCm": 5.5,
+    "widthCm": 13.8,
+    "heightCm": 2.4,
+    "weightG": 22.0,
+    "volumeMl": 182.16
+  },
+  "411366": {
+    "sku": "411366",
+    "dept": "BEAUTY",
+    "lengthCm": 13.8,
+    "widthCm": 9.9,
+    "heightCm": 11.9,
+    "weightG": 574.0,
+    "volumeMl": 1625.78
+  },
+  "411363": {
+    "sku": "411363",
+    "dept": "BEAUTY",
+    "lengthCm": 10.4,
+    "widthCm": 15.7,
+    "heightCm": 11.0,
+    "weightG": 574.0,
+    "volumeMl": 1796.08
+  },
+  "411362": {
+    "sku": "411362",
+    "dept": "BEAUTY",
+    "lengthCm": 43.0,
+    "widthCm": 11.2,
+    "heightCm": 10.8,
+    "weightG": 580.0,
+    "volumeMl": 5201.28
+  },
+  "411358": {
+    "sku": "411358",
+    "dept": "BEAUTY",
+    "lengthCm": 12.9,
+    "widthCm": 11.0,
+    "heightCm": 7.5,
+    "weightG": 322.0,
+    "volumeMl": 1064.25
+  },
+  "411357": {
+    "sku": "411357",
+    "dept": "BEAUTY",
+    "lengthCm": 11.4,
+    "widthCm": 15.6,
+    "heightCm": 7.0,
+    "weightG": 330.0,
+    "volumeMl": 1244.88
+  },
+  "410841": {
+    "sku": "410841",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.4,
+    "widthCm": 10.0,
+    "heightCm": 1.6,
+    "weightG": 20.0,
+    "volumeMl": 150.4
+  },
+  "409916": {
+    "sku": "409916",
+    "dept": "BEAUTY",
+    "lengthCm": 10.8,
+    "widthCm": 11.4,
+    "heightCm": 2.4,
+    "weightG": 18.0,
+    "volumeMl": 295.49
+  },
+  "405631": {
+    "sku": "405631",
+    "dept": "BEAUTY",
+    "lengthCm": 6.1,
+    "widthCm": 8.8,
+    "heightCm": 3.4,
+    "weightG": 30.0,
+    "volumeMl": 182.51
+  },
+  "404654": {
+    "sku": "404654",
+    "dept": "BEAUTY",
+    "lengthCm": 3.2,
+    "widthCm": 7.4,
+    "heightCm": 20.3,
+    "weightG": 204.0,
+    "volumeMl": 480.7
+  },
+  "402620": {
+    "sku": "402620",
+    "dept": "BEAUTY",
+    "lengthCm": 6.8,
+    "widthCm": 13.5,
+    "heightCm": 14.8,
+    "weightG": 396.0,
+    "volumeMl": 1358.64
+  },
+  "402619": {
+    "sku": "402619",
+    "dept": "BEAUTY",
+    "lengthCm": 8.5,
+    "widthCm": 7.2,
+    "heightCm": 14.4,
+    "weightG": 388.0,
+    "volumeMl": 881.28
+  },
+  "401118": {
+    "sku": "401118",
+    "dept": "BEAUTY",
+    "lengthCm": 12.5,
+    "widthCm": 6.6,
+    "heightCm": 2.7,
+    "weightG": 30.0,
+    "volumeMl": 222.75
+  },
+  "400993": {
+    "sku": "400993",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.3,
+    "widthCm": 8.1,
+    "heightCm": 3.1,
+    "weightG": 28.0,
+    "volumeMl": 183.3
+  },
+  "396869": {
+    "sku": "396869",
+    "dept": "BEAUTY",
+    "lengthCm": 18.0,
+    "widthCm": 13.4,
+    "heightCm": 6.7,
+    "weightG": 338.0,
+    "volumeMl": 1616.04
+  },
+  "394745": {
+    "sku": "394745",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.2,
+    "widthCm": 12.0,
+    "heightCm": 3.4,
+    "weightG": 34.0,
+    "volumeMl": 375.36
+  },
+  "393923": {
+    "sku": "393923",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 8.3,
+    "widthCm": 15.9,
+    "heightCm": 3.7,
+    "weightG": 70.0,
+    "volumeMl": 488.29
+  },
+  "391336": {
+    "sku": "391336",
+    "dept": "BEAUTY",
+    "lengthCm": 17.7,
+    "widthCm": 18.2,
+    "heightCm": 16.1,
+    "weightG": 482.0,
+    "volumeMl": 5186.45
+  },
+  "391163": {
+    "sku": "391163",
+    "dept": "BEAUTY",
+    "lengthCm": 8.2,
+    "widthCm": 35.8,
+    "heightCm": 21.0,
+    "weightG": 296.0,
+    "volumeMl": 6164.76
+  },
+  "386879": {
+    "sku": "386879",
+    "dept": "BEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 9.3,
+    "heightCm": 3.1,
+    "weightG": 58.0,
+    "volumeMl": 147.03
+  },
+  "385382": {
+    "sku": "385382",
+    "dept": "BEAUTY",
+    "lengthCm": 8.0,
+    "widthCm": 16.2,
+    "heightCm": 5.1,
+    "weightG": 296.0,
+    "volumeMl": 660.96
+  },
+  "375732": {
+    "sku": "375732",
+    "dept": "BEAUTY",
+    "lengthCm": 16.7,
+    "widthCm": 18.0,
+    "heightCm": 4.3,
+    "weightG": 366.0,
+    "volumeMl": 1292.58
+  },
+  "375211": {
+    "sku": "375211",
+    "dept": "BEAUTY",
+    "lengthCm": 11.6,
+    "widthCm": 9.0,
+    "heightCm": 4.4,
+    "weightG": 86.0,
+    "volumeMl": 459.36
+  },
+  "375210": {
+    "sku": "375210",
+    "dept": "BEAUTY",
+    "lengthCm": 11.8,
+    "widthCm": 4.4,
+    "heightCm": 0.09,
+    "weightG": 406.0,
+    "volumeMl": 4.78
+  },
+  "373624": {
+    "sku": "373624",
+    "dept": "BEAUTY",
+    "lengthCm": 6.0,
+    "widthCm": 14.5,
+    "heightCm": 3.2,
+    "weightG": 92.0,
+    "volumeMl": 278.4
+  },
+  "372370": {
+    "sku": "372370",
+    "dept": "BEAUTY",
+    "lengthCm": 14.0,
+    "widthCm": 43.5,
+    "heightCm": 8.0,
+    "weightG": 856.0,
+    "volumeMl": 4872.0
+  },
+  "368550": {
+    "sku": "368550",
+    "dept": "BEAUTY",
+    "lengthCm": 6.4,
+    "widthCm": 20.0,
+    "heightCm": 5.8,
+    "weightG": 186.0,
+    "volumeMl": 742.4
+  },
+  "364951": {
+    "sku": "364951",
+    "dept": "BEAUTY",
+    "lengthCm": 17.3,
+    "widthCm": 23.1,
+    "heightCm": 6.2,
+    "weightG": 38.2,
+    "volumeMl": 2477.71
+  },
+  "364280": {
+    "sku": "364280",
+    "dept": "BEAUTY",
+    "lengthCm": 13.5,
+    "widthCm": 2.4,
+    "heightCm": 3.6,
+    "weightG": 50.0,
+    "volumeMl": 116.64
+  },
+  "361183": {
+    "sku": "361183",
+    "dept": "BEAUTY",
+    "lengthCm": 16.0,
+    "widthCm": 6.3,
+    "heightCm": 2.2,
+    "weightG": 12.0,
+    "volumeMl": 221.76
+  },
+  "355722": {
+    "sku": "355722",
+    "dept": "BEAUTY",
+    "lengthCm": 9.1,
+    "widthCm": 12.5,
+    "heightCm": 3.4,
+    "weightG": 124.0,
+    "volumeMl": 386.75
+  },
+  "349378": {
+    "sku": "349378",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 4.3,
+    "widthCm": 4.5,
+    "heightCm": 15.9,
+    "weightG": 148.0,
+    "volumeMl": 307.66
+  },
+  "346081": {
+    "sku": "346081",
+    "dept": "BEAUTY",
+    "lengthCm": 6.6,
+    "widthCm": 7.0,
+    "heightCm": 2.4,
+    "weightG": 28.0,
+    "volumeMl": 110.88
+  },
+  "345889": {
+    "sku": "345889",
+    "dept": "BEAUTY",
+    "lengthCm": 9.4,
+    "widthCm": 19.8,
+    "heightCm": 4.2,
+    "weightG": 166.0,
+    "volumeMl": 781.7
+  },
+  "344142": {
+    "sku": "344142",
+    "dept": "BEAUTY",
+    "lengthCm": 10.9,
+    "widthCm": 5.8,
+    "heightCm": 3.0,
+    "weightG": 52.0,
+    "volumeMl": 189.66
+  },
+  "343678": {
+    "sku": "343678",
+    "dept": "BEAUTY",
+    "lengthCm": 9.4,
+    "widthCm": 19.8,
+    "heightCm": 4.2,
+    "weightG": 166.0,
+    "volumeMl": 781.7
+  },
+  "341675": {
+    "sku": "341675",
+    "dept": "BEAUTY",
+    "lengthCm": 8.7,
+    "widthCm": 17.1,
+    "heightCm": 4.8,
+    "weightG": 46.0,
+    "volumeMl": 714.1
+  },
+  "340152": {
+    "sku": "340152",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 0.0,
+    "volumeMl": 331.47
+  },
+  "335346": {
+    "sku": "335346",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.4,
+    "widthCm": 10.0,
+    "heightCm": 1.6,
+    "weightG": 20.0,
+    "volumeMl": 150.4
+  },
+  "334497": {
+    "sku": "334497",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 9.6,
+    "widthCm": 11.8,
+    "heightCm": 7.0,
+    "weightG": 212.0,
+    "volumeMl": 792.96
+  },
+  "333978": {
+    "sku": "333978",
+    "dept": "BOUTIQAATBRANDS",
+    "lengthCm": 30.0,
+    "widthCm": 9.7,
+    "heightCm": 9.5,
+    "weightG": 385.0,
+    "volumeMl": 2764.5
+  },
+  "332928": {
+    "sku": "332928",
+    "dept": "BEAUTY",
+    "lengthCm": 9.6,
+    "widthCm": 7.4,
+    "heightCm": 2.6,
+    "weightG": 21.0,
+    "volumeMl": 184.7
+  },
+  "326977": {
+    "sku": "326977",
+    "dept": "BEAUTY",
+    "lengthCm": 10.3,
+    "widthCm": 14.0,
+    "heightCm": 11.4,
+    "weightG": 606.0,
+    "volumeMl": 1643.88
+  },
+  "326472": {
+    "sku": "326472",
+    "dept": "BEAUTY",
+    "lengthCm": 3.3,
+    "widthCm": 3.3,
+    "heightCm": 12.8,
+    "weightG": 860.0,
+    "volumeMl": 139.39
+  },
+  "326137": {
+    "sku": "326137",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 17.0,
+    "widthCm": 6.5,
+    "heightCm": 5.1,
+    "weightG": 64.0,
+    "volumeMl": 563.55
+  },
+  "321796": {
+    "sku": "321796",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 12.6,
+    "widthCm": 39.8,
+    "heightCm": 9.2,
+    "weightG": 264.0,
+    "volumeMl": 4613.62
+  },
+  "320375": {
+    "sku": "320375",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.1,
+    "widthCm": 8.5,
+    "heightCm": 2.8,
+    "weightG": 50.0,
+    "volumeMl": 240.38
+  },
+  "309435": {
+    "sku": "309435",
+    "dept": "BEAUTY",
+    "lengthCm": 12.8,
+    "widthCm": 20.0,
+    "heightCm": 1.7,
+    "weightG": 146.0,
+    "volumeMl": 435.2
+  },
+  "308781": {
+    "sku": "308781",
+    "dept": "BEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 9.3,
+    "heightCm": 3.1,
+    "weightG": 58.0,
+    "volumeMl": 147.03
+  },
+  "305967": {
+    "sku": "305967",
+    "dept": "BEAUTY",
+    "lengthCm": 15.0,
+    "widthCm": 15.0,
+    "heightCm": 9.8,
+    "weightG": 1086.0,
+    "volumeMl": 2205.0
+  },
+  "305965": {
+    "sku": "305965",
+    "dept": "BEAUTY",
+    "lengthCm": 6.8,
+    "widthCm": 13.8,
+    "heightCm": 17.7,
+    "weightG": 186.0,
+    "volumeMl": 1660.97
+  },
+  "305964": {
+    "sku": "305964",
+    "dept": "BEAUTY",
+    "lengthCm": 21.4,
+    "widthCm": 25.6,
+    "heightCm": 10.0,
+    "weightG": 1186.0,
+    "volumeMl": 5478.4
+  },
+  "305963": {
+    "sku": "305963",
+    "dept": "BEAUTY",
+    "lengthCm": 16.2,
+    "widthCm": 21.5,
+    "heightCm": 9.5,
+    "weightG": 1016.0,
+    "volumeMl": 3308.85
+  },
+  "302154": {
+    "sku": "302154",
+    "dept": "BEAUTY",
+    "lengthCm": 9.6,
+    "widthCm": 7.5,
+    "heightCm": 7.6,
+    "weightG": 178.0,
+    "volumeMl": 547.2
+  },
+  "302152": {
+    "sku": "302152",
+    "dept": "BEAUTY",
+    "lengthCm": 6.4,
+    "widthCm": 8.2,
+    "heightCm": 4.6,
+    "weightG": 52.0,
+    "volumeMl": 241.41
+  },
+  "300321": {
+    "sku": "300321",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.1,
+    "widthCm": 8.5,
+    "heightCm": 2.8,
+    "weightG": 50.0,
+    "volumeMl": 240.38
+  },
+  "300045": {
+    "sku": "300045",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 4.4,
+    "widthCm": 4.4,
+    "heightCm": 15.8,
+    "weightG": 148.0,
+    "volumeMl": 305.89
+  },
+  "295977": {
+    "sku": "295977",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 9.0,
+    "widthCm": 8.8,
+    "heightCm": 6.8,
+    "weightG": 188.0,
+    "volumeMl": 538.56
+  },
+  "294358": {
+    "sku": "294358",
+    "dept": "BEAUTY",
+    "lengthCm": 7.9,
+    "widthCm": 7.1,
+    "heightCm": 3.1,
+    "weightG": 55.0,
+    "volumeMl": 173.88
+  },
+  "294350": {
+    "sku": "294350",
+    "dept": "BEAUTY",
+    "lengthCm": 8.8,
+    "widthCm": 5.5,
+    "heightCm": 3.6,
+    "weightG": 61.0,
+    "volumeMl": 174.24
+  },
+  "292557": {
+    "sku": "292557",
+    "dept": "BEAUTY",
+    "lengthCm": 8.5,
+    "widthCm": 9.9,
+    "heightCm": 1.9,
+    "weightG": 72.0,
+    "volumeMl": 159.88
+  },
+  "287053": {
+    "sku": "287053",
+    "dept": "BEAUTY",
+    "lengthCm": 4.7,
+    "widthCm": 5.0,
+    "heightCm": 19.6,
+    "weightG": 318.0,
+    "volumeMl": 460.6
+  },
+  "284180": {
+    "sku": "284180",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.5,
+    "widthCm": 41.2,
+    "heightCm": 11.1,
+    "weightG": 662.0,
+    "volumeMl": 15777.54
+  },
+  "284179": {
+    "sku": "284179",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.5,
+    "widthCm": 41.2,
+    "heightCm": 11.1,
+    "weightG": 662.0,
+    "volumeMl": 15777.54
+  },
+  "284178": {
+    "sku": "284178",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.5,
+    "widthCm": 41.2,
+    "heightCm": 11.1,
+    "weightG": 662.0,
+    "volumeMl": 15777.54
+  },
+  "284177": {
+    "sku": "284177",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.5,
+    "widthCm": 41.2,
+    "heightCm": 11.1,
+    "weightG": 662.0,
+    "volumeMl": 15777.54
+  },
+  "284176": {
+    "sku": "284176",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.6,
+    "widthCm": 14.0,
+    "heightCm": 11.0,
+    "weightG": 656.0,
+    "volumeMl": 5328.4
+  },
+  "284175": {
+    "sku": "284175",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.6,
+    "widthCm": 14.0,
+    "heightCm": 11.0,
+    "weightG": 656.0,
+    "volumeMl": 5328.4
+  },
+  "284174": {
+    "sku": "284174",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 35.1,
+    "widthCm": 14.2,
+    "heightCm": 11.2,
+    "weightG": 698.0,
+    "volumeMl": 5582.3
+  },
+  "284170": {
+    "sku": "284170",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.5,
+    "widthCm": 14.1,
+    "heightCm": 11.3,
+    "weightG": 675.0,
+    "volumeMl": 5496.89
+  },
+  "284169": {
+    "sku": "284169",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.5,
+    "widthCm": 14.1,
+    "heightCm": 11.3,
+    "weightG": 675.0,
+    "volumeMl": 5496.89
+  },
+  "284167": {
+    "sku": "284167",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.8,
+    "widthCm": 13.8,
+    "heightCm": 11.1,
+    "weightG": 700.0,
+    "volumeMl": 5330.66
+  },
+  "284166": {
+    "sku": "284166",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.5,
+    "widthCm": 14.1,
+    "heightCm": 11.3,
+    "weightG": 675.0,
+    "volumeMl": 5496.89
+  },
+  "284165": {
+    "sku": "284165",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.8,
+    "widthCm": 13.8,
+    "heightCm": 11.1,
+    "weightG": 700.0,
+    "volumeMl": 5330.66
+  },
+  "284162": {
+    "sku": "284162",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.7,
+    "widthCm": 14.0,
+    "heightCm": 11.4,
+    "weightG": 722.0,
+    "volumeMl": 5538.12
+  },
+  "284161": {
+    "sku": "284161",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.5,
+    "widthCm": 41.2,
+    "heightCm": 11.1,
+    "weightG": 662.0,
+    "volumeMl": 15777.54
+  },
+  "284160": {
+    "sku": "284160",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.7,
+    "widthCm": 14.0,
+    "heightCm": 11.4,
+    "weightG": 722.0,
+    "volumeMl": 5538.12
+  },
+  "284159": {
+    "sku": "284159",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 31.6,
+    "widthCm": 11.9,
+    "heightCm": 10.4,
+    "weightG": 604.0,
+    "volumeMl": 3910.82
+  },
+  "284158": {
+    "sku": "284158",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 35.1,
+    "widthCm": 14.2,
+    "heightCm": 11.2,
+    "weightG": 698.0,
+    "volumeMl": 5582.3
+  },
+  "284157": {
+    "sku": "284157",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 31.6,
+    "widthCm": 11.9,
+    "heightCm": 10.4,
+    "weightG": 604.0,
+    "volumeMl": 3910.82
+  },
+  "284156": {
+    "sku": "284156",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 31.6,
+    "widthCm": 11.9,
+    "heightCm": 10.4,
+    "weightG": 604.0,
+    "volumeMl": 3910.82
+  },
+  "284152": {
+    "sku": "284152",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 37.1,
+    "widthCm": 14.9,
+    "heightCm": 12.2,
+    "weightG": 835.0,
+    "volumeMl": 6744.04
+  },
+  "284151": {
+    "sku": "284151",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.6,
+    "widthCm": 14.4,
+    "heightCm": 11.9,
+    "weightG": 750.0,
+    "volumeMl": 5929.06
+  },
+  "284149": {
+    "sku": "284149",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 13.9,
+    "widthCm": 34.8,
+    "heightCm": 11.4,
+    "weightG": 762.0,
+    "volumeMl": 5514.41
+  },
+  "284148": {
+    "sku": "284148",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.6,
+    "widthCm": 14.1,
+    "heightCm": 11.8,
+    "weightG": 705.0,
+    "volumeMl": 5756.75
+  },
+  "284147": {
+    "sku": "284147",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.6,
+    "widthCm": 14.4,
+    "heightCm": 11.9,
+    "weightG": 750.0,
+    "volumeMl": 5929.06
+  },
+  "284146": {
+    "sku": "284146",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.8,
+    "widthCm": 14.2,
+    "heightCm": 11.4,
+    "weightG": 675.0,
+    "volumeMl": 5633.42
+  },
+  "284138": {
+    "sku": "284138",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 30.0,
+    "widthCm": 17.1,
+    "heightCm": 12.0,
+    "weightG": 794.0,
+    "volumeMl": 6156.0
+  },
+  "284127": {
+    "sku": "284127",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.7,
+    "widthCm": 14.0,
+    "heightCm": 11.4,
+    "weightG": 722.0,
+    "volumeMl": 5538.12
+  },
+  "284126": {
+    "sku": "284126",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.5,
+    "widthCm": 41.2,
+    "heightCm": 11.1,
+    "weightG": 662.0,
+    "volumeMl": 15777.54
+  },
+  "284125": {
+    "sku": "284125",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.6,
+    "widthCm": 14.0,
+    "heightCm": 11.0,
+    "weightG": 656.0,
+    "volumeMl": 5328.4
+  },
+  "284124": {
+    "sku": "284124",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 35.1,
+    "widthCm": 14.2,
+    "heightCm": 11.2,
+    "weightG": 698.0,
+    "volumeMl": 5582.3
+  },
+  "284123": {
+    "sku": "284123",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.5,
+    "widthCm": 41.2,
+    "heightCm": 11.1,
+    "weightG": 662.0,
+    "volumeMl": 15777.54
+  },
+  "284122": {
+    "sku": "284122",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.5,
+    "widthCm": 41.2,
+    "heightCm": 11.1,
+    "weightG": 662.0,
+    "volumeMl": 15777.54
+  },
+  "284086": {
+    "sku": "284086",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 30.0,
+    "widthCm": 17.1,
+    "heightCm": 12.0,
+    "weightG": 794.0,
+    "volumeMl": 6156.0
+  },
+  "284067": {
+    "sku": "284067",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 27.2,
+    "widthCm": 21.8,
+    "heightCm": 8.4,
+    "weightG": 348.0,
+    "volumeMl": 4980.86
+  },
+  "284066": {
+    "sku": "284066",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 24.3,
+    "widthCm": 24.0,
+    "heightCm": 7.3,
+    "weightG": 302.0,
+    "volumeMl": 4257.36
+  },
+  "279459": {
+    "sku": "279459",
+    "dept": "BEAUTY",
+    "lengthCm": 17.0,
+    "widthCm": 23.6,
+    "heightCm": 7.9,
+    "weightG": 654.0,
+    "volumeMl": 3169.48
+  },
+  "268827": {
+    "sku": "268827",
+    "dept": "BEAUTY",
+    "lengthCm": 13.5,
+    "widthCm": 34.3,
+    "heightCm": 4.6,
+    "weightG": 120.0,
+    "volumeMl": 2130.03
+  },
+  "268825": {
+    "sku": "268825",
+    "dept": "BEAUTY",
+    "lengthCm": 5.0,
+    "widthCm": 5.2,
+    "heightCm": 10.8,
+    "weightG": 88.0,
+    "volumeMl": 280.8
+  },
+  "268824": {
+    "sku": "268824",
+    "dept": "BEAUTY",
+    "lengthCm": 5.0,
+    "widthCm": 5.2,
+    "heightCm": 10.8,
+    "weightG": 88.0,
+    "volumeMl": 280.8
+  },
+  "268823": {
+    "sku": "268823",
+    "dept": "BEAUTY",
+    "lengthCm": 6.9,
+    "widthCm": 20.7,
+    "heightCm": 4.9,
+    "weightG": 278.0,
+    "volumeMl": 699.87
+  },
+  "268817": {
+    "sku": "268817",
+    "dept": "BEAUTY",
+    "lengthCm": 5.0,
+    "widthCm": 5.2,
+    "heightCm": 10.8,
+    "weightG": 88.0,
+    "volumeMl": 280.8
+  },
+  "268816": {
+    "sku": "268816",
+    "dept": "BEAUTY",
+    "lengthCm": 4.9,
+    "widthCm": 5.0,
+    "heightCm": 10.6,
+    "weightG": 96.0,
+    "volumeMl": 259.7
+  },
+  "268814": {
+    "sku": "268814",
+    "dept": "BEAUTY",
+    "lengthCm": 5.0,
+    "widthCm": 5.2,
+    "heightCm": 10.8,
+    "weightG": 88.0,
+    "volumeMl": 280.8
+  },
+  "268813": {
+    "sku": "268813",
+    "dept": "BEAUTY",
+    "lengthCm": 5.0,
+    "widthCm": 5.2,
+    "heightCm": 10.8,
+    "weightG": 88.0,
+    "volumeMl": 280.8
+  },
+  "268811": {
+    "sku": "268811",
+    "dept": "BEAUTY",
+    "lengthCm": 7.4,
+    "widthCm": 13.4,
+    "heightCm": 2.1,
+    "weightG": 22.0,
+    "volumeMl": 208.24
+  },
+  "265378": {
+    "sku": "265378",
+    "dept": "BEAUTY",
+    "lengthCm": 15.0,
+    "widthCm": 17.8,
+    "heightCm": 8.1,
+    "weightG": 184.0,
+    "volumeMl": 2162.7
+  },
+  "261984": {
+    "sku": "261984",
+    "dept": "BEAUTY",
+    "lengthCm": 15.3,
+    "widthCm": 2.7,
+    "heightCm": 1.3,
+    "weightG": 6.0,
+    "volumeMl": 53.7
+  },
+  "260652": {
+    "sku": "260652",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.3,
+    "widthCm": 8.1,
+    "heightCm": 3.1,
+    "weightG": 28.0,
+    "volumeMl": 183.3
+  },
+  "257451": {
+    "sku": "257451",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.2,
+    "widthCm": 9.1,
+    "heightCm": 2.8,
+    "weightG": 50.0,
+    "volumeMl": 285.38
+  },
+  "257401": {
+    "sku": "257401",
+    "dept": "BEAUTY",
+    "lengthCm": 4.8,
+    "widthCm": 11.4,
+    "heightCm": 18.0,
+    "weightG": 164.0,
+    "volumeMl": 984.96
+  },
+  "244894": {
+    "sku": "244894",
+    "dept": "BEAUTY",
+    "lengthCm": 4.9,
+    "widthCm": 25.8,
+    "heightCm": 16.6,
+    "weightG": 292.0,
+    "volumeMl": 2098.57
+  },
+  "242626": {
+    "sku": "242626",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 7.8,
+    "widthCm": 10.8,
+    "heightCm": 8.1,
+    "weightG": 186.0,
+    "volumeMl": 682.34
+  },
+  "242127": {
+    "sku": "242127",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 7.6,
+    "widthCm": 18.3,
+    "heightCm": 6.6,
+    "weightG": 230.0,
+    "volumeMl": 917.93
+  },
+  "239485": {
+    "sku": "239485",
+    "dept": "BEAUTY",
+    "lengthCm": 10.5,
+    "widthCm": 10.8,
+    "heightCm": 15.2,
+    "weightG": 612.0,
+    "volumeMl": 1723.68
+  },
+  "236239": {
+    "sku": "236239",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 3.7,
+    "heightCm": 2.1,
+    "weightG": 12.0,
+    "volumeMl": 76.15
+  },
+  "231005": {
+    "sku": "231005",
+    "dept": "BEAUTY",
+    "lengthCm": 11.9,
+    "widthCm": 17.4,
+    "heightCm": 4.2,
+    "weightG": 40.0,
+    "volumeMl": 869.65
+  },
+  "230855": {
+    "sku": "230855",
+    "dept": "BEAUTY",
+    "lengthCm": 16.0,
+    "widthCm": 6.3,
+    "heightCm": 2.2,
+    "weightG": 12.0,
+    "volumeMl": 221.76
+  },
+  "229981": {
+    "sku": "229981",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 18.3,
+    "widthCm": 12.2,
+    "heightCm": 2.5,
+    "weightG": 45.0,
+    "volumeMl": 558.15
+  },
+  "229616": {
+    "sku": "229616",
+    "dept": "BEAUTY",
+    "lengthCm": 6.4,
+    "widthCm": 10.7,
+    "heightCm": 8.0,
+    "weightG": 50.0,
+    "volumeMl": 547.84
+  },
+  "224702": {
+    "sku": "224702",
+    "dept": "BEAUTY",
+    "lengthCm": 3.9,
+    "widthCm": 10.3,
+    "heightCm": 13.7,
+    "weightG": 294.0,
+    "volumeMl": 550.33
+  },
+  "219481": {
+    "sku": "219481",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 7.2,
+    "widthCm": 16.0,
+    "heightCm": 7.3,
+    "weightG": 316.0,
+    "volumeMl": 840.96
+  },
+  "213417": {
+    "sku": "213417",
+    "dept": "BEAUTY",
+    "lengthCm": 7.6,
+    "widthCm": 13.3,
+    "heightCm": 13.2,
+    "weightG": 306.0,
+    "volumeMl": 1334.26
+  },
+  "213385": {
+    "sku": "213385",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 6.5,
+    "widthCm": 5.9,
+    "heightCm": 16.4,
+    "weightG": 234.0,
+    "volumeMl": 628.94
+  },
+  "213376": {
+    "sku": "213376",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 7.5,
+    "widthCm": 7.6,
+    "heightCm": 21.9,
+    "weightG": 306.0,
+    "volumeMl": 1248.3
+  },
+  "213369": {
+    "sku": "213369",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 8.5,
+    "widthCm": 8.5,
+    "heightCm": 16.2,
+    "weightG": 550.0,
+    "volumeMl": 1170.45
+  },
+  "213227": {
+    "sku": "213227",
+    "dept": "BEAUTY",
+    "lengthCm": 7.1,
+    "widthCm": 30.6,
+    "heightCm": 15.7,
+    "weightG": 292.0,
+    "volumeMl": 3410.98
+  },
+  "210376": {
+    "sku": "210376",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.1,
+    "widthCm": 9.7,
+    "heightCm": 2.0,
+    "weightG": 28.0,
+    "volumeMl": 176.54
+  },
+  "208403": {
+    "sku": "208403",
+    "dept": "BEAUTY",
+    "lengthCm": 5.7,
+    "widthCm": 16.9,
+    "heightCm": 5.9,
+    "weightG": 150.0,
+    "volumeMl": 568.35
+  },
+  "208085": {
+    "sku": "208085",
+    "dept": "BEAUTY",
+    "lengthCm": 24.9,
+    "widthCm": 5.2,
+    "heightCm": 1.0,
+    "weightG": 16.0,
+    "volumeMl": 129.48
+  },
+  "207251": {
+    "sku": "207251",
+    "dept": "BEAUTY",
+    "lengthCm": 6.1,
+    "widthCm": 21.5,
+    "heightCm": 25.5,
+    "weightG": 256.0,
+    "volumeMl": 3344.33
+  },
+  "205278": {
+    "sku": "205278",
+    "dept": "BEAUTY",
+    "lengthCm": 8.3,
+    "widthCm": 21.3,
+    "heightCm": 5.3,
+    "weightG": 274.0,
+    "volumeMl": 936.99
+  },
+  "205276": {
+    "sku": "205276",
+    "dept": "BEAUTY",
+    "lengthCm": 8.3,
+    "widthCm": 21.3,
+    "heightCm": 5.3,
+    "weightG": 274.0,
+    "volumeMl": 936.99
+  },
+  "201197": {
+    "sku": "201197",
+    "dept": "BEAUTY",
+    "lengthCm": 5.9,
+    "widthCm": 18.1,
+    "heightCm": 5.2,
+    "weightG": 190.0,
+    "volumeMl": 555.31
+  },
+  "201033": {
+    "sku": "201033",
+    "dept": "BEAUTY",
+    "lengthCm": 18.7,
+    "widthCm": 9.0,
+    "heightCm": 4.2,
+    "weightG": 172.0,
+    "volumeMl": 706.86
+  },
+  "199530": {
+    "sku": "199530",
+    "dept": "BEAUTY",
+    "lengthCm": 11.2,
+    "widthCm": 12.2,
+    "heightCm": 6.4,
+    "weightG": 146.0,
+    "volumeMl": 874.5
+  },
+  "197575": {
+    "sku": "197575",
+    "dept": "BEAUTY",
+    "lengthCm": 20.6,
+    "widthCm": 8.2,
+    "heightCm": 3.9,
+    "weightG": 34.0,
+    "volumeMl": 658.79
+  },
+  "197132": {
+    "sku": "197132",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.6,
+    "heightCm": 3.1,
+    "weightG": 34.0,
+    "volumeMl": 351.54
+  },
+  "195494": {
+    "sku": "195494",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.2,
+    "widthCm": 9.1,
+    "heightCm": 2.8,
+    "weightG": 50.0,
+    "volumeMl": 285.38
+  },
+  "192483": {
+    "sku": "192483",
+    "dept": "BEAUTY",
+    "lengthCm": 9.3,
+    "widthCm": 19.6,
+    "heightCm": 5.2,
+    "weightG": 224.0,
+    "volumeMl": 947.86
+  },
+  "190708": {
+    "sku": "190708",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.2,
+    "widthCm": 9.1,
+    "heightCm": 2.8,
+    "weightG": 50.0,
+    "volumeMl": 285.38
+  },
+  "190493": {
+    "sku": "190493",
+    "dept": "BEAUTY",
+    "lengthCm": 4.4,
+    "widthCm": 11.0,
+    "heightCm": 3.8,
+    "weightG": 20.0,
+    "volumeMl": 183.92
+  },
+  "189062": {
+    "sku": "189062",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 10.4,
+    "heightCm": 7.6,
+    "weightG": 272.0,
+    "volumeMl": 774.59
+  },
+  "185064": {
+    "sku": "185064",
+    "dept": "BEAUTY",
+    "lengthCm": 12.5,
+    "widthCm": 2.2,
+    "heightCm": 2.1,
+    "weightG": 180.0,
+    "volumeMl": 57.75
+  },
+  "182029": {
+    "sku": "182029",
+    "dept": "BEAUTY",
+    "lengthCm": 3.0,
+    "widthCm": 14.7,
+    "heightCm": 2.0,
+    "weightG": 10.0,
+    "volumeMl": 88.2
+  },
+  "180153": {
+    "sku": "180153",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.3,
+    "widthCm": 9.4,
+    "heightCm": 2.2,
+    "weightG": 22.0,
+    "volumeMl": 192.32
+  },
+  "176475": {
+    "sku": "176475",
+    "dept": "BEAUTY",
+    "lengthCm": 10.6,
+    "widthCm": 23.6,
+    "heightCm": 11.8,
+    "weightG": 470.0,
+    "volumeMl": 2951.89
+  },
+  "170123": {
+    "sku": "170123",
+    "dept": "BEAUTY",
+    "lengthCm": 8.0,
+    "widthCm": 7.4,
+    "heightCm": 1.9,
+    "weightG": 78.0,
+    "volumeMl": 112.48
+  },
+  "168581": {
+    "sku": "168581",
+    "dept": "BEAUTY",
+    "lengthCm": 18.0,
+    "widthCm": 13.4,
+    "heightCm": 6.7,
+    "weightG": 338.0,
+    "volumeMl": 1616.04
+  },
+  "160364": {
+    "sku": "160364",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 4.2,
+    "widthCm": 13.8,
+    "heightCm": 4.3,
+    "weightG": 254.0,
+    "volumeMl": 249.23
+  },
+  "154676": {
+    "sku": "154676",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 6.1,
+    "widthCm": 18.7,
+    "heightCm": 18.2,
+    "weightG": 250.0,
+    "volumeMl": 2076.07
+  },
+  "148654": {
+    "sku": "148654",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 12.0,
+    "widthCm": 11.9,
+    "heightCm": 21.6,
+    "weightG": 256.0,
+    "volumeMl": 3084.48
+  },
+  "148053": {
+    "sku": "148053",
+    "dept": "BEAUTY",
+    "lengthCm": 9.1,
+    "widthCm": 15.7,
+    "heightCm": 3.9,
+    "weightG": 62.0,
+    "volumeMl": 557.19
+  },
+  "147299": {
+    "sku": "147299",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 13.8,
+    "widthCm": 4.3,
+    "heightCm": 4.4,
+    "weightG": 248.0,
+    "volumeMl": 261.1
+  },
+  "140480": {
+    "sku": "140480",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 4.3,
+    "widthCm": 4.5,
+    "heightCm": 15.8,
+    "weightG": 146.0,
+    "volumeMl": 305.73
+  },
+  "138858": {
+    "sku": "138858",
+    "dept": "BEAUTY",
+    "lengthCm": 4.4,
+    "widthCm": 24.9,
+    "heightCm": 8.4,
+    "weightG": 42.0,
+    "volumeMl": 920.3
+  },
+  "138826": {
+    "sku": "138826",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 0.0,
+    "volumeMl": 331.47
+  },
+  "138320": {
+    "sku": "138320",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 10.6,
+    "heightCm": 7.6,
+    "weightG": 274.0,
+    "volumeMl": 789.49
+  },
+  "135724": {
+    "sku": "135724",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.1,
+    "widthCm": 8.8,
+    "heightCm": 2.9,
+    "weightG": 38.0,
+    "volumeMl": 257.75
+  },
+  "135213": {
+    "sku": "135213",
+    "dept": "BEAUTY",
+    "lengthCm": 6.6,
+    "widthCm": 7.0,
+    "heightCm": 2.4,
+    "weightG": 28.0,
+    "volumeMl": 110.88
+  },
+  "134282": {
+    "sku": "134282",
+    "dept": "BEAUTY",
+    "lengthCm": 8.3,
+    "widthCm": 13.1,
+    "heightCm": 5.6,
+    "weightG": 40.0,
+    "volumeMl": 608.89
+  },
+  "133770": {
+    "sku": "133770",
+    "dept": "BEAUTY",
+    "lengthCm": 6.6,
+    "widthCm": 5.6,
+    "heightCm": 3.6,
+    "weightG": 25.0,
+    "volumeMl": 133.06
+  },
+  "133381": {
+    "sku": "133381",
+    "dept": "BEAUTY",
+    "lengthCm": 12.0,
+    "widthCm": 14.8,
+    "heightCm": 12.8,
+    "weightG": 3000.0,
+    "volumeMl": 2273.28
+  },
+  "131767": {
+    "sku": "131767",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.1,
+    "widthCm": 8.5,
+    "heightCm": 2.8,
+    "weightG": 50.0,
+    "volumeMl": 240.38
+  },
+  "130300": {
+    "sku": "130300",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.3,
+    "widthCm": 8.1,
+    "heightCm": 3.1,
+    "weightG": 28.0,
+    "volumeMl": 183.3
+  },
+  "129970": {
+    "sku": "129970",
+    "dept": "BEAUTY",
+    "lengthCm": 11.5,
+    "widthCm": 9.6,
+    "heightCm": 4.2,
+    "weightG": 10.0,
+    "volumeMl": 463.68
+  },
+  "124885": {
+    "sku": "124885",
+    "dept": "BEAUTY",
+    "lengthCm": 13.5,
+    "widthCm": 25.8,
+    "heightCm": 4.8,
+    "weightG": 80.0,
+    "volumeMl": 1671.84
+  },
+  "124792": {
+    "sku": "124792",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.0,
+    "widthCm": 12.7,
+    "heightCm": 2.9,
+    "weightG": 0.0,
+    "volumeMl": 331.47
+  },
+  "124374": {
+    "sku": "124374",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 44.6,
+    "widthCm": 13.5,
+    "heightCm": 7.1,
+    "weightG": 276.0,
+    "volumeMl": 4274.91
+  },
+  "123328": {
+    "sku": "123328",
+    "dept": "BEAUTY",
+    "lengthCm": 6.1,
+    "widthCm": 16.1,
+    "heightCm": 2.1,
+    "weightG": 12.0,
+    "volumeMl": 206.24
+  },
+  "123322": {
+    "sku": "123322",
+    "dept": "BEAUTY",
+    "lengthCm": 15.9,
+    "widthCm": 4.6,
+    "heightCm": 2.2,
+    "weightG": 18.0,
+    "volumeMl": 160.91
+  },
+  "123321": {
+    "sku": "123321",
+    "dept": "BEAUTY",
+    "lengthCm": 15.9,
+    "widthCm": 4.6,
+    "heightCm": 2.2,
+    "weightG": 18.0,
+    "volumeMl": 160.91
+  },
+  "116621": {
+    "sku": "116621",
+    "dept": "BEAUTY",
+    "lengthCm": 9.1,
+    "widthCm": 14.7,
+    "heightCm": 2.8,
+    "weightG": 30.0,
+    "volumeMl": 374.56
+  },
+  "112945": {
+    "sku": "112945",
+    "dept": "BEAUTY",
+    "lengthCm": 11.4,
+    "widthCm": 14.9,
+    "heightCm": 7.4,
+    "weightG": 328.0,
+    "volumeMl": 1256.96
+  },
+  "111102": {
+    "sku": "111102",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 9.6,
+    "widthCm": 9.9,
+    "heightCm": 8.4,
+    "weightG": 382.0,
+    "volumeMl": 798.34
+  },
+  "110523": {
+    "sku": "110523",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.1,
+    "widthCm": 9.7,
+    "heightCm": 2.0,
+    "weightG": 28.0,
+    "volumeMl": 176.54
+  },
+  "109502": {
+    "sku": "109502",
+    "dept": "BEAUTY",
+    "lengthCm": 13.0,
+    "widthCm": 8.5,
+    "heightCm": 3.1,
+    "weightG": 26.0,
+    "volumeMl": 342.55
+  },
+  "108836": {
+    "sku": "108836",
+    "dept": "BEAUTY",
+    "lengthCm": 5.7,
+    "widthCm": 14.5,
+    "heightCm": 3.6,
+    "weightG": 92.0,
+    "volumeMl": 297.54
+  },
+  "106477": {
+    "sku": "106477",
+    "dept": "BEAUTY",
+    "lengthCm": 3.8,
+    "widthCm": 15.9,
+    "heightCm": 2.3,
+    "weightG": 10.0,
+    "volumeMl": 138.97
+  },
+  "100845": {
+    "sku": "100845",
+    "dept": "BEAUTY",
+    "lengthCm": 11.2,
+    "widthCm": 12.2,
+    "heightCm": 6.4,
+    "weightG": 146.0,
+    "volumeMl": 874.5
+  },
+  "096876": {
+    "sku": "096876",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.8,
+    "widthCm": 19.6,
+    "heightCm": 5.3,
+    "weightG": 116.0,
+    "volumeMl": 1225.78
+  },
+  "096875": {
+    "sku": "096875",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 17.7,
+    "widthCm": 8.1,
+    "heightCm": 5.5,
+    "weightG": 116.0,
+    "volumeMl": 788.53
+  },
+  "096874": {
+    "sku": "096874",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 17.7,
+    "widthCm": 8.1,
+    "heightCm": 5.5,
+    "weightG": 116.0,
+    "volumeMl": 788.53
+  },
+  "096866": {
+    "sku": "096866",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.8,
+    "widthCm": 19.6,
+    "heightCm": 5.3,
+    "weightG": 116.0,
+    "volumeMl": 1225.78
+  },
+  "096863": {
+    "sku": "096863",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 20.3,
+    "widthCm": 11.4,
+    "heightCm": 4.2,
+    "weightG": 150.0,
+    "volumeMl": 971.96
+  },
+  "096852": {
+    "sku": "096852",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.8,
+    "widthCm": 19.6,
+    "heightCm": 5.3,
+    "weightG": 116.0,
+    "volumeMl": 1225.78
+  },
+  "096851": {
+    "sku": "096851",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.8,
+    "widthCm": 19.6,
+    "heightCm": 5.3,
+    "weightG": 116.0,
+    "volumeMl": 1225.78
+  },
+  "095627": {
+    "sku": "095627",
+    "dept": "BEAUTY",
+    "lengthCm": 5.4,
+    "widthCm": 14.2,
+    "heightCm": 17.1,
+    "weightG": 432.0,
+    "volumeMl": 1311.23
+  },
+  "095117": {
+    "sku": "095117",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 34.6,
+    "widthCm": 29.9,
+    "heightCm": 3.7,
+    "weightG": 182.0,
+    "volumeMl": 3827.8
+  },
+  "095116": {
+    "sku": "095116",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 35.7,
+    "widthCm": 30.1,
+    "heightCm": 3.6,
+    "weightG": 172.0,
+    "volumeMl": 3868.45
+  },
+  "095115": {
+    "sku": "095115",
+    "dept": "FASHIONSPORTS",
+    "lengthCm": 36.9,
+    "widthCm": 31.1,
+    "heightCm": 3.4,
+    "weightG": 154.0,
+    "volumeMl": 3901.81
+  },
+  "093750": {
+    "sku": "093750",
+    "dept": "BEAUTY",
+    "lengthCm": 7.4,
+    "widthCm": 18.1,
+    "heightCm": 10.8,
+    "weightG": 630.0,
+    "volumeMl": 1446.55
+  },
+  "092976": {
+    "sku": "092976",
+    "dept": "BEAUTY",
+    "lengthCm": 14.5,
+    "widthCm": 47.2,
+    "heightCm": 8.5,
+    "weightG": 786.0,
+    "volumeMl": 5817.4
+  },
+  "091093": {
+    "sku": "091093",
+    "dept": "BEAUTY",
+    "lengthCm": 8.0,
+    "widthCm": 21.5,
+    "heightCm": 5.2,
+    "weightG": 272.0,
+    "volumeMl": 894.4
+  },
+  "091056": {
+    "sku": "091056",
+    "dept": "BEAUTY",
+    "lengthCm": 4.8,
+    "widthCm": 19.4,
+    "heightCm": 5.1,
+    "weightG": 322.0,
+    "volumeMl": 474.91
+  },
+  "086059": {
+    "sku": "086059",
+    "dept": "BEAUTY",
+    "lengthCm": 15.1,
+    "widthCm": 17.7,
+    "heightCm": 4.0,
+    "weightG": 294.0,
+    "volumeMl": 1069.08
+  },
+  "085962": {
+    "sku": "085962",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 14.9,
+    "widthCm": 10.6,
+    "heightCm": 4.8,
+    "weightG": 112000.0,
+    "volumeMl": 758.11
+  },
+  "082493": {
+    "sku": "082493",
+    "dept": "BEAUTY",
+    "lengthCm": 8.7,
+    "widthCm": 7.9,
+    "heightCm": 4.6,
+    "weightG": 94.0,
+    "volumeMl": 316.16
+  },
+  "067730": {
+    "sku": "067730",
+    "dept": "BEAUTY",
+    "lengthCm": 7.9,
+    "widthCm": 31.3,
+    "heightCm": 5.2,
+    "weightG": 290.0,
+    "volumeMl": 1285.8
+  },
+  "064229": {
+    "sku": "064229",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.5,
+    "widthCm": 7.4,
+    "heightCm": 2.7,
+    "weightG": 56.0,
+    "volumeMl": 209.79
+  },
+  "063596": {
+    "sku": "063596",
+    "dept": "PVTLABEL",
+    "lengthCm": 6.8,
+    "widthCm": 11.3,
+    "heightCm": 5.1,
+    "weightG": 224.0,
+    "volumeMl": 391.88
+  },
+  "063393": {
+    "sku": "063393",
+    "dept": "BEAUTY",
+    "lengthCm": 1.8,
+    "widthCm": 11.3,
+    "heightCm": 1.9,
+    "weightG": 20.0,
+    "volumeMl": 38.65
+  },
+  "063387": {
+    "sku": "063387",
+    "dept": "BEAUTY",
+    "lengthCm": 1.8,
+    "widthCm": 11.4,
+    "heightCm": 2.0,
+    "weightG": 18.0,
+    "volumeMl": 41.04
+  },
+  "063381": {
+    "sku": "063381",
+    "dept": "BEAUTY",
+    "lengthCm": 1.8,
+    "widthCm": 11.4,
+    "heightCm": 1.9,
+    "weightG": 18.0,
+    "volumeMl": 38.99
+  },
+  "062165": {
+    "sku": "062165",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 10.3,
+    "widthCm": 18.9,
+    "heightCm": 10.3,
+    "weightG": 388.0,
+    "volumeMl": 2005.1
+  },
+  "059783": {
+    "sku": "059783",
+    "dept": "BEAUTY",
+    "lengthCm": 10.2,
+    "widthCm": 9.7,
+    "heightCm": 7.5,
+    "weightG": 274.0,
+    "volumeMl": 742.05
+  },
+  "056372": {
+    "sku": "056372",
+    "dept": "BEAUTY",
+    "lengthCm": 4.6,
+    "widthCm": 13.4,
+    "heightCm": 14.0,
+    "weightG": 368.0,
+    "volumeMl": 862.96
+  },
+  "050505": {
+    "sku": "050505",
+    "dept": "PVTLABEL",
+    "lengthCm": 6.7,
+    "widthCm": 9.7,
+    "heightCm": 17.7,
+    "weightG": 466.0,
+    "volumeMl": 1150.32
+  },
+  "049405": {
+    "sku": "049405",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 8.7,
+    "widthCm": 16.2,
+    "heightCm": 3.9,
+    "weightG": 64.0,
+    "volumeMl": 549.67
+  },
+  "048462": {
+    "sku": "048462",
+    "dept": "BEAUTY",
+    "lengthCm": 21.8,
+    "widthCm": 18.4,
+    "heightCm": 12.1,
+    "weightG": 511.0,
+    "volumeMl": 4853.55
+  },
+  "048032": {
+    "sku": "048032",
+    "dept": "BEAUTY",
+    "lengthCm": 4.2,
+    "widthCm": 10.6,
+    "heightCm": 12.5,
+    "weightG": 286.0,
+    "volumeMl": 556.5
+  },
+  "047551": {
+    "sku": "047551",
+    "dept": "BEAUTY",
+    "lengthCm": 16.0,
+    "widthCm": 6.3,
+    "heightCm": 2.2,
+    "weightG": 12.0,
+    "volumeMl": 221.76
+  },
+  "047474": {
+    "sku": "047474",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 8.1,
+    "widthCm": 8.2,
+    "heightCm": 11.0,
+    "weightG": 172.0,
+    "volumeMl": 730.62
+  },
+  "044362": {
+    "sku": "044362",
+    "dept": "BEAUTY",
+    "lengthCm": 15.5,
+    "widthCm": 10.4,
+    "heightCm": 11.9,
+    "weightG": 532.0,
+    "volumeMl": 1918.28
+  },
+  "038496": {
+    "sku": "038496",
+    "dept": "BEAUTY",
+    "lengthCm": 21.9,
+    "widthCm": 6.3,
+    "heightCm": 3.3,
+    "weightG": 134.0,
+    "volumeMl": 455.3
+  },
+  "037286": {
+    "sku": "037286",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 7.1,
+    "widthCm": 17.7,
+    "heightCm": 17.4,
+    "weightG": 556.0,
+    "volumeMl": 2186.66
+  },
+  "034223": {
+    "sku": "034223",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 6.1,
+    "widthCm": 7.0,
+    "heightCm": 11.0,
+    "weightG": 364.0,
+    "volumeMl": 469.7
+  },
+  "032768": {
+    "sku": "032768",
+    "dept": "BEAUTY",
+    "lengthCm": 4.5,
+    "widthCm": 6.4,
+    "heightCm": 4.6,
+    "weightG": 16.0,
+    "volumeMl": 132.48
+  },
+  "032696": {
+    "sku": "032696",
+    "dept": "BEAUTY",
+    "lengthCm": 3.1,
+    "widthCm": 20.9,
+    "heightCm": 2.8,
+    "weightG": 18.0,
+    "volumeMl": 181.41
+  },
+  "032373": {
+    "sku": "032373",
+    "dept": "BEAUTY",
+    "lengthCm": 3.5,
+    "widthCm": 12.3,
+    "heightCm": 2.0,
+    "weightG": 21.0,
+    "volumeMl": 86.1
+  },
+  "032320": {
+    "sku": "032320",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.2,
+    "widthCm": 9.1,
+    "heightCm": 2.8,
+    "weightG": 50.0,
+    "volumeMl": 285.38
+  },
+  "032270": {
+    "sku": "032270",
+    "dept": "BEAUTY",
+    "lengthCm": 4.5,
+    "widthCm": 20.4,
+    "heightCm": 2.8,
+    "weightG": 30.0,
+    "volumeMl": 257.04
+  },
+  "032205": {
+    "sku": "032205",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 17.4,
+    "widthCm": 6.3,
+    "heightCm": 6.3,
+    "weightG": 558.0,
+    "volumeMl": 690.61
+  },
+  "032120": {
+    "sku": "032120",
+    "dept": "BEAUTY",
+    "lengthCm": 13.1,
+    "widthCm": 9.3,
+    "heightCm": 4.4,
+    "weightG": 65.0,
+    "volumeMl": 536.05
+  },
+  "032118": {
+    "sku": "032118",
+    "dept": "BEAUTY",
+    "lengthCm": 5.4,
+    "widthCm": 7.3,
+    "heightCm": 18.7,
+    "weightG": 238.0,
+    "volumeMl": 737.15
+  },
+  "031977": {
+    "sku": "031977",
+    "dept": "BEAUTY",
+    "lengthCm": 15.6,
+    "widthCm": 9.0,
+    "heightCm": 2.5,
+    "weightG": 35.0,
+    "volumeMl": 351.0
+  },
+  "031960": {
+    "sku": "031960",
+    "dept": "BEAUTY",
+    "lengthCm": 22.9,
+    "widthCm": 12.5,
+    "heightCm": 16.8,
+    "weightG": 84.0,
+    "volumeMl": 4809.0
+  },
+  "031925": {
+    "sku": "031925",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 12.1,
+    "heightCm": 6.2,
+    "weightG": 106.0,
+    "volumeMl": 735.2
+  },
+  "031915": {
+    "sku": "031915",
+    "dept": "BEAUTY",
+    "lengthCm": 2.9,
+    "widthCm": 13.0,
+    "heightCm": 2.7,
+    "weightG": 36.0,
+    "volumeMl": 101.79
+  },
+  "031908": {
+    "sku": "031908",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 16.1,
+    "widthCm": 15.1,
+    "heightCm": 1.4,
+    "weightG": 84.0,
+    "volumeMl": 340.35
+  },
+  "031703": {
+    "sku": "031703",
+    "dept": "BEAUTY",
+    "lengthCm": 11.7,
+    "widthCm": 10.4,
+    "heightCm": 2.1,
+    "weightG": 12.0,
+    "volumeMl": 255.53
+  },
+  "031662": {
+    "sku": "031662",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 15.9,
+    "widthCm": 4.4,
+    "heightCm": 4.4,
+    "weightG": 150.0,
+    "volumeMl": 307.82
+  },
+  "031661": {
+    "sku": "031661",
+    "dept": "BEAUTY",
+    "lengthCm": 8.7,
+    "widthCm": 11.3,
+    "heightCm": 16.5,
+    "weightG": 404.0,
+    "volumeMl": 1622.12
+  },
+  "031525": {
+    "sku": "031525",
+    "dept": "BEAUTY",
+    "lengthCm": 13.9,
+    "widthCm": 23.3,
+    "heightCm": 7.9,
+    "weightG": 616.0,
+    "volumeMl": 2558.57
+  },
+  "031400": {
+    "sku": "031400",
+    "dept": "BEAUTY",
+    "lengthCm": 12.2,
+    "widthCm": 4.8,
+    "heightCm": 2.5,
+    "weightG": 50.0,
+    "volumeMl": 146.4
+  },
+  "031249": {
+    "sku": "031249",
+    "dept": "BEAUTY",
+    "lengthCm": 16.2,
+    "widthCm": 14.3,
+    "heightCm": 5.5,
+    "weightG": 148.0,
+    "volumeMl": 1274.13
+  },
+  "031127": {
+    "sku": "031127",
+    "dept": "BEAUTY",
+    "lengthCm": 11.8,
+    "widthCm": 15.3,
+    "heightCm": 2.9,
+    "weightG": 680.0,
+    "volumeMl": 523.57
+  },
+  "031083": {
+    "sku": "031083",
+    "dept": "BEAUTY",
+    "lengthCm": 6.7,
+    "widthCm": 5.8,
+    "heightCm": 2.7,
+    "weightG": 54.0,
+    "volumeMl": 104.92
+  },
+  "031004": {
+    "sku": "031004",
+    "dept": "BEAUTY",
+    "lengthCm": 24.6,
+    "widthCm": 21.4,
+    "heightCm": 5.4,
+    "weightG": 426.0,
+    "volumeMl": 2842.78
+  },
+  "030948": {
+    "sku": "030948",
+    "dept": "BEAUTY",
+    "lengthCm": 6.1,
+    "widthCm": 14.2,
+    "heightCm": 4.2,
+    "weightG": 58.0,
+    "volumeMl": 363.8
+  },
+  "030930": {
+    "sku": "030930",
+    "dept": "BEAUTY",
+    "lengthCm": 6.8,
+    "widthCm": 6.0,
+    "heightCm": 1.3,
+    "weightG": 25.0,
+    "volumeMl": 53.04
+  },
+  "030887": {
+    "sku": "030887",
+    "dept": "BEAUTY",
+    "lengthCm": 8.7,
+    "widthCm": 21.9,
+    "heightCm": 6.4,
+    "weightG": 322.0,
+    "volumeMl": 1219.39
+  },
+  "030778": {
+    "sku": "030778",
+    "dept": "BEAUTY",
+    "lengthCm": 6.3,
+    "widthCm": 8.3,
+    "heightCm": 16.1,
+    "weightG": 448.0,
+    "volumeMl": 841.87
+  },
+  "030656": {
+    "sku": "030656",
+    "dept": "BEAUTY",
+    "lengthCm": 10.0,
+    "widthCm": 10.0,
+    "heightCm": 9.1,
+    "weightG": 578.0,
+    "volumeMl": 910.0
+  },
+  "030567": {
+    "sku": "030567",
+    "dept": "BEAUTY",
+    "lengthCm": 11.2,
+    "widthCm": 12.2,
+    "heightCm": 6.4,
+    "weightG": 146.0,
+    "volumeMl": 874.5
+  },
+  "030258": {
+    "sku": "030258",
+    "dept": "BEAUTY",
+    "lengthCm": 7.4,
+    "widthCm": 33.8,
+    "heightCm": 13.0,
+    "weightG": 298.0,
+    "volumeMl": 3251.56
+  },
+  "030123": {
+    "sku": "030123",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 6.4,
+    "heightCm": 2.4,
+    "weightG": 14.0,
+    "volumeMl": 150.53
+  },
+  "030076": {
+    "sku": "030076",
+    "dept": "BEAUTY",
+    "lengthCm": 20.3,
+    "widthCm": 7.7,
+    "heightCm": 6.6,
+    "weightG": 268.0,
+    "volumeMl": 1031.65
+  },
+  "030067": {
+    "sku": "030067",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 16.4,
+    "heightCm": 11.8,
+    "weightG": 438.0,
+    "volumeMl": 1896.5
+  },
+  "030023": {
+    "sku": "030023",
+    "dept": "BEAUTY",
+    "lengthCm": 5.6,
+    "widthCm": 10.9,
+    "heightCm": 20.8,
+    "weightG": 256.0,
+    "volumeMl": 1269.63
+  },
+  "029907": {
+    "sku": "029907",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 5.0,
+    "widthCm": 5.7,
+    "heightCm": 12.5,
+    "weightG": 104.0,
+    "volumeMl": 356.25
+  },
+  "029901": {
+    "sku": "029901",
+    "dept": "BEAUTY",
+    "lengthCm": 3.3,
+    "widthCm": 8.2,
+    "heightCm": 3.1,
+    "weightG": 50.0,
+    "volumeMl": 83.89
+  },
+  "029839": {
+    "sku": "029839",
+    "dept": "BEAUTY",
+    "lengthCm": 6.2,
+    "widthCm": 9.3,
+    "heightCm": 20.0,
+    "weightG": 122.0,
+    "volumeMl": 1153.2
+  },
+  "029756": {
+    "sku": "029756",
+    "dept": "BEAUTY",
+    "lengthCm": 7.6,
+    "widthCm": 11.4,
+    "heightCm": 16.2,
+    "weightG": 354.0,
+    "volumeMl": 1403.57
+  },
+  "029691": {
+    "sku": "029691",
+    "dept": "BEAUTY",
+    "lengthCm": 5.6,
+    "widthCm": 6.8,
+    "heightCm": 2.8,
+    "weightG": 54.0,
+    "volumeMl": 106.62
+  },
+  "029672": {
+    "sku": "029672",
+    "dept": "BEAUTY",
+    "lengthCm": 21.3,
+    "widthCm": 13.2,
+    "heightCm": 6.5,
+    "weightG": 624.0,
+    "volumeMl": 1827.54
+  },
+  "029543": {
+    "sku": "029543",
+    "dept": "BEAUTY",
+    "lengthCm": 9.6,
+    "widthCm": 4.8,
+    "heightCm": 19.0,
+    "weightG": 156.0,
+    "volumeMl": 875.52
+  },
+  "029497": {
+    "sku": "029497",
+    "dept": "BEAUTY",
+    "lengthCm": 10.9,
+    "widthCm": 11.0,
+    "heightCm": 16.6,
+    "weightG": 376.0,
+    "volumeMl": 1990.34
+  },
+  "029495": {
+    "sku": "029495",
+    "dept": "BEAUTY",
+    "lengthCm": 20.5,
+    "widthCm": 9.0,
+    "heightCm": 3.6,
+    "weightG": 32.0,
+    "volumeMl": 664.2
+  },
+  "029486": {
+    "sku": "029486",
+    "dept": "BEAUTY",
+    "lengthCm": 9.1,
+    "widthCm": 11.6,
+    "heightCm": 3.3,
+    "weightG": 56.0,
+    "volumeMl": 348.35
+  },
+  "029461": {
+    "sku": "029461",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.9,
+    "heightCm": 3.3,
+    "weightG": 38.0,
+    "volumeMl": 349.57
+  },
+  "029431": {
+    "sku": "029431",
+    "dept": "BEAUTY",
+    "lengthCm": 5.9,
+    "widthCm": 14.5,
+    "heightCm": 16.0,
+    "weightG": 462.0,
+    "volumeMl": 1368.8
+  },
+  "029343": {
+    "sku": "029343",
+    "dept": "BEAUTY",
+    "lengthCm": 7.3,
+    "widthCm": 14.9,
+    "heightCm": 21.2,
+    "weightG": 576.0,
+    "volumeMl": 2305.92
+  },
+  "029334": {
+    "sku": "029334",
+    "dept": "BEAUTY",
+    "lengthCm": 9.6,
+    "widthCm": 14.3,
+    "heightCm": 2.6,
+    "weightG": 22.0,
+    "volumeMl": 356.93
+  },
+  "029304": {
+    "sku": "029304",
+    "dept": "BEAUTY",
+    "lengthCm": 45.0,
+    "widthCm": 20.9,
+    "heightCm": 12.1,
+    "weightG": 870.0,
+    "volumeMl": 11380.05
+  },
+  "029178": {
+    "sku": "029178",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.1,
+    "widthCm": 8.6,
+    "heightCm": 2.8,
+    "weightG": 56.0,
+    "volumeMl": 243.21
+  },
+  "029075": {
+    "sku": "029075",
+    "dept": "BEAUTY",
+    "lengthCm": 9.9,
+    "widthCm": 17.7,
+    "heightCm": 1.4,
+    "weightG": 32.0,
+    "volumeMl": 245.32
+  },
+  "029058": {
+    "sku": "029058",
+    "dept": "BEAUTY",
+    "lengthCm": 14.9,
+    "widthCm": 22.9,
+    "heightCm": 5.3,
+    "weightG": 96.0,
+    "volumeMl": 1808.41
+  },
+  "028951": {
+    "sku": "028951",
+    "dept": "BEAUTY",
+    "lengthCm": 13.5,
+    "widthCm": 22.9,
+    "heightCm": 16.1,
+    "weightG": 518.0,
+    "volumeMl": 4977.32
+  },
+  "028913": {
+    "sku": "028913",
+    "dept": "BEAUTY",
+    "lengthCm": 6.7,
+    "widthCm": 15.6,
+    "heightCm": 18.0,
+    "weightG": 424.0,
+    "volumeMl": 1881.36
+  },
+  "028874": {
+    "sku": "028874",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 13.6,
+    "widthCm": 6.5,
+    "heightCm": 6.3,
+    "weightG": 344.0,
+    "volumeMl": 556.92
+  },
+  "028774": {
+    "sku": "028774",
+    "dept": "BEAUTY",
+    "lengthCm": 10.4,
+    "widthCm": 10.2,
+    "heightCm": 3.7,
+    "weightG": 48.0,
+    "volumeMl": 392.5
+  },
+  "028679": {
+    "sku": "028679",
+    "dept": "BEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 10.4,
+    "heightCm": 16.1,
+    "weightG": 342.0,
+    "volumeMl": 853.94
+  },
+  "028653": {
+    "sku": "028653",
+    "dept": "BEAUTY",
+    "lengthCm": 19.3,
+    "widthCm": 12.0,
+    "heightCm": 15.2,
+    "weightG": 418.0,
+    "volumeMl": 3520.32
+  },
+  "028417": {
+    "sku": "028417",
+    "dept": "BEAUTY",
+    "lengthCm": 7.5,
+    "widthCm": 12.1,
+    "heightCm": 16.1,
+    "weightG": 250.0,
+    "volumeMl": 1461.08
+  },
+  "028222": {
+    "sku": "028222",
+    "dept": "BEAUTY",
+    "lengthCm": 11.0,
+    "widthCm": 14.6,
+    "heightCm": 4.3,
+    "weightG": 116.0,
+    "volumeMl": 690.58
+  },
+  "028126": {
+    "sku": "028126",
+    "dept": "BEAUTY",
+    "lengthCm": 19.4,
+    "widthCm": 15.9,
+    "heightCm": 7.5,
+    "weightG": 635.0,
+    "volumeMl": 2313.45
+  },
+  "027976": {
+    "sku": "027976",
+    "dept": "BEAUTY",
+    "lengthCm": 5.3,
+    "widthCm": 15.6,
+    "heightCm": 1.8,
+    "weightG": 8.0,
+    "volumeMl": 148.82
+  },
+  "027954": {
+    "sku": "027954",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 17.3,
+    "widthCm": 19.5,
+    "heightCm": 5.2,
+    "weightG": 834.0,
+    "volumeMl": 1754.22
+  },
+  "027915": {
+    "sku": "027915",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 5.7,
+    "widthCm": 14.1,
+    "heightCm": 20.1,
+    "weightG": 548.0,
+    "volumeMl": 1615.44
+  },
+  "027815": {
+    "sku": "027815",
+    "dept": "BEAUTY",
+    "lengthCm": 5.7,
+    "widthCm": 13.1,
+    "heightCm": 5.0,
+    "weightG": 5000.0,
+    "volumeMl": 373.35
+  },
+  "027733": {
+    "sku": "027733",
+    "dept": "BEAUTY",
+    "lengthCm": 15.7,
+    "widthCm": 9.6,
+    "heightCm": 15.4,
+    "weightG": 616.0,
+    "volumeMl": 2321.09
+  },
+  "027461": {
+    "sku": "027461",
+    "dept": "BEAUTY",
+    "lengthCm": 5.9,
+    "widthCm": 14.7,
+    "heightCm": 6.0,
+    "weightG": 120.0,
+    "volumeMl": 520.38
+  },
+  "027385": {
+    "sku": "027385",
+    "dept": "BEAUTY",
+    "lengthCm": 15.7,
+    "widthCm": 13.3,
+    "heightCm": 5.1,
+    "weightG": 455.0,
+    "volumeMl": 1064.93
+  },
+  "027370": {
+    "sku": "027370",
+    "dept": "BEAUTY",
+    "lengthCm": 15.0,
+    "widthCm": 12.3,
+    "heightCm": 4.3,
+    "weightG": 372.0,
+    "volumeMl": 793.35
+  },
+  "027354": {
+    "sku": "027354",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 7.2,
+    "widthCm": 14.1,
+    "heightCm": 18.5,
+    "weightG": 560.0,
+    "volumeMl": 1878.12
+  },
+  "027300": {
+    "sku": "027300",
+    "dept": "BEAUTY",
+    "lengthCm": 7.3,
+    "widthCm": 11.1,
+    "heightCm": 16.4,
+    "weightG": 406.0,
+    "volumeMl": 1328.89
+  },
+  "027269": {
+    "sku": "027269",
+    "dept": "BEAUTY",
+    "lengthCm": 9.4,
+    "widthCm": 15.9,
+    "heightCm": 4.0,
+    "weightG": 72.0,
+    "volumeMl": 597.84
+  },
+  "027222": {
+    "sku": "027222",
+    "dept": "BEAUTY",
+    "lengthCm": 5.3,
+    "widthCm": 5.9,
+    "heightCm": 2.9,
+    "weightG": 52.0,
+    "volumeMl": 90.68
+  },
+  "026973": {
+    "sku": "026973",
+    "dept": "BEAUTY",
+    "lengthCm": 9.5,
+    "widthCm": 14.4,
+    "heightCm": 4.8,
+    "weightG": 92.0,
+    "volumeMl": 656.64
+  },
+  "026972": {
+    "sku": "026972",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 8.3,
+    "widthCm": 12.9,
+    "heightCm": 4.9,
+    "weightG": 78.0,
+    "volumeMl": 524.64
+  },
+  "026910": {
+    "sku": "026910",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 6.9,
+    "widthCm": 7.5,
+    "heightCm": 2.2,
+    "weightG": 10.0,
+    "volumeMl": 113.85
+  },
+  "026901": {
+    "sku": "026901",
+    "dept": "BEAUTY",
+    "lengthCm": 6.3,
+    "widthCm": 6.9,
+    "heightCm": 2.7,
+    "weightG": 48.0,
+    "volumeMl": 117.37
+  },
+  "026830": {
+    "sku": "026830",
+    "dept": "BEAUTY",
+    "lengthCm": 2.6,
+    "widthCm": 12.3,
+    "heightCm": 2.0,
+    "weightG": 18.0,
+    "volumeMl": 63.96
+  },
+  "026671": {
+    "sku": "026671",
+    "dept": "BEAUTY",
+    "lengthCm": 3.4,
+    "widthCm": 11.5,
+    "heightCm": 2.5,
+    "weightG": 34.0,
+    "volumeMl": 97.75
+  },
+  "026445": {
+    "sku": "026445",
+    "dept": "BEAUTY",
+    "lengthCm": 8.7,
+    "widthCm": 21.9,
+    "heightCm": 6.4,
+    "weightG": 322.0,
+    "volumeMl": 1219.39
+  },
+  "026353": {
+    "sku": "026353",
+    "dept": "BEAUTY",
+    "lengthCm": 32.2,
+    "widthCm": 17.9,
+    "heightCm": 5.5,
+    "weightG": 538.0,
+    "volumeMl": 3170.09
+  },
+  "026091": {
+    "sku": "026091",
+    "dept": "BEAUTY",
+    "lengthCm": 8.5,
+    "widthCm": 7.8,
+    "heightCm": 1.8,
+    "weightG": 38.0,
+    "volumeMl": 119.34
+  },
+  "026062": {
+    "sku": "026062",
+    "dept": "BEAUTY",
+    "lengthCm": 10.8,
+    "widthCm": 12.6,
+    "heightCm": 6.4,
+    "weightG": 236.0,
+    "volumeMl": 870.91
+  },
+  "026050": {
+    "sku": "026050",
+    "dept": "BEAUTY",
+    "lengthCm": 10.5,
+    "widthCm": 14.1,
+    "heightCm": 12.7,
+    "weightG": 510.0,
+    "volumeMl": 1880.23
+  },
+  "025877": {
+    "sku": "025877",
+    "dept": "PVTLABEL",
+    "lengthCm": 9.9,
+    "widthCm": 14.1,
+    "heightCm": 14.1,
+    "weightG": 234.0,
+    "volumeMl": 1968.22
+  },
+  "025817": {
+    "sku": "025817",
+    "dept": "BEAUTY",
+    "lengthCm": 5.3,
+    "widthCm": 5.9,
+    "heightCm": 2.9,
+    "weightG": 52.0,
+    "volumeMl": 90.68
+  },
+  "025572": {
+    "sku": "025572",
+    "dept": "BEAUTY",
+    "lengthCm": 18.7,
+    "widthCm": 9.8,
+    "heightCm": 2.1,
+    "weightG": 15.0,
+    "volumeMl": 384.85
+  },
+  "025482": {
+    "sku": "025482",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 6.4,
+    "widthCm": 6.7,
+    "heightCm": 18.1,
+    "weightG": 784.0,
+    "volumeMl": 776.13
+  },
+  "025461": {
+    "sku": "025461",
+    "dept": "BEAUTY",
+    "lengthCm": 7.2,
+    "widthCm": 8.8,
+    "heightCm": 16.7,
+    "weightG": 432.0,
+    "volumeMl": 1058.11
+  },
+  "025444": {
+    "sku": "025444",
+    "dept": "BEAUTY",
+    "lengthCm": 12.6,
+    "widthCm": 5.6,
+    "heightCm": 2.4,
+    "weightG": 46.0,
+    "volumeMl": 169.34
+  },
+  "025436": {
+    "sku": "025436",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 6.6,
+    "widthCm": 15.8,
+    "heightCm": 2.2,
+    "weightG": 30.0,
+    "volumeMl": 229.42
+  },
+  "025386": {
+    "sku": "025386",
+    "dept": "BEAUTY",
+    "lengthCm": 11.9,
+    "widthCm": 18.5,
+    "heightCm": 2.1,
+    "weightG": 16.0,
+    "volumeMl": 462.32
+  },
+  "025381": {
+    "sku": "025381",
+    "dept": "BEAUTY",
+    "lengthCm": 4.6,
+    "widthCm": 26.1,
+    "heightCm": 4.8,
+    "weightG": 48.0,
+    "volumeMl": 576.29
+  },
+  "025346": {
+    "sku": "025346",
+    "dept": "BEAUTY",
+    "lengthCm": 14.2,
+    "widthCm": 6.3,
+    "heightCm": 3.4,
+    "weightG": 92.0,
+    "volumeMl": 304.16
+  },
+  "025340": {
+    "sku": "025340",
+    "dept": "BEAUTY",
+    "lengthCm": 15.5,
+    "widthCm": 11.7,
+    "heightCm": 9.1,
+    "weightG": 208.0,
+    "volumeMl": 1650.28
+  },
+  "025232": {
+    "sku": "025232",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 6.6,
+    "widthCm": 15.3,
+    "heightCm": 1.9,
+    "weightG": 40.0,
+    "volumeMl": 191.86
+  },
+  "025195": {
+    "sku": "025195",
+    "dept": "BEAUTY",
+    "lengthCm": 5.8,
+    "widthCm": 10.9,
+    "heightCm": 3.7,
+    "weightG": 44.0,
+    "volumeMl": 233.91
+  },
+  "025112": {
+    "sku": "025112",
+    "dept": "BEAUTY",
+    "lengthCm": 11.4,
+    "widthCm": 12.3,
+    "heightCm": 4.2,
+    "weightG": 112.0,
+    "volumeMl": 588.92
+  },
+  "025096": {
+    "sku": "025096",
+    "dept": "BEAUTY",
+    "lengthCm": 3.4,
+    "widthCm": 11.5,
+    "heightCm": 2.5,
+    "weightG": 34.0,
+    "volumeMl": 97.75
+  },
+  "024978": {
+    "sku": "024978",
+    "dept": "BEAUTY",
+    "lengthCm": 7.0,
+    "widthCm": 17.9,
+    "heightCm": 1.9,
+    "weightG": 34.0,
+    "volumeMl": 238.07
+  },
+  "024956": {
+    "sku": "024956",
+    "dept": "BEAUTY",
+    "lengthCm": 12.3,
+    "widthCm": 15.3,
+    "heightCm": 7.7,
+    "weightG": 250.0,
+    "volumeMl": 1449.06
+  },
+  "024951": {
+    "sku": "024951",
+    "dept": "BEAUTY",
+    "lengthCm": 13.0,
+    "widthCm": 12.3,
+    "heightCm": 2.6,
+    "weightG": 22.0,
+    "volumeMl": 415.74
+  },
+  "024917": {
+    "sku": "024917",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 5.2,
+    "widthCm": 9.7,
+    "heightCm": 25.6,
+    "weightG": 311.0,
+    "volumeMl": 1291.26
+  },
+  "024878": {
+    "sku": "024878",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.9,
+    "widthCm": 7.3,
+    "heightCm": 3.4,
+    "weightG": 18.0,
+    "volumeMl": 270.54
+  },
+  "024868": {
+    "sku": "024868",
+    "dept": "BEAUTY",
+    "lengthCm": 5.4,
+    "widthCm": 12.2,
+    "heightCm": 12.3,
+    "weightG": 176.0,
+    "volumeMl": 810.32
+  },
+  "024739": {
+    "sku": "024739",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 17.2,
+    "widthCm": 13.1,
+    "heightCm": 1.8,
+    "weightG": 16.0,
+    "volumeMl": 405.58
+  },
+  "024727": {
+    "sku": "024727",
+    "dept": "BEAUTY",
+    "lengthCm": 11.4,
+    "widthCm": 11.4,
+    "heightCm": 10.4,
+    "weightG": 332.0,
+    "volumeMl": 1351.58
+  },
+  "024516": {
+    "sku": "024516",
+    "dept": "BEAUTY",
+    "lengthCm": 10.8,
+    "widthCm": 10.6,
+    "heightCm": 6.8,
+    "weightG": 216.0,
+    "volumeMl": 778.46
+  },
+  "024440": {
+    "sku": "024440",
+    "dept": "BEAUTY",
+    "lengthCm": 15.1,
+    "widthCm": 1.7,
+    "heightCm": 3.4,
+    "weightG": 5.0,
+    "volumeMl": 87.28
+  },
+  "024372": {
+    "sku": "024372",
+    "dept": "BEAUTY",
+    "lengthCm": 4.5,
+    "widthCm": 9.7,
+    "heightCm": 17.2,
+    "weightG": 180.0,
+    "volumeMl": 750.78
+  },
+  "024325": {
+    "sku": "024325",
+    "dept": "PVTLABEL",
+    "lengthCm": 10.7,
+    "widthCm": 11.5,
+    "heightCm": 4.2,
+    "weightG": 154.0,
+    "volumeMl": 516.81
+  },
+  "024291": {
+    "sku": "024291",
+    "dept": "BEAUTY",
+    "lengthCm": 12.1,
+    "widthCm": 4.9,
+    "heightCm": 15.5,
+    "weightG": 456.0,
+    "volumeMl": 919.0
+  },
+  "024238": {
+    "sku": "024238",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.9,
+    "widthCm": 11.2,
+    "heightCm": 3.7,
+    "weightG": 60.0,
+    "volumeMl": 451.7
+  },
+  "024153": {
+    "sku": "024153",
+    "dept": "BEAUTY",
+    "lengthCm": 7.0,
+    "widthCm": 6.6,
+    "heightCm": 6.2,
+    "weightG": 128.0,
+    "volumeMl": 286.44
+  },
+  "024101": {
+    "sku": "024101",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.9,
+    "widthCm": 11.2,
+    "heightCm": 3.7,
+    "weightG": 60.0,
+    "volumeMl": 451.7
+  },
+  "024070": {
+    "sku": "024070",
+    "dept": "BEAUTY",
+    "lengthCm": 6.9,
+    "widthCm": 21.2,
+    "heightCm": 4.2,
+    "weightG": 46.0,
+    "volumeMl": 614.38
+  },
+  "023889": {
+    "sku": "023889",
+    "dept": "BEAUTY",
+    "lengthCm": 6.0,
+    "widthCm": 6.2,
+    "heightCm": 18.8,
+    "weightG": 230.0,
+    "volumeMl": 699.36
+  },
+  "023550": {
+    "sku": "023550",
+    "dept": "BEAUTY",
+    "lengthCm": 13.7,
+    "widthCm": 11.9,
+    "heightCm": 4.2,
+    "weightG": 118.0,
+    "volumeMl": 684.73
+  },
+  "023515": {
+    "sku": "023515",
+    "dept": "BEAUTY",
+    "lengthCm": 6.0,
+    "widthCm": 14.7,
+    "heightCm": 3.4,
+    "weightG": 64.0,
+    "volumeMl": 299.88
+  },
+  "023473": {
+    "sku": "023473",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 6.6,
+    "widthCm": 15.8,
+    "heightCm": 2.2,
+    "weightG": 30.0,
+    "volumeMl": 229.42
+  },
+  "023435": {
+    "sku": "023435",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 7.7,
+    "widthCm": 10.7,
+    "heightCm": 11.7,
+    "weightG": 351.0,
+    "volumeMl": 963.96
+  },
+  "023409": {
+    "sku": "023409",
+    "dept": "BEAUTY",
+    "lengthCm": 3.4,
+    "widthCm": 20.7,
+    "heightCm": 4.0,
+    "weightG": 16.0,
+    "volumeMl": 281.52
+  },
+  "023345": {
+    "sku": "023345",
+    "dept": "BEAUTY",
+    "lengthCm": 2.4,
+    "widthCm": 15.8,
+    "heightCm": 2.4,
+    "weightG": 8.0,
+    "volumeMl": 91.01
+  },
+  "023297": {
+    "sku": "023297",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 8.3,
+    "widthCm": 8.2,
+    "heightCm": 10.6,
+    "weightG": 396.0,
+    "volumeMl": 721.44
+  },
+  "023278": {
+    "sku": "023278",
+    "dept": "PVTLABEL",
+    "lengthCm": 14.2,
+    "widthCm": 17.3,
+    "heightCm": 4.9,
+    "weightG": 566.0,
+    "volumeMl": 1203.73
+  },
+  "023201": {
+    "sku": "023201",
+    "dept": "PVTLABEL",
+    "lengthCm": 4.0,
+    "widthCm": 14.1,
+    "heightCm": 4.6,
+    "weightG": 146.0,
+    "volumeMl": 259.44
+  },
+  "023144": {
+    "sku": "023144",
+    "dept": "BEAUTY",
+    "lengthCm": 13.4,
+    "widthCm": 6.2,
+    "heightCm": 2.3,
+    "weightG": 50.0,
+    "volumeMl": 191.08
+  },
+  "023054": {
+    "sku": "023054",
+    "dept": "BEAUTY",
+    "lengthCm": 3.7,
+    "widthCm": 21.5,
+    "heightCm": 2.5,
+    "weightG": 20.0,
+    "volumeMl": 198.88
+  },
+  "022995": {
+    "sku": "022995",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 15.8,
+    "widthCm": 6.2,
+    "heightCm": 4.4,
+    "weightG": 154.0,
+    "volumeMl": 431.02
+  },
+  "022985": {
+    "sku": "022985",
+    "dept": "BEAUTY",
+    "lengthCm": 12.3,
+    "widthCm": 13.9,
+    "heightCm": 5.3,
+    "weightG": 282.0,
+    "volumeMl": 906.14
+  },
+  "022893": {
+    "sku": "022893",
+    "dept": "BEAUTY",
+    "lengthCm": 9.7,
+    "widthCm": 17.1,
+    "heightCm": 12.4,
+    "weightG": 428.0,
+    "volumeMl": 2056.79
+  },
+  "022604": {
+    "sku": "022604",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.0,
+    "widthCm": 17.3,
+    "heightCm": 3.3,
+    "weightG": 62.0,
+    "volumeMl": 627.99
+  },
+  "022539": {
+    "sku": "022539",
+    "dept": "BEAUTY",
+    "lengthCm": 6.7,
+    "widthCm": 17.9,
+    "heightCm": 22.8,
+    "weightG": 622.0,
+    "volumeMl": 2734.4
+  },
+  "022500": {
+    "sku": "022500",
+    "dept": "BEAUTY",
+    "lengthCm": 6.1,
+    "widthCm": 36.6,
+    "heightCm": 2.4,
+    "weightG": 22.0,
+    "volumeMl": 535.82
+  },
+  "022490": {
+    "sku": "022490",
+    "dept": "BEAUTY",
+    "lengthCm": 6.9,
+    "widthCm": 13.0,
+    "heightCm": 14.5,
+    "weightG": 318.0,
+    "volumeMl": 1300.65
+  },
+  "022402": {
+    "sku": "022402",
+    "dept": "BEAUTY",
+    "lengthCm": 7.1,
+    "widthCm": 11.1,
+    "heightCm": 16.1,
+    "weightG": 322.0,
+    "volumeMl": 1268.84
+  },
+  "022315": {
+    "sku": "022315",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 4.9,
+    "widthCm": 8.1,
+    "heightCm": 15.8,
+    "weightG": 634.0,
+    "volumeMl": 627.1
+  },
+  "022254": {
+    "sku": "022254",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 3.2,
+    "widthCm": 3.2,
+    "heightCm": 8.5,
+    "weightG": 82.0,
+    "volumeMl": 87.04
+  },
+  "022157": {
+    "sku": "022157",
+    "dept": "BEAUTY",
+    "lengthCm": 15.1,
+    "widthCm": 14.6,
+    "heightCm": 5.8,
+    "weightG": 256.0,
+    "volumeMl": 1278.67
+  },
+  "022116": {
+    "sku": "022116",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.9,
+    "widthCm": 11.2,
+    "heightCm": 3.7,
+    "weightG": 60.0,
+    "volumeMl": 451.7
+  },
+  "022003": {
+    "sku": "022003",
+    "dept": "BEAUTY",
+    "lengthCm": 12.1,
+    "widthCm": 5.1,
+    "heightCm": 2.4,
+    "weightG": 200.0,
+    "volumeMl": 148.1
+  },
+  "021966": {
+    "sku": "021966",
+    "dept": "BEAUTY",
+    "lengthCm": 6.3,
+    "widthCm": 38.4,
+    "heightCm": 14.0,
+    "weightG": 224.0,
+    "volumeMl": 3386.88
+  },
+  "021934": {
+    "sku": "021934",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 6.6,
+    "widthCm": 14.3,
+    "heightCm": 19.0,
+    "weightG": 248.0,
+    "volumeMl": 1793.22
+  },
+  "021865": {
+    "sku": "021865",
+    "dept": "BEAUTY",
+    "lengthCm": 8.9,
+    "widthCm": 16.5,
+    "heightCm": 6.1,
+    "weightG": 292.0,
+    "volumeMl": 895.78
+  },
+  "021857": {
+    "sku": "021857",
+    "dept": "BEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 11.9,
+    "heightCm": 16.3,
+    "weightG": 318.0,
+    "volumeMl": 989.25
+  },
+  "021776": {
+    "sku": "021776",
+    "dept": "BEAUTY",
+    "lengthCm": 6.1,
+    "widthCm": 24.7,
+    "heightCm": 7.6,
+    "weightG": 68.0,
+    "volumeMl": 1145.09
+  },
+  "021645": {
+    "sku": "021645",
+    "dept": "BEAUTY",
+    "lengthCm": 13.9,
+    "widthCm": 32.2,
+    "heightCm": 12.1,
+    "weightG": 516.0,
+    "volumeMl": 5415.72
+  },
+  "021561": {
+    "sku": "021561",
+    "dept": "BEAUTY",
+    "lengthCm": 19.7,
+    "widthCm": 12.2,
+    "heightCm": 18.2,
+    "weightG": 488.0,
+    "volumeMl": 4374.19
+  },
+  "021461": {
+    "sku": "021461",
+    "dept": "BEAUTY",
+    "lengthCm": 12.4,
+    "widthCm": 35.2,
+    "heightCm": 20.0,
+    "weightG": 586.0,
+    "volumeMl": 8729.6
+  },
+  "021458": {
+    "sku": "021458",
+    "dept": "BEAUTY",
+    "lengthCm": 12.1,
+    "widthCm": 5.1,
+    "heightCm": 2.4,
+    "weightG": 200.0,
+    "volumeMl": 148.1
+  },
+  "021391": {
+    "sku": "021391",
+    "dept": "BEAUTY",
+    "lengthCm": 9.1,
+    "widthCm": 18.8,
+    "heightCm": 4.1,
+    "weightG": 12.0,
+    "volumeMl": 701.43
+  },
+  "021353": {
+    "sku": "021353",
+    "dept": "BEAUTY",
+    "lengthCm": 12.2,
+    "widthCm": 7.4,
+    "heightCm": 2.2,
+    "weightG": 52.0,
+    "volumeMl": 198.62
+  },
+  "021260": {
+    "sku": "021260",
+    "dept": "BEAUTY",
+    "lengthCm": 4.1,
+    "widthCm": 4.1,
+    "heightCm": 14.7,
+    "weightG": 94.0,
+    "volumeMl": 247.11
+  },
+  "021172": {
+    "sku": "021172",
+    "dept": "BEAUTY",
+    "lengthCm": 2.4,
+    "widthCm": 15.8,
+    "heightCm": 2.4,
+    "weightG": 8.0,
+    "volumeMl": 91.01
+  },
+  "021146": {
+    "sku": "021146",
+    "dept": "BEAUTY",
+    "lengthCm": 8.7,
+    "widthCm": 21.9,
+    "heightCm": 6.4,
+    "weightG": 322.0,
+    "volumeMl": 1219.39
+  },
+  "021132": {
+    "sku": "021132",
+    "dept": "BEAUTY",
+    "lengthCm": 7.5,
+    "widthCm": 10.2,
+    "heightCm": 13.1,
+    "weightG": 386.0,
+    "volumeMl": 1002.15
+  },
+  "021131": {
+    "sku": "021131",
+    "dept": "BEAUTY",
+    "lengthCm": 4.9,
+    "widthCm": 7.4,
+    "heightCm": 18.0,
+    "weightG": 240.0,
+    "volumeMl": 652.68
+  },
+  "021078": {
+    "sku": "021078",
+    "dept": "PVTLABEL",
+    "lengthCm": 11.6,
+    "widthCm": 11.6,
+    "heightCm": 7.2,
+    "weightG": 306.0,
+    "volumeMl": 968.83
+  },
+  "021017": {
+    "sku": "021017",
+    "dept": "BEAUTY",
+    "lengthCm": 14.4,
+    "widthCm": 5.1,
+    "heightCm": 1.1,
+    "weightG": 5.0,
+    "volumeMl": 80.78
+  },
+  "021015": {
+    "sku": "021015",
+    "dept": "BEAUTY",
+    "lengthCm": 8.9,
+    "widthCm": 16.2,
+    "heightCm": 3.0,
+    "weightG": 28.0,
+    "volumeMl": 432.54
+  },
+  "021013": {
+    "sku": "021013",
+    "dept": "BEAUTY",
+    "lengthCm": 5.0,
+    "widthCm": 12.5,
+    "heightCm": 20.0,
+    "weightG": 800.0,
+    "volumeMl": 1250.0
+  },
+  "020986": {
+    "sku": "020986",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.1,
+    "widthCm": 8.6,
+    "heightCm": 2.8,
+    "weightG": 56.0,
+    "volumeMl": 243.21
+  },
+  "020886": {
+    "sku": "020886",
+    "dept": "BEAUTY",
+    "lengthCm": 15.2,
+    "widthCm": 33.4,
+    "heightCm": 4.8,
+    "weightG": 90.0,
+    "volumeMl": 2436.86
+  },
+  "020882": {
+    "sku": "020882",
+    "dept": "BEAUTY",
+    "lengthCm": 18.6,
+    "widthCm": 15.0,
+    "heightCm": 6.5,
+    "weightG": 506.0,
+    "volumeMl": 1813.5
+  },
+  "020807": {
+    "sku": "020807",
+    "dept": "BEAUTY",
+    "lengthCm": 11.2,
+    "widthCm": 12.2,
+    "heightCm": 6.4,
+    "weightG": 146.0,
+    "volumeMl": 874.5
+  },
+  "020789": {
+    "sku": "020789",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 5.6,
+    "widthCm": 6.8,
+    "heightCm": 1.6,
+    "weightG": 30.0,
+    "volumeMl": 60.93
+  },
+  "020747": {
+    "sku": "020747",
+    "dept": "BEAUTY",
+    "lengthCm": 4.8,
+    "widthCm": 19.3,
+    "heightCm": 6.8,
+    "weightG": 166.0,
+    "volumeMl": 629.95
+  },
+  "020723": {
+    "sku": "020723",
+    "dept": "BEAUTY",
+    "lengthCm": 6.6,
+    "widthCm": 6.9,
+    "heightCm": 6.8,
+    "weightG": 134.0,
+    "volumeMl": 309.67
+  },
+  "020663": {
+    "sku": "020663",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.9,
+    "heightCm": 3.3,
+    "weightG": 38.0,
+    "volumeMl": 349.57
+  },
+  "020574": {
+    "sku": "020574",
+    "dept": "BEAUTY",
+    "lengthCm": 9.4,
+    "widthCm": 11.2,
+    "heightCm": 10.2,
+    "weightG": 226.0,
+    "volumeMl": 1073.86
+  },
+  "020542": {
+    "sku": "020542",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.9,
+    "widthCm": 11.2,
+    "heightCm": 3.7,
+    "weightG": 60.0,
+    "volumeMl": 451.7
+  },
+  "020501": {
+    "sku": "020501",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 6.4,
+    "widthCm": 14.2,
+    "heightCm": 11.6,
+    "weightG": 586.0,
+    "volumeMl": 1054.21
+  },
+  "020474": {
+    "sku": "020474",
+    "dept": "BEAUTY",
+    "lengthCm": 9.5,
+    "widthCm": 7.5,
+    "heightCm": 4.4,
+    "weightG": 440.0,
+    "volumeMl": 313.5
+  },
+  "020380": {
+    "sku": "020380",
+    "dept": "BEAUTY",
+    "lengthCm": 8.4,
+    "widthCm": 14.6,
+    "heightCm": 9.0,
+    "weightG": 282.0,
+    "volumeMl": 1103.76
+  },
+  "020324": {
+    "sku": "020324",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 21.9,
+    "heightCm": 5.8,
+    "weightG": 320.0,
+    "volumeMl": 1244.8
+  },
+  "020241": {
+    "sku": "020241",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.9,
+    "heightCm": 3.3,
+    "weightG": 38.0,
+    "volumeMl": 349.57
+  },
+  "020227": {
+    "sku": "020227",
+    "dept": "BEAUTY",
+    "lengthCm": 21.5,
+    "widthCm": 22.6,
+    "heightCm": 16.7,
+    "weightG": 68.0,
+    "volumeMl": 8114.53
+  },
+  "020211": {
+    "sku": "020211",
+    "dept": "BEAUTY",
+    "lengthCm": 8.0,
+    "widthCm": 8.7,
+    "heightCm": 3.4,
+    "weightG": 74.0,
+    "volumeMl": 236.64
+  },
+  "019997": {
+    "sku": "019997",
+    "dept": "BEAUTY",
+    "lengthCm": 9.7,
+    "widthCm": 6.0,
+    "heightCm": 3.5,
+    "weightG": 68.0,
+    "volumeMl": 203.7
+  },
+  "019885": {
+    "sku": "019885",
+    "dept": "BEAUTY",
+    "lengthCm": 5.5,
+    "widthCm": 20.5,
+    "heightCm": 1.5,
+    "weightG": 20.0,
+    "volumeMl": 169.12
+  },
+  "019832": {
+    "sku": "019832",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 6.6,
+    "widthCm": 10.4,
+    "heightCm": 3.5,
+    "weightG": 106.0,
+    "volumeMl": 240.24
+  },
+  "019810": {
+    "sku": "019810",
+    "dept": "BEAUTY",
+    "lengthCm": 7.2,
+    "widthCm": 12.8,
+    "heightCm": 19.0,
+    "weightG": 680.0,
+    "volumeMl": 1751.04
+  },
+  "019643": {
+    "sku": "019643",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 6.0,
+    "widthCm": 10.5,
+    "heightCm": 12.8,
+    "weightG": 420.0,
+    "volumeMl": 806.4
+  },
+  "019253": {
+    "sku": "019253",
+    "dept": "BEAUTY",
+    "lengthCm": 14.4,
+    "widthCm": 5.1,
+    "heightCm": 1.1,
+    "weightG": 5.0,
+    "volumeMl": 80.78
+  },
+  "019141": {
+    "sku": "019141",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 7.5,
+    "widthCm": 7.6,
+    "heightCm": 24.4,
+    "weightG": 494.0,
+    "volumeMl": 1390.8
+  },
+  "019106": {
+    "sku": "019106",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 6.6,
+    "widthCm": 6.7,
+    "heightCm": 18.2,
+    "weightG": 800.0,
+    "volumeMl": 804.8
+  },
+  "019061": {
+    "sku": "019061",
+    "dept": "BEAUTY",
+    "lengthCm": 13.1,
+    "widthCm": 3.8,
+    "heightCm": 2.8,
+    "weightG": 22.0,
+    "volumeMl": 139.38
+  },
+  "019060": {
+    "sku": "019060",
+    "dept": "BEAUTY",
+    "lengthCm": 5.9,
+    "widthCm": 14.2,
+    "heightCm": 2.7,
+    "weightG": 32.0,
+    "volumeMl": 226.21
+  },
+  "019031": {
+    "sku": "019031",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 15.6,
+    "widthCm": 9.3,
+    "heightCm": 7.3,
+    "weightG": 342.0,
+    "volumeMl": 1059.08
+  },
+  "019000": {
+    "sku": "019000",
+    "dept": "BEAUTY",
+    "lengthCm": 6.9,
+    "widthCm": 14.9,
+    "heightCm": 2.2,
+    "weightG": 22.0,
+    "volumeMl": 226.18
+  },
+  "018942": {
+    "sku": "018942",
+    "dept": "BEAUTY",
+    "lengthCm": 4.7,
+    "widthCm": 8.9,
+    "heightCm": 13.4,
+    "weightG": 392.0,
+    "volumeMl": 560.52
+  },
+  "018888": {
+    "sku": "018888",
+    "dept": "BEAUTY",
+    "lengthCm": 14.5,
+    "widthCm": 5.3,
+    "heightCm": 1.2,
+    "weightG": 10.0,
+    "volumeMl": 92.22
+  },
+  "018879": {
+    "sku": "018879",
+    "dept": "BEAUTY",
+    "lengthCm": 9.7,
+    "widthCm": 17.1,
+    "heightCm": 12.4,
+    "weightG": 428.0,
+    "volumeMl": 2056.79
+  },
+  "018583": {
+    "sku": "018583",
+    "dept": "BEAUTY",
+    "lengthCm": 9.7,
+    "widthCm": 6.0,
+    "heightCm": 3.5,
+    "weightG": 68.0,
+    "volumeMl": 203.7
+  },
+  "018494": {
+    "sku": "018494",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.5,
+    "widthCm": 10.3,
+    "heightCm": 3.4,
+    "weightG": 61.0,
+    "volumeMl": 402.73
+  },
+  "018430": {
+    "sku": "018430",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 6.5,
+    "widthCm": 5.6,
+    "heightCm": 1.4,
+    "weightG": 10.0,
+    "volumeMl": 50.96
+  },
+  "018420": {
+    "sku": "018420",
+    "dept": "BEAUTY",
+    "lengthCm": 5.6,
+    "widthCm": 9.3,
+    "heightCm": 22.1,
+    "weightG": 338.0,
+    "volumeMl": 1150.97
+  },
+  "018369": {
+    "sku": "018369",
+    "dept": "PVTLABEL",
+    "lengthCm": 5.6,
+    "widthCm": 11.4,
+    "heightCm": 16.6,
+    "weightG": 542.0,
+    "volumeMl": 1059.74
+  },
+  "018331": {
+    "sku": "018331",
+    "dept": "BEAUTY",
+    "lengthCm": 6.0,
+    "widthCm": 17.6,
+    "heightCm": 2.0,
+    "weightG": 24.0,
+    "volumeMl": 211.2
+  },
+  "018277": {
+    "sku": "018277",
+    "dept": "BEAUTY",
+    "lengthCm": 18.7,
+    "widthCm": 13.7,
+    "heightCm": 8.2,
+    "weightG": 485.0,
+    "volumeMl": 2100.76
+  },
+  "018151": {
+    "sku": "018151",
+    "dept": "PVTLABEL",
+    "lengthCm": 5.0,
+    "widthCm": 6.8,
+    "heightCm": 11.2,
+    "weightG": 228.0,
+    "volumeMl": 380.8
+  },
+  "018082": {
+    "sku": "018082",
+    "dept": "BEAUTY",
+    "lengthCm": 36.6,
+    "widthCm": 15.5,
+    "heightCm": 6.8,
+    "weightG": 880.0,
+    "volumeMl": 3857.64
+  },
+  "018017": {
+    "sku": "018017",
+    "dept": "BEAUTY",
+    "lengthCm": 12.8,
+    "widthCm": 9.6,
+    "heightCm": 8.7,
+    "weightG": 196.0,
+    "volumeMl": 1069.06
+  },
+  "017965": {
+    "sku": "017965",
+    "dept": "BEAUTY",
+    "lengthCm": 14.5,
+    "widthCm": 16.3,
+    "heightCm": 1.6,
+    "weightG": 254.0,
+    "volumeMl": 378.16
+  },
+  "017874": {
+    "sku": "017874",
+    "dept": "BEAUTY",
+    "lengthCm": 8.9,
+    "widthCm": 14.5,
+    "heightCm": 5.8,
+    "weightG": 170.0,
+    "volumeMl": 748.49
+  },
+  "017819": {
+    "sku": "017819",
+    "dept": "BEAUTY",
+    "lengthCm": 5.8,
+    "widthCm": 15.5,
+    "heightCm": 16.6,
+    "weightG": 496.0,
+    "volumeMl": 1492.34
+  },
+  "017578": {
+    "sku": "017578",
+    "dept": "BEAUTY",
+    "lengthCm": 15.4,
+    "widthCm": 16.4,
+    "heightCm": 3.3,
+    "weightG": 136.0,
+    "volumeMl": 833.45
+  },
+  "017357": {
+    "sku": "017357",
+    "dept": "PVTLABEL",
+    "lengthCm": 5.5,
+    "widthCm": 8.9,
+    "heightCm": 15.4,
+    "weightG": 333.0,
+    "volumeMl": 753.83
+  },
+  "017143": {
+    "sku": "017143",
+    "dept": "BEAUTY",
+    "lengthCm": 10.4,
+    "widthCm": 14.8,
+    "heightCm": 4.1,
+    "weightG": 302.0,
+    "volumeMl": 631.07
+  },
+  "017108": {
+    "sku": "017108",
+    "dept": "BEAUTY",
+    "lengthCm": 14.2,
+    "widthCm": 21.7,
+    "heightCm": 5.2,
+    "weightG": 426.0,
+    "volumeMl": 1602.33
+  },
+  "017053": {
+    "sku": "017053",
+    "dept": "BEAUTY",
+    "lengthCm": 11.0,
+    "widthCm": 6.9,
+    "heightCm": 2.8,
+    "weightG": 26.0,
+    "volumeMl": 212.52
+  },
+  "016909": {
+    "sku": "016909",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 4.5,
+    "widthCm": 9.9,
+    "heightCm": 19.1,
+    "weightG": 174.0,
+    "volumeMl": 850.91
+  },
+  "016887": {
+    "sku": "016887",
+    "dept": "BEAUTY",
+    "lengthCm": 14.6,
+    "widthCm": 20.8,
+    "heightCm": 7.9,
+    "weightG": 594.0,
+    "volumeMl": 2399.07
+  },
+  "016845": {
+    "sku": "016845",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 7.3,
+    "widthCm": 16.6,
+    "heightCm": 5.0,
+    "weightG": 78.0,
+    "volumeMl": 605.9
+  },
+  "016803": {
+    "sku": "016803",
+    "dept": "BEAUTY",
+    "lengthCm": 10.2,
+    "widthCm": 12.1,
+    "heightCm": 3.9,
+    "weightG": 82.0,
+    "volumeMl": 481.34
+  },
+  "016794": {
+    "sku": "016794",
+    "dept": "BEAUTY",
+    "lengthCm": 6.5,
+    "widthCm": 12.5,
+    "heightCm": 3.4,
+    "weightG": 138.0,
+    "volumeMl": 276.25
+  },
+  "016788": {
+    "sku": "016788",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.3,
+    "widthCm": 7.5,
+    "heightCm": 1.8,
+    "weightG": 16.0,
+    "volumeMl": 98.55
+  },
+  "016768": {
+    "sku": "016768",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 6.9,
+    "widthCm": 7.5,
+    "heightCm": 2.2,
+    "weightG": 10.0,
+    "volumeMl": 113.85
+  },
+  "016688": {
+    "sku": "016688",
+    "dept": "BEAUTY",
+    "lengthCm": 10.4,
+    "widthCm": 10.2,
+    "heightCm": 3.7,
+    "weightG": 48.0,
+    "volumeMl": 392.5
+  },
+  "016672": {
+    "sku": "016672",
+    "dept": "BEAUTY",
+    "lengthCm": 11.5,
+    "widthCm": 8.3,
+    "heightCm": 6.9,
+    "weightG": 405.0,
+    "volumeMl": 658.61
+  },
+  "016427": {
+    "sku": "016427",
+    "dept": "BEAUTY",
+    "lengthCm": 5.6,
+    "widthCm": 6.8,
+    "heightCm": 2.8,
+    "weightG": 54.0,
+    "volumeMl": 106.62
+  },
+  "016241": {
+    "sku": "016241",
+    "dept": "BEAUTY",
+    "lengthCm": 4.5,
+    "widthCm": 9.4,
+    "heightCm": 4.6,
+    "weightG": 30.0,
+    "volumeMl": 194.58
+  },
+  "016184": {
+    "sku": "016184",
+    "dept": "BEAUTY",
+    "lengthCm": 8.7,
+    "widthCm": 7.8,
+    "heightCm": 4.8,
+    "weightG": 16.0,
+    "volumeMl": 325.73
+  },
+  "016148": {
+    "sku": "016148",
+    "dept": "BEAUTY",
+    "lengthCm": 16.4,
+    "widthCm": 4.5,
+    "heightCm": 1.4,
+    "weightG": 20.0,
+    "volumeMl": 103.32
+  },
+  "016070": {
+    "sku": "016070",
+    "dept": "BEAUTY",
+    "lengthCm": 16.4,
+    "widthCm": 10.0,
+    "heightCm": 3.9,
+    "weightG": 304.0,
+    "volumeMl": 639.6
+  },
+  "015899": {
+    "sku": "015899",
+    "dept": "BEAUTY",
+    "lengthCm": 5.8,
+    "widthCm": 15.5,
+    "heightCm": 16.6,
+    "weightG": 496.0,
+    "volumeMl": 1492.34
+  },
+  "015848": {
+    "sku": "015848",
+    "dept": "BEAUTY",
+    "lengthCm": 14.7,
+    "widthCm": 18.9,
+    "heightCm": 8.7,
+    "weightG": 374.0,
+    "volumeMl": 2417.12
+  },
+  "015787": {
+    "sku": "015787",
+    "dept": "BEAUTY",
+    "lengthCm": 12.2,
+    "widthCm": 33.2,
+    "heightCm": 21.0,
+    "weightG": 566.0,
+    "volumeMl": 8505.84
+  },
+  "015773": {
+    "sku": "015773",
+    "dept": "BEAUTY",
+    "lengthCm": 4.7,
+    "widthCm": 12.8,
+    "heightCm": 2.7,
+    "weightG": 54.0,
+    "volumeMl": 162.43
+  },
+  "015753": {
+    "sku": "015753",
+    "dept": "BEAUTY",
+    "lengthCm": 19.9,
+    "widthCm": 7.1,
+    "heightCm": 4.6,
+    "weightG": 122.0,
+    "volumeMl": 649.93
+  },
+  "015703": {
+    "sku": "015703",
+    "dept": "BEAUTY",
+    "lengthCm": 14.6,
+    "widthCm": 18.4,
+    "heightCm": 10.0,
+    "weightG": 326.0,
+    "volumeMl": 2686.4
+  },
+  "015535": {
+    "sku": "015535",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 21.9,
+    "heightCm": 5.8,
+    "weightG": 320.0,
+    "volumeMl": 1244.8
+  },
+  "015528": {
+    "sku": "015528",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 15.0,
+    "widthCm": 10.9,
+    "heightCm": 1.3,
+    "weightG": 58.0,
+    "volumeMl": 212.55
+  },
+  "015518": {
+    "sku": "015518",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.1,
+    "widthCm": 8.6,
+    "heightCm": 2.8,
+    "weightG": 56.0,
+    "volumeMl": 243.21
+  },
+  "015506": {
+    "sku": "015506",
+    "dept": "BEAUTY",
+    "lengthCm": 10.9,
+    "widthCm": 8.9,
+    "heightCm": 3.4,
+    "weightG": 85.0,
+    "volumeMl": 329.83
+  },
+  "015435": {
+    "sku": "015435",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 5.9,
+    "widthCm": 9.5,
+    "heightCm": 2.8,
+    "weightG": 8.0,
+    "volumeMl": 156.94
+  },
+  "015427": {
+    "sku": "015427",
+    "dept": "BEAUTY",
+    "lengthCm": 5.7,
+    "widthCm": 11.8,
+    "heightCm": 2.8,
+    "weightG": 20.0,
+    "volumeMl": 188.33
+  },
+  "015390": {
+    "sku": "015390",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 15.0,
+    "widthCm": 10.9,
+    "heightCm": 1.3,
+    "weightG": 58.0,
+    "volumeMl": 212.55
+  },
+  "015369": {
+    "sku": "015369",
+    "dept": "BEAUTY",
+    "lengthCm": 5.2,
+    "widthCm": 10.8,
+    "heightCm": 4.0,
+    "weightG": 76.0,
+    "volumeMl": 224.64
+  },
+  "015309": {
+    "sku": "015309",
+    "dept": "BEAUTY",
+    "lengthCm": 5.2,
+    "widthCm": 14.5,
+    "heightCm": 4.3,
+    "weightG": 102.0,
+    "volumeMl": 324.22
+  },
+  "015226": {
+    "sku": "015226",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 6.4,
+    "widthCm": 6.4,
+    "heightCm": 13.5,
+    "weightG": 342.0,
+    "volumeMl": 552.96
+  },
+  "015066": {
+    "sku": "015066",
+    "dept": "BEAUTY",
+    "lengthCm": 13.1,
+    "widthCm": 6.1,
+    "heightCm": 3.3,
+    "weightG": 30.0,
+    "volumeMl": 263.7
+  },
+  "015014": {
+    "sku": "015014",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 5.9,
+    "widthCm": 9.5,
+    "heightCm": 2.8,
+    "weightG": 8.0,
+    "volumeMl": 156.94
+  },
+  "014739": {
+    "sku": "014739",
+    "dept": "BEAUTY",
+    "lengthCm": 44.0,
+    "widthCm": 16.7,
+    "heightCm": 9.0,
+    "weightG": 638.0,
+    "volumeMl": 6613.2
+  },
+  "014698": {
+    "sku": "014698",
+    "dept": "BEAUTY",
+    "lengthCm": 14.6,
+    "widthCm": 19.5,
+    "heightCm": 7.6,
+    "weightG": 410.0,
+    "volumeMl": 2163.72
+  },
+  "014678": {
+    "sku": "014678",
+    "dept": "BEAUTY",
+    "lengthCm": 8.6,
+    "widthCm": 14.4,
+    "heightCm": 2.5,
+    "weightG": 28.0,
+    "volumeMl": 309.6
+  },
+  "014633": {
+    "sku": "014633",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.3,
+    "widthCm": 7.5,
+    "heightCm": 1.8,
+    "weightG": 16.0,
+    "volumeMl": 98.55
+  },
+  "014596": {
+    "sku": "014596",
+    "dept": "BEAUTY",
+    "lengthCm": 18.2,
+    "widthCm": 8.4,
+    "heightCm": 1.2,
+    "weightG": 8.0,
+    "volumeMl": 183.46
+  },
+  "014530": {
+    "sku": "014530",
+    "dept": "BEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 7.7,
+    "heightCm": 19.1,
+    "weightG": 248.0,
+    "volumeMl": 750.06
+  },
+  "014480": {
+    "sku": "014480",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.5,
+    "widthCm": 7.8,
+    "heightCm": 3.6,
+    "weightG": 60.0,
+    "volumeMl": 266.76
+  },
+  "014432": {
+    "sku": "014432",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 15.4,
+    "widthCm": 17.6,
+    "heightCm": 2.2,
+    "weightG": 40.0,
+    "volumeMl": 596.29
+  },
+  "014300": {
+    "sku": "014300",
+    "dept": "BEAUTY",
+    "lengthCm": 7.9,
+    "widthCm": 19.8,
+    "heightCm": 3.4,
+    "weightG": 18.0,
+    "volumeMl": 531.83
+  },
+  "014218": {
+    "sku": "014218",
+    "dept": "BEAUTY",
+    "lengthCm": 6.6,
+    "widthCm": 10.0,
+    "heightCm": 10.0,
+    "weightG": 212.0,
+    "volumeMl": 660.0
+  },
+  "014206": {
+    "sku": "014206",
+    "dept": "BEAUTY",
+    "lengthCm": 5.7,
+    "widthCm": 14.1,
+    "heightCm": 4.7,
+    "weightG": 116.0,
+    "volumeMl": 377.74
+  },
+  "014101": {
+    "sku": "014101",
+    "dept": "BEAUTY",
+    "lengthCm": 9.5,
+    "widthCm": 10.6,
+    "heightCm": 2.9,
+    "weightG": 980.0,
+    "volumeMl": 292.03
+  },
+  "014072": {
+    "sku": "014072",
+    "dept": "BEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 14.1,
+    "heightCm": 14.0,
+    "weightG": 506.0,
+    "volumeMl": 1006.74
+  },
+  "014018": {
+    "sku": "014018",
+    "dept": "BEAUTY",
+    "lengthCm": 10.0,
+    "widthCm": 14.9,
+    "heightCm": 12.1,
+    "weightG": 434.0,
+    "volumeMl": 1802.9
+  },
+  "013899": {
+    "sku": "013899",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 8.3,
+    "heightCm": 16.2,
+    "weightG": 422.0,
+    "volumeMl": 1317.71
+  },
+  "013896": {
+    "sku": "013896",
+    "dept": "BEAUTY",
+    "lengthCm": 11.3,
+    "widthCm": 18.6,
+    "heightCm": 4.2,
+    "weightG": 454.0,
+    "volumeMl": 882.76
+  },
+  "013857": {
+    "sku": "013857",
+    "dept": "BEAUTY",
+    "lengthCm": 10.2,
+    "widthCm": 11.4,
+    "heightCm": 9.9,
+    "weightG": 524.0,
+    "volumeMl": 1151.17
+  },
+  "013522": {
+    "sku": "013522",
+    "dept": "BEAUTY",
+    "lengthCm": 6.2,
+    "widthCm": 6.2,
+    "heightCm": 4.1,
+    "weightG": 82.0,
+    "volumeMl": 157.6
+  },
+  "013374": {
+    "sku": "013374",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 9.2,
+    "heightCm": 9.2,
+    "weightG": 222.0,
+    "volumeMl": 829.47
+  },
+  "013334": {
+    "sku": "013334",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.9,
+    "widthCm": 11.2,
+    "heightCm": 3.7,
+    "weightG": 60.0,
+    "volumeMl": 451.7
+  },
+  "013330": {
+    "sku": "013330",
+    "dept": "BEAUTY",
+    "lengthCm": 6.1,
+    "widthCm": 15.4,
+    "heightCm": 2.6,
+    "weightG": 34.0,
+    "volumeMl": 244.24
+  },
+  "013225": {
+    "sku": "013225",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 5.9,
+    "widthCm": 9.5,
+    "heightCm": 2.8,
+    "weightG": 8.0,
+    "volumeMl": 156.94
+  },
+  "013116": {
+    "sku": "013116",
+    "dept": "BEAUTY",
+    "lengthCm": 6.5,
+    "widthCm": 12.5,
+    "heightCm": 3.4,
+    "weightG": 138.0,
+    "volumeMl": 276.25
+  },
+  "012947": {
+    "sku": "012947",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 6.4,
+    "widthCm": 11.4,
+    "heightCm": 19.4,
+    "weightG": 248.0,
+    "volumeMl": 1415.42
+  },
+  "012833": {
+    "sku": "012833",
+    "dept": "BEAUTY",
+    "lengthCm": 9.3,
+    "widthCm": 20.1,
+    "heightCm": 5.9,
+    "weightG": 128.0,
+    "volumeMl": 1102.89
+  },
+  "012616": {
+    "sku": "012616",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 6.1,
+    "widthCm": 11.9,
+    "heightCm": 17.9,
+    "weightG": 298.0,
+    "volumeMl": 1299.36
+  },
+  "012607": {
+    "sku": "012607",
+    "dept": "BEAUTY",
+    "lengthCm": 7.3,
+    "widthCm": 16.0,
+    "heightCm": 14.0,
+    "weightG": 360.0,
+    "volumeMl": 1635.2
+  },
+  "012554": {
+    "sku": "012554",
+    "dept": "BEAUTY",
+    "lengthCm": 5.3,
+    "widthCm": 5.9,
+    "heightCm": 2.9,
+    "weightG": 52.0,
+    "volumeMl": 90.68
+  },
+  "012401": {
+    "sku": "012401",
+    "dept": "BEAUTY",
+    "lengthCm": 11.8,
+    "widthCm": 15.3,
+    "heightCm": 2.9,
+    "weightG": 680.0,
+    "volumeMl": 523.57
+  },
+  "012378": {
+    "sku": "012378",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.6,
+    "widthCm": 6.3,
+    "heightCm": 3.3,
+    "weightG": 16.0,
+    "volumeMl": 220.37
+  },
+  "012346": {
+    "sku": "012346",
+    "dept": "BEAUTY",
+    "lengthCm": 13.4,
+    "widthCm": 22.3,
+    "heightCm": 8.2,
+    "weightG": 596.0,
+    "volumeMl": 2450.32
+  },
+  "012298": {
+    "sku": "012298",
+    "dept": "BEAUTY",
+    "lengthCm": 17.6,
+    "widthCm": 13.1,
+    "heightCm": 4.8,
+    "weightG": 450.0,
+    "volumeMl": 1106.69
+  },
+  "012247": {
+    "sku": "012247",
+    "dept": "BEAUTY",
+    "lengthCm": 11.6,
+    "widthCm": 48.2,
+    "heightCm": 4.2,
+    "weightG": 74.0,
+    "volumeMl": 2348.3
+  },
+  "012221": {
+    "sku": "012221",
+    "dept": "BEAUTY",
+    "lengthCm": 5.8,
+    "widthCm": 12.6,
+    "heightCm": 4.2,
+    "weightG": 144.0,
+    "volumeMl": 306.94
+  },
+  "012214": {
+    "sku": "012214",
+    "dept": "BEAUTY",
+    "lengthCm": 11.5,
+    "widthCm": 24.9,
+    "heightCm": 14.4,
+    "weightG": 444.0,
+    "volumeMl": 4123.44
+  },
+  "012112": {
+    "sku": "012112",
+    "dept": "BEAUTY",
+    "lengthCm": 22.3,
+    "widthCm": 9.4,
+    "heightCm": 2.7,
+    "weightG": 45.0,
+    "volumeMl": 565.97
+  },
+  "012090": {
+    "sku": "012090",
+    "dept": "PVTLABEL",
+    "lengthCm": 4.4,
+    "widthCm": 14.2,
+    "heightCm": 4.2,
+    "weightG": 146.0,
+    "volumeMl": 262.42
+  },
+  "012069": {
+    "sku": "012069",
+    "dept": "BEAUTY",
+    "lengthCm": 12.4,
+    "widthCm": 18.9,
+    "heightCm": 12.9,
+    "weightG": 382.0,
+    "volumeMl": 3023.24
+  },
+  "011968": {
+    "sku": "011968",
+    "dept": "BEAUTY",
+    "lengthCm": 12.6,
+    "widthCm": 12.5,
+    "heightCm": 7.1,
+    "weightG": 226.0,
+    "volumeMl": 1118.25
+  },
+  "011909": {
+    "sku": "011909",
+    "dept": "BEAUTY",
+    "lengthCm": 45.9,
+    "widthCm": 16.4,
+    "heightCm": 2.7,
+    "weightG": 34.0,
+    "volumeMl": 2032.45
+  },
+  "011836": {
+    "sku": "011836",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 15.4,
+    "widthCm": 17.6,
+    "heightCm": 2.2,
+    "weightG": 40.0,
+    "volumeMl": 596.29
+  },
+  "011825": {
+    "sku": "011825",
+    "dept": "BEAUTY",
+    "lengthCm": 5.5,
+    "widthCm": 10.3,
+    "heightCm": 13.4,
+    "weightG": 374.0,
+    "volumeMl": 759.11
+  },
+  "011751": {
+    "sku": "011751",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.3,
+    "widthCm": 7.1,
+    "heightCm": 1.8,
+    "weightG": 16.0,
+    "volumeMl": 93.29
+  },
+  "011636": {
+    "sku": "011636",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 4.2,
+    "widthCm": 7.9,
+    "heightCm": 14.4,
+    "weightG": 462.0,
+    "volumeMl": 477.79
+  },
+  "011604": {
+    "sku": "011604",
+    "dept": "BEAUTY",
+    "lengthCm": 9.4,
+    "widthCm": 10.0,
+    "heightCm": 6.8,
+    "weightG": 350.0,
+    "volumeMl": 639.2
+  },
+  "011573": {
+    "sku": "011573",
+    "dept": "BEAUTY",
+    "lengthCm": 8.2,
+    "widthCm": 8.1,
+    "heightCm": 9.5,
+    "weightG": 200.0,
+    "volumeMl": 630.99
+  },
+  "011464": {
+    "sku": "011464",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.9,
+    "widthCm": 11.2,
+    "heightCm": 3.7,
+    "weightG": 60.0,
+    "volumeMl": 451.7
+  },
+  "011430": {
+    "sku": "011430",
+    "dept": "BEAUTY",
+    "lengthCm": 11.4,
+    "widthCm": 14.9,
+    "heightCm": 21.6,
+    "weightG": 332.0,
+    "volumeMl": 3668.98
+  },
+  "011387": {
+    "sku": "011387",
+    "dept": "BEAUTY",
+    "lengthCm": 11.9,
+    "widthCm": 9.6,
+    "heightCm": 2.8,
+    "weightG": 85000.0,
+    "volumeMl": 319.87
+  },
+  "011357": {
+    "sku": "011357",
+    "dept": "BEAUTY",
+    "lengthCm": 2.6,
+    "widthCm": 12.3,
+    "heightCm": 2.0,
+    "weightG": 18.0,
+    "volumeMl": 63.96
+  },
+  "011254": {
+    "sku": "011254",
+    "dept": "BEAUTY",
+    "lengthCm": 15.9,
+    "widthCm": 4.6,
+    "heightCm": 2.2,
+    "weightG": 18.0,
+    "volumeMl": 160.91
+  },
+  "011167": {
+    "sku": "011167",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.1,
+    "widthCm": 8.5,
+    "heightCm": 2.8,
+    "weightG": 50.0,
+    "volumeMl": 240.38
+  },
+  "010914": {
+    "sku": "010914",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 21.9,
+    "widthCm": 13.7,
+    "heightCm": 1.2,
+    "weightG": 84.0,
+    "volumeMl": 360.04
+  },
+  "010875": {
+    "sku": "010875",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 7.7,
+    "widthCm": 7.4,
+    "heightCm": 24.5,
+    "weightG": 478.0,
+    "volumeMl": 1396.01
+  },
+  "010788": {
+    "sku": "010788",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 6.9,
+    "widthCm": 7.5,
+    "heightCm": 2.2,
+    "weightG": 10.0,
+    "volumeMl": 113.85
+  },
+  "010773": {
+    "sku": "010773",
+    "dept": "BEAUTY",
+    "lengthCm": 13.1,
+    "widthCm": 11.9,
+    "heightCm": 4.1,
+    "weightG": 214.0,
+    "volumeMl": 639.15
+  },
+  "010654": {
+    "sku": "010654",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 8.2,
+    "widthCm": 22.5,
+    "heightCm": 6.2,
+    "weightG": 568.0,
+    "volumeMl": 1143.9
+  },
+  "010404": {
+    "sku": "010404",
+    "dept": "BEAUTY",
+    "lengthCm": 6.4,
+    "widthCm": 6.9,
+    "heightCm": 5.4,
+    "weightG": 92.0,
+    "volumeMl": 238.46
+  },
+  "010313": {
+    "sku": "010313",
+    "dept": "BEAUTY",
+    "lengthCm": 12.1,
+    "widthCm": 5.1,
+    "heightCm": 2.4,
+    "weightG": 200.0,
+    "volumeMl": 148.1
+  },
+  "010289": {
+    "sku": "010289",
+    "dept": "BEAUTY",
+    "lengthCm": 33.1,
+    "widthCm": 14.1,
+    "heightCm": 3.4,
+    "weightG": 32.0,
+    "volumeMl": 1586.81
+  },
+  "010200": {
+    "sku": "010200",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.2,
+    "widthCm": 15.6,
+    "heightCm": 2.0,
+    "weightG": 40.0,
+    "volumeMl": 224.64
+  },
+  "010058": {
+    "sku": "010058",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 9.5,
+    "widthCm": 20.3,
+    "heightCm": 5.3,
+    "weightG": 224.0,
+    "volumeMl": 1022.1
+  },
+  "009932": {
+    "sku": "009932",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 16.4,
+    "heightCm": 11.8,
+    "weightG": 438.0,
+    "volumeMl": 1896.5
+  },
+  "009737": {
+    "sku": "009737",
+    "dept": "BEAUTY",
+    "lengthCm": 10.2,
+    "widthCm": 10.3,
+    "heightCm": 12.1,
+    "weightG": 608.0,
+    "volumeMl": 1271.23
+  },
+  "009653": {
+    "sku": "009653",
+    "dept": "BEAUTY",
+    "lengthCm": 12.9,
+    "widthCm": 14.2,
+    "heightCm": 1.5,
+    "weightG": 6.0,
+    "volumeMl": 274.77
+  },
+  "009530": {
+    "sku": "009530",
+    "dept": "BEAUTY",
+    "lengthCm": 15.8,
+    "widthCm": 14.5,
+    "heightCm": 7.2,
+    "weightG": 145.0,
+    "volumeMl": 1649.52
+  },
+  "009498": {
+    "sku": "009498",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.1,
+    "widthCm": 9.3,
+    "heightCm": 2.4,
+    "weightG": 24.0,
+    "volumeMl": 203.11
+  },
+  "009391": {
+    "sku": "009391",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 5.8,
+    "widthCm": 5.4,
+    "heightCm": 12.6,
+    "weightG": 156.0,
+    "volumeMl": 394.63
+  },
+  "009327": {
+    "sku": "009327",
+    "dept": "BEAUTY",
+    "lengthCm": 6.1,
+    "widthCm": 13.2,
+    "heightCm": 19.6,
+    "weightG": 244.0,
+    "volumeMl": 1578.19
+  },
+  "009300": {
+    "sku": "009300",
+    "dept": "BEAUTY",
+    "lengthCm": 5.4,
+    "widthCm": 17.5,
+    "heightCm": 2.2,
+    "weightG": 46.0,
+    "volumeMl": 207.9
+  },
+  "009217": {
+    "sku": "009217",
+    "dept": "BEAUTY",
+    "lengthCm": 12.8,
+    "widthCm": 2.4,
+    "heightCm": 1.1,
+    "weightG": 4.0,
+    "volumeMl": 33.79
+  },
+  "009161": {
+    "sku": "009161",
+    "dept": "BEAUTY",
+    "lengthCm": 7.7,
+    "widthCm": 16.4,
+    "heightCm": 5.0,
+    "weightG": 102.0,
+    "volumeMl": 631.4
+  },
+  "009119": {
+    "sku": "009119",
+    "dept": "BEAUTY",
+    "lengthCm": 15.0,
+    "widthCm": 3.2,
+    "heightCm": 1.85,
+    "weightG": 10.0,
+    "volumeMl": 88.8
+  },
+  "009074": {
+    "sku": "009074",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.9,
+    "heightCm": 3.3,
+    "weightG": 38.0,
+    "volumeMl": 349.57
+  },
+  "009037": {
+    "sku": "009037",
+    "dept": "BEAUTY",
+    "lengthCm": 4.8,
+    "widthCm": 10.8,
+    "heightCm": 13.6,
+    "weightG": 102.0,
+    "volumeMl": 705.02
+  },
+  "008987": {
+    "sku": "008987",
+    "dept": "BEAUTY",
+    "lengthCm": 15.8,
+    "widthCm": 8.8,
+    "heightCm": 5.4,
+    "weightG": 52.0,
+    "volumeMl": 750.82
+  },
+  "008978": {
+    "sku": "008978",
+    "dept": "BEAUTY",
+    "lengthCm": 11.2,
+    "widthCm": 7.6,
+    "heightCm": 20.0,
+    "weightG": 308.0,
+    "volumeMl": 1702.4
+  },
+  "008883": {
+    "sku": "008883",
+    "dept": "BEAUTY",
+    "lengthCm": 15.8,
+    "widthCm": 18.0,
+    "heightCm": 3.8,
+    "weightG": 288.0,
+    "volumeMl": 1080.72
+  },
+  "008826": {
+    "sku": "008826",
+    "dept": "BEAUTY",
+    "lengthCm": 2.4,
+    "widthCm": 15.8,
+    "heightCm": 2.4,
+    "weightG": 8.0,
+    "volumeMl": 91.01
+  },
+  "008715": {
+    "sku": "008715",
+    "dept": "BEAUTY",
+    "lengthCm": 6.0,
+    "widthCm": 53.3,
+    "heightCm": 3.7,
+    "weightG": 48.0,
+    "volumeMl": 1183.26
+  },
+  "008701": {
+    "sku": "008701",
+    "dept": "BEAUTY",
+    "lengthCm": 10.6,
+    "widthCm": 18.7,
+    "heightCm": 5.2,
+    "weightG": 424.0,
+    "volumeMl": 1030.74
+  },
+  "008667": {
+    "sku": "008667",
+    "dept": "BEAUTY",
+    "lengthCm": 5.6,
+    "widthCm": 11.0,
+    "heightCm": 16.1,
+    "weightG": 340.0,
+    "volumeMl": 991.76
+  },
+  "008542": {
+    "sku": "008542",
+    "dept": "BEAUTY",
+    "lengthCm": 13.2,
+    "widthCm": 22.0,
+    "heightCm": 6.0,
+    "weightG": 410.0,
+    "volumeMl": 1742.4
+  },
+  "008257": {
+    "sku": "008257",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 8.2,
+    "widthCm": 14.4,
+    "heightCm": 4.5,
+    "weightG": 76.0,
+    "volumeMl": 531.36
+  },
+  "008235": {
+    "sku": "008235",
+    "dept": "BEAUTY",
+    "lengthCm": 6.7,
+    "widthCm": 13.6,
+    "heightCm": 3.3,
+    "weightG": 28.0,
+    "volumeMl": 300.7
+  },
+  "008233": {
+    "sku": "008233",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.6,
+    "widthCm": 7.3,
+    "heightCm": 2.2,
+    "weightG": 20.0,
+    "volumeMl": 122.06
+  },
+  "008116": {
+    "sku": "008116",
+    "dept": "BEAUTY",
+    "lengthCm": 8.7,
+    "widthCm": 17.0,
+    "heightCm": 16.1,
+    "weightG": 328.0,
+    "volumeMl": 2381.19
+  },
+  "007973": {
+    "sku": "007973",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 16.4,
+    "heightCm": 11.8,
+    "weightG": 438.0,
+    "volumeMl": 1896.5
+  },
+  "007966": {
+    "sku": "007966",
+    "dept": "BEAUTY",
+    "lengthCm": 4.5,
+    "widthCm": 13.5,
+    "heightCm": 17.8,
+    "weightG": 156.0,
+    "volumeMl": 1081.35
+  },
+  "007947": {
+    "sku": "007947",
+    "dept": "BEAUTY",
+    "lengthCm": 3.7,
+    "widthCm": 9.7,
+    "heightCm": 3.9,
+    "weightG": 62.0,
+    "volumeMl": 139.97
+  },
+  "007845": {
+    "sku": "007845",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 5.2,
+    "widthCm": 5.2,
+    "heightCm": 18.0,
+    "weightG": 240.0,
+    "volumeMl": 486.72
+  },
+  "007795": {
+    "sku": "007795",
+    "dept": "BEAUTY",
+    "lengthCm": 11.1,
+    "widthCm": 7.3,
+    "heightCm": 3.6,
+    "weightG": 35.0,
+    "volumeMl": 291.71
+  },
+  "007786": {
+    "sku": "007786",
+    "dept": "BEAUTY",
+    "lengthCm": 5.9,
+    "widthCm": 18.1,
+    "heightCm": 5.2,
+    "weightG": 190.0,
+    "volumeMl": 555.31
+  },
+  "007740": {
+    "sku": "007740",
+    "dept": "BEAUTY",
+    "lengthCm": 4.1,
+    "widthCm": 8.0,
+    "heightCm": 11.5,
+    "weightG": 228.0,
+    "volumeMl": 377.2
+  },
+  "007734": {
+    "sku": "007734",
+    "dept": "BEAUTY",
+    "lengthCm": 5.2,
+    "widthCm": 15.2,
+    "heightCm": 2.7,
+    "weightG": 32.0,
+    "volumeMl": 213.41
+  },
+  "007704": {
+    "sku": "007704",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 13.3,
+    "widthCm": 15.5,
+    "heightCm": 5.3,
+    "weightG": 206.0,
+    "volumeMl": 1092.6
+  },
+  "007642": {
+    "sku": "007642",
+    "dept": "BEAUTY",
+    "lengthCm": 7.9,
+    "widthCm": 7.7,
+    "heightCm": 17.5,
+    "weightG": 602.0,
+    "volumeMl": 1064.53
+  },
+  "007527": {
+    "sku": "007527",
+    "dept": "BEAUTY",
+    "lengthCm": 45.9,
+    "widthCm": 16.4,
+    "heightCm": 2.7,
+    "weightG": 34.0,
+    "volumeMl": 2032.45
+  },
+  "007428": {
+    "sku": "007428",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 12.4,
+    "widthCm": 11.7,
+    "heightCm": 9.9,
+    "weightG": 558.0,
+    "volumeMl": 1436.29
+  },
+  "007417": {
+    "sku": "007417",
+    "dept": "BEAUTY",
+    "lengthCm": 13.2,
+    "widthCm": 6.4,
+    "heightCm": 3.3,
+    "weightG": 138.0,
+    "volumeMl": 278.78
+  },
+  "007346": {
+    "sku": "007346",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 15.0,
+    "widthCm": 10.9,
+    "heightCm": 1.3,
+    "weightG": 58.0,
+    "volumeMl": 212.55
+  },
+  "007336": {
+    "sku": "007336",
+    "dept": "BEAUTY",
+    "lengthCm": 4.9,
+    "widthCm": 36.5,
+    "heightCm": 12.3,
+    "weightG": 144.0,
+    "volumeMl": 2199.86
+  },
+  "007120": {
+    "sku": "007120",
+    "dept": "BEAUTY",
+    "lengthCm": 4.4,
+    "widthCm": 11.9,
+    "heightCm": 2.7,
+    "weightG": 48.0,
+    "volumeMl": 141.37
+  },
+  "007047": {
+    "sku": "007047",
+    "dept": "BEAUTY",
+    "lengthCm": 12.1,
+    "widthCm": 6.5,
+    "heightCm": 2.2,
+    "weightG": 20.0,
+    "volumeMl": 173.03
+  },
+  "007040": {
+    "sku": "007040",
+    "dept": "PVTLABEL",
+    "lengthCm": 18.3,
+    "widthCm": 15.7,
+    "heightCm": 5.0,
+    "weightG": 602.0,
+    "volumeMl": 1436.55
+  },
+  "006869": {
+    "sku": "006869",
+    "dept": "BEAUTY",
+    "lengthCm": 7.5,
+    "widthCm": 27.9,
+    "heightCm": 2.5,
+    "weightG": 106.0,
+    "volumeMl": 523.12
+  },
+  "006591": {
+    "sku": "006591",
+    "dept": "BEAUTY",
+    "lengthCm": 10.8,
+    "widthCm": 6.3,
+    "heightCm": 2.7,
+    "weightG": 36.0,
+    "volumeMl": 183.71
+  },
+  "006569": {
+    "sku": "006569",
+    "dept": "BEAUTY",
+    "lengthCm": 6.9,
+    "widthCm": 7.5,
+    "heightCm": 1.8,
+    "weightG": 38.0,
+    "volumeMl": 93.15
+  },
+  "006556": {
+    "sku": "006556",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.6,
+    "widthCm": 6.3,
+    "heightCm": 3.3,
+    "weightG": 16.0,
+    "volumeMl": 220.37
+  },
+  "006457": {
+    "sku": "006457",
+    "dept": "BEAUTY",
+    "lengthCm": 12.1,
+    "widthCm": 5.1,
+    "heightCm": 2.4,
+    "weightG": 200.0,
+    "volumeMl": 148.1
+  },
+  "006378": {
+    "sku": "006378",
+    "dept": "BEAUTY",
+    "lengthCm": 6.9,
+    "widthCm": 14.9,
+    "heightCm": 3.7,
+    "weightG": 76.0,
+    "volumeMl": 380.4
+  },
+  "006284": {
+    "sku": "006284",
+    "dept": "BEAUTY",
+    "lengthCm": 18.6,
+    "widthCm": 3.6,
+    "heightCm": 1.1,
+    "weightG": 8.0,
+    "volumeMl": 73.66
+  },
+  "006259": {
+    "sku": "006259",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.7,
+    "widthCm": 9.9,
+    "heightCm": 3.3,
+    "weightG": 38.0,
+    "volumeMl": 349.57
+  },
+  "006238": {
+    "sku": "006238",
+    "dept": "BEAUTY",
+    "lengthCm": 4.5,
+    "widthCm": 13.7,
+    "heightCm": 16.6,
+    "weightG": 462.0,
+    "volumeMl": 1023.39
+  },
+  "006218": {
+    "sku": "006218",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 6.1,
+    "widthCm": 17.9,
+    "heightCm": 5.1,
+    "weightG": 146.0,
+    "volumeMl": 556.87
+  },
+  "006058": {
+    "sku": "006058",
+    "dept": "BEAUTY",
+    "lengthCm": 3.4,
+    "widthCm": 19.1,
+    "heightCm": 2.1,
+    "weightG": 20.0,
+    "volumeMl": 136.37
+  },
+  "006026": {
+    "sku": "006026",
+    "dept": "BEAUTY",
+    "lengthCm": 11.4,
+    "widthCm": 12.3,
+    "heightCm": 4.2,
+    "weightG": 112.0,
+    "volumeMl": 588.92
+  },
+  "006025": {
+    "sku": "006025",
+    "dept": "BEAUTY",
+    "lengthCm": 10.5,
+    "widthCm": 14.1,
+    "heightCm": 12.5,
+    "weightG": 600.0,
+    "volumeMl": 1850.62
+  },
+  "005991": {
+    "sku": "005991",
+    "dept": "PVTLABEL",
+    "lengthCm": 10.7,
+    "widthCm": 10.7,
+    "heightCm": 15.1,
+    "weightG": 674.0,
+    "volumeMl": 1728.8
+  },
+  "005913": {
+    "sku": "005913",
+    "dept": "BEAUTY",
+    "lengthCm": 5.4,
+    "widthCm": 16.4,
+    "heightCm": 5.1,
+    "weightG": 150.0,
+    "volumeMl": 451.66
+  },
+  "005594": {
+    "sku": "005594",
+    "dept": "BEAUTY",
+    "lengthCm": 7.4,
+    "widthCm": 11.3,
+    "heightCm": 12.8,
+    "weightG": 332.0,
+    "volumeMl": 1070.34
+  },
+  "005564": {
+    "sku": "005564",
+    "dept": "BEAUTY",
+    "lengthCm": 11.2,
+    "widthCm": 13.5,
+    "heightCm": 4.3,
+    "weightG": 228.0,
+    "volumeMl": 650.16
+  },
+  "005411": {
+    "sku": "005411",
+    "dept": "BEAUTY",
+    "lengthCm": 5.2,
+    "widthCm": 15.4,
+    "heightCm": 4.6,
+    "weightG": 98.0,
+    "volumeMl": 368.37
+  },
+  "005204": {
+    "sku": "005204",
+    "dept": "BEAUTY",
+    "lengthCm": 10.4,
+    "widthCm": 10.2,
+    "heightCm": 3.7,
+    "weightG": 48.0,
+    "volumeMl": 392.5
+  },
+  "005196": {
+    "sku": "005196",
+    "dept": "BEAUTY",
+    "lengthCm": 14.2,
+    "widthCm": 11.7,
+    "heightCm": 6.1,
+    "weightG": 368.0,
+    "volumeMl": 1013.45
+  },
+  "005147": {
+    "sku": "005147",
+    "dept": "BEAUTY",
+    "lengthCm": 11.3,
+    "widthCm": 17.3,
+    "heightCm": 5.8,
+    "weightG": 138.0,
+    "volumeMl": 1133.84
+  },
+  "005025": {
+    "sku": "005025",
+    "dept": "BEAUTY",
+    "lengthCm": 8.3,
+    "widthCm": 10.6,
+    "heightCm": 5.5,
+    "weightG": 88.0,
+    "volumeMl": 483.89
+  },
+  "005005": {
+    "sku": "005005",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.9,
+    "widthCm": 11.2,
+    "heightCm": 3.7,
+    "weightG": 60.0,
+    "volumeMl": 451.7
+  },
+  "004974": {
+    "sku": "004974",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 17.4,
+    "heightCm": 1.1,
+    "weightG": 34.0,
+    "volumeMl": 187.57
+  },
+  "004893": {
+    "sku": "004893",
+    "dept": "BEAUTY",
+    "lengthCm": 15.9,
+    "widthCm": 10.4,
+    "heightCm": 3.7,
+    "weightG": 46.0,
+    "volumeMl": 611.83
+  },
+  "004819": {
+    "sku": "004819",
+    "dept": "BEAUTY",
+    "lengthCm": 14.2,
+    "widthCm": 13.7,
+    "heightCm": 13.3,
+    "weightG": 506.0,
+    "volumeMl": 2587.38
+  },
+  "004811": {
+    "sku": "004811",
+    "dept": "BEAUTY",
+    "lengthCm": 12.5,
+    "widthCm": 5.5,
+    "heightCm": 1.8,
+    "weightG": 20.0,
+    "volumeMl": 123.75
+  },
+  "004758": {
+    "sku": "004758",
+    "dept": "BEAUTY",
+    "lengthCm": 17.1,
+    "widthCm": 15.2,
+    "heightCm": 7.8,
+    "weightG": 234.0,
+    "volumeMl": 2027.38
+  },
+  "004752": {
+    "sku": "004752",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.9,
+    "widthCm": 11.2,
+    "heightCm": 3.7,
+    "weightG": 60.0,
+    "volumeMl": 451.7
+  },
+  "004664": {
+    "sku": "004664",
+    "dept": "BEAUTY",
+    "lengthCm": 6.9,
+    "widthCm": 8.1,
+    "heightCm": 15.2,
+    "weightG": 374.0,
+    "volumeMl": 849.53
+  },
+  "004646": {
+    "sku": "004646",
+    "dept": "BEAUTY",
+    "lengthCm": 9.5,
+    "widthCm": 4.6,
+    "heightCm": 13.8,
+    "weightG": 66.0,
+    "volumeMl": 603.06
+  },
+  "004640": {
+    "sku": "004640",
+    "dept": "BEAUTY",
+    "lengthCm": 3.7,
+    "widthCm": 17.5,
+    "heightCm": 1.1,
+    "weightG": 10.0,
+    "volumeMl": 71.23
+  },
+  "004626": {
+    "sku": "004626",
+    "dept": "PVTLABEL",
+    "lengthCm": 10.7,
+    "widthCm": 10.7,
+    "heightCm": 14.9,
+    "weightG": 666.0,
+    "volumeMl": 1705.9
+  },
+  "004353": {
+    "sku": "004353",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 17.2,
+    "widthCm": 13.1,
+    "heightCm": 1.8,
+    "weightG": 16.0,
+    "volumeMl": 405.58
+  },
+  "004209": {
+    "sku": "004209",
+    "dept": "BEAUTY",
+    "lengthCm": 3.1,
+    "widthCm": 20.9,
+    "heightCm": 2.8,
+    "weightG": 18.0,
+    "volumeMl": 181.41
+  },
+  "004156": {
+    "sku": "004156",
+    "dept": "BEAUTY",
+    "lengthCm": 3.1,
+    "widthCm": 10.1,
+    "heightCm": 3.2,
+    "weightG": 16.0,
+    "volumeMl": 100.19
+  },
+  "004053": {
+    "sku": "004053",
+    "dept": "BEAUTY",
+    "lengthCm": 9.6,
+    "widthCm": 7.5,
+    "heightCm": 7.6,
+    "weightG": 178.0,
+    "volumeMl": 547.2
+  },
+  "004046": {
+    "sku": "004046",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 9.3,
+    "widthCm": 57.2,
+    "heightCm": 1.9,
+    "weightG": 20.0,
+    "volumeMl": 1010.72
+  },
+  "004028": {
+    "sku": "004028",
+    "dept": "BEAUTY",
+    "lengthCm": 11.1,
+    "widthCm": 23.6,
+    "heightCm": 6.2,
+    "weightG": 34.2,
+    "volumeMl": 1624.15
+  },
+  "004017": {
+    "sku": "004017",
+    "dept": "BEAUTY",
+    "lengthCm": 11.4,
+    "widthCm": 4.8,
+    "heightCm": 3.1,
+    "weightG": 52.0,
+    "volumeMl": 169.63
+  },
+  "003961": {
+    "sku": "003961",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.3,
+    "widthCm": 7.7,
+    "heightCm": 2.1,
+    "weightG": 18.0,
+    "volumeMl": 118.04
+  },
+  "003923": {
+    "sku": "003923",
+    "dept": "BEAUTY",
+    "lengthCm": 7.6,
+    "widthCm": 17.9,
+    "heightCm": 3.8,
+    "weightG": 68.0,
+    "volumeMl": 516.95
+  },
+  "003835": {
+    "sku": "003835",
+    "dept": "BEAUTY",
+    "lengthCm": 6.9,
+    "widthCm": 9.8,
+    "heightCm": 46.0,
+    "weightG": 58.0,
+    "volumeMl": 3110.52
+  },
+  "003815": {
+    "sku": "003815",
+    "dept": "BEAUTY",
+    "lengthCm": 20.4,
+    "widthCm": 8.9,
+    "heightCm": 4.7,
+    "weightG": 180.0,
+    "volumeMl": 853.33
+  },
+  "003809": {
+    "sku": "003809",
+    "dept": "BEAUTY",
+    "lengthCm": 8.6,
+    "widthCm": 6.4,
+    "heightCm": 3.6,
+    "weightG": 65.0,
+    "volumeMl": 198.14
+  },
+  "003741": {
+    "sku": "003741",
+    "dept": "BEAUTY",
+    "lengthCm": 9.4,
+    "widthCm": 9.4,
+    "heightCm": 2.7,
+    "weightG": 70.0,
+    "volumeMl": 238.57
+  },
+  "003652": {
+    "sku": "003652",
+    "dept": "BEAUTY",
+    "lengthCm": 8.7,
+    "widthCm": 11.2,
+    "heightCm": 4.8,
+    "weightG": 40.0,
+    "volumeMl": 467.71
+  },
+  "003639": {
+    "sku": "003639",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 11.2,
+    "widthCm": 9.1,
+    "heightCm": 2.8,
+    "weightG": 50.0,
+    "volumeMl": 285.38
+  },
+  "003637": {
+    "sku": "003637",
+    "dept": "BEAUTY",
+    "lengthCm": 15.0,
+    "widthCm": 8.8,
+    "heightCm": 3.1,
+    "weightG": 35.0,
+    "volumeMl": 409.2
+  },
+  "003467": {
+    "sku": "003467",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 6.6,
+    "widthCm": 15.8,
+    "heightCm": 2.2,
+    "weightG": 30.0,
+    "volumeMl": 229.42
+  },
+  "003428": {
+    "sku": "003428",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 8.6,
+    "widthCm": 9.0,
+    "heightCm": 2.6,
+    "weightG": 28.0,
+    "volumeMl": 201.24
+  },
+  "003294": {
+    "sku": "003294",
+    "dept": "BEAUTY",
+    "lengthCm": 5.6,
+    "widthCm": 6.8,
+    "heightCm": 2.8,
+    "weightG": 54.0,
+    "volumeMl": 106.62
+  },
+  "003293": {
+    "sku": "003293",
+    "dept": "BEAUTY",
+    "lengthCm": 9.7,
+    "widthCm": 14.0,
+    "heightCm": 3.6,
+    "weightG": 128.0,
+    "volumeMl": 488.88
+  },
+  "003266": {
+    "sku": "003266",
+    "dept": "PVTLABEL",
+    "lengthCm": 9.3,
+    "widthCm": 9.7,
+    "heightCm": 4.1,
+    "weightG": 112.0,
+    "volumeMl": 369.86
+  },
+  "003135": {
+    "sku": "003135",
+    "dept": "BEAUTY",
+    "lengthCm": 20.2,
+    "widthCm": 31.3,
+    "heightCm": 4.6,
+    "weightG": 150.0,
+    "volumeMl": 2908.4
+  },
+  "003095": {
+    "sku": "003095",
+    "dept": "BEAUTY",
+    "lengthCm": 4.2,
+    "widthCm": 43.0,
+    "heightCm": 18.0,
+    "weightG": 134.0,
+    "volumeMl": 3250.8
+  },
+  "003076": {
+    "sku": "003076",
+    "dept": "BEAUTY",
+    "lengthCm": 17.3,
+    "widthCm": 7.8,
+    "heightCm": 4.9,
+    "weightG": 245.0,
+    "volumeMl": 661.21
+  },
+  "002953": {
+    "sku": "002953",
+    "dept": "BEAUTY",
+    "lengthCm": 10.0,
+    "widthCm": 18.2,
+    "heightCm": 5.2,
+    "weightG": 424.0,
+    "volumeMl": 946.4
+  },
+  "002686": {
+    "sku": "002686",
+    "dept": "BEAUTY",
+    "lengthCm": 13.6,
+    "widthCm": 10.8,
+    "heightCm": 7.6,
+    "weightG": 306.0,
+    "volumeMl": 1116.29
+  },
+  "002681": {
+    "sku": "002681",
+    "dept": "BEAUTY",
+    "lengthCm": 7.8,
+    "widthCm": 8.3,
+    "heightCm": 8.9,
+    "weightG": 216.0,
+    "volumeMl": 576.19
+  },
+  "002640": {
+    "sku": "002640",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 8.6,
+    "widthCm": 15.5,
+    "heightCm": 7.2,
+    "weightG": 342.0,
+    "volumeMl": 959.76
+  },
+  "002581": {
+    "sku": "002581",
+    "dept": "BEAUTY",
+    "lengthCm": 6.2,
+    "widthCm": 15.8,
+    "heightCm": 20.0,
+    "weightG": 430.0,
+    "volumeMl": 1959.2
+  },
+  "002474": {
+    "sku": "002474",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 13.8,
+    "widthCm": 8.5,
+    "heightCm": 3.0,
+    "weightG": 48.0,
+    "volumeMl": 351.9
+  },
+  "002420": {
+    "sku": "002420",
+    "dept": "BEAUTY",
+    "lengthCm": 11.8,
+    "widthCm": 15.3,
+    "heightCm": 2.9,
+    "weightG": 680.0,
+    "volumeMl": 523.57
+  },
+  "002365": {
+    "sku": "002365",
+    "dept": "BEAUTY",
+    "lengthCm": 4.7,
+    "widthCm": 13.4,
+    "heightCm": 11.6,
+    "weightG": 318.0,
+    "volumeMl": 730.57
+  },
+  "002336": {
+    "sku": "002336",
+    "dept": "BEAUTY",
+    "lengthCm": 2.4,
+    "widthCm": 15.8,
+    "heightCm": 2.4,
+    "weightG": 8.0,
+    "volumeMl": 91.01
+  },
+  "002255": {
+    "sku": "002255",
+    "dept": "BEAUTY",
+    "lengthCm": 12.3,
+    "widthCm": 6.1,
+    "heightCm": 3.4,
+    "weightG": 52.0,
+    "volumeMl": 255.1
+  },
+  "002230": {
+    "sku": "002230",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 7.5,
+    "widthCm": 18.9,
+    "heightCm": 7.9,
+    "weightG": 1100.0,
+    "volumeMl": 1119.83
+  },
+  "002226": {
+    "sku": "002226",
+    "dept": "BEAUTY",
+    "lengthCm": 23.3,
+    "widthCm": 7.0,
+    "heightCm": 2.8,
+    "weightG": 26.0,
+    "volumeMl": 456.68
+  },
+  "002204": {
+    "sku": "002204",
+    "dept": "BEAUTY",
+    "lengthCm": 11.5,
+    "widthCm": 19.8,
+    "heightCm": 12.7,
+    "weightG": 338.0,
+    "volumeMl": 2891.79
+  },
+  "002182": {
+    "sku": "002182",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 7.4,
+    "widthCm": 6.3,
+    "heightCm": 1.9,
+    "weightG": 18.0,
+    "volumeMl": 88.58
+  },
+  "002115": {
+    "sku": "002115",
+    "dept": "BEAUTY",
+    "lengthCm": 17.1,
+    "widthCm": 12.1,
+    "heightCm": 5.7,
+    "weightG": 385.0,
+    "volumeMl": 1179.39
+  },
+  "002052": {
+    "sku": "002052",
+    "dept": "BEAUTY",
+    "lengthCm": 7.9,
+    "widthCm": 21.2,
+    "heightCm": 1.9,
+    "weightG": 42.0,
+    "volumeMl": 318.21
+  },
+  "002039": {
+    "sku": "002039",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 6.9,
+    "widthCm": 7.5,
+    "heightCm": 2.2,
+    "weightG": 10.0,
+    "volumeMl": 113.85
+  },
+  "002037": {
+    "sku": "002037",
+    "dept": "BEAUTY",
+    "lengthCm": 26.1,
+    "widthCm": 12.4,
+    "heightCm": 3.7,
+    "weightG": 72.0,
+    "volumeMl": 1197.47
+  },
+  "001986": {
+    "sku": "001986",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 5.0,
+    "widthCm": 8.2,
+    "heightCm": 15.9,
+    "weightG": 605.0,
+    "volumeMl": 651.9
+  },
+  "001953": {
+    "sku": "001953",
+    "dept": "BEAUTY",
+    "lengthCm": 5.1,
+    "widthCm": 6.2,
+    "heightCm": 15.3,
+    "weightG": 140.0,
+    "volumeMl": 483.79
+  },
+  "001851": {
+    "sku": "001851",
+    "dept": "BEAUTY",
+    "lengthCm": 7.9,
+    "widthCm": 35.6,
+    "heightCm": 14.8,
+    "weightG": 150.0,
+    "volumeMl": 4162.35
+  },
+  "001766": {
+    "sku": "001766",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 11.4,
+    "widthCm": 26.1,
+    "heightCm": 6.4,
+    "weightG": 578.0,
+    "volumeMl": 1904.26
+  },
+  "001727": {
+    "sku": "001727",
+    "dept": "BEAUTY",
+    "lengthCm": 9.7,
+    "widthCm": 6.0,
+    "heightCm": 3.5,
+    "weightG": 68.0,
+    "volumeMl": 203.7
+  },
+  "001724": {
+    "sku": "001724",
+    "dept": "BEAUTY",
+    "lengthCm": 16.0,
+    "widthCm": 7.9,
+    "heightCm": 5.2,
+    "weightG": 252.0,
+    "volumeMl": 657.28
+  },
+  "001547": {
+    "sku": "001547",
+    "dept": "BEAUTY",
+    "lengthCm": 7.3,
+    "widthCm": 15.0,
+    "heightCm": 16.0,
+    "weightG": 404.0,
+    "volumeMl": 1752.0
+  },
+  "001510": {
+    "sku": "001510",
+    "dept": "BEAUTY",
+    "lengthCm": 5.9,
+    "widthCm": 18.1,
+    "heightCm": 5.2,
+    "weightG": 190.0,
+    "volumeMl": 555.31
+  },
+  "001432": {
+    "sku": "001432",
+    "dept": "BEAUTY",
+    "lengthCm": 9.8,
+    "widthCm": 11.3,
+    "heightCm": 2.5,
+    "weightG": 80.0,
+    "volumeMl": 276.85
+  },
+  "001429": {
+    "sku": "001429",
+    "dept": "BEAUTY",
+    "lengthCm": 5.4,
+    "widthCm": 5.8,
+    "heightCm": 1.7,
+    "weightG": 22.0,
+    "volumeMl": 53.24
+  },
+  "001351": {
+    "sku": "001351",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 10.1,
+    "widthCm": 8.5,
+    "heightCm": 2.8,
+    "weightG": 50.0,
+    "volumeMl": 240.38
+  },
+  "001274": {
+    "sku": "001274",
+    "dept": "BEAUTY",
+    "lengthCm": 5.6,
+    "widthCm": 4.3,
+    "heightCm": 15.6,
+    "weightG": 126.0,
+    "volumeMl": 375.65
+  },
+  "001249": {
+    "sku": "001249",
+    "dept": "BEAUTY",
+    "lengthCm": 9.1,
+    "widthCm": 14.4,
+    "heightCm": 8.4,
+    "weightG": 338.0,
+    "volumeMl": 1100.74
+  },
+  "001125": {
+    "sku": "001125",
+    "dept": "BEAUTY",
+    "lengthCm": 6.9,
+    "widthCm": 12.7,
+    "heightCm": 18.4,
+    "weightG": 426.0,
+    "volumeMl": 1612.39
+  },
+  "001074": {
+    "sku": "001074",
+    "dept": "BEAUTY",
+    "lengthCm": 17.1,
+    "widthCm": 14.1,
+    "heightCm": 3.1,
+    "weightG": 31.0,
+    "volumeMl": 747.44
+  },
+  "001011": {
+    "sku": "001011",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 6.6,
+    "widthCm": 15.3,
+    "heightCm": 1.9,
+    "weightG": 40.0,
+    "volumeMl": 191.86
+  },
+  "000941": {
+    "sku": "000941",
+    "dept": "BEAUTY",
+    "lengthCm": 5.7,
+    "widthCm": 12.1,
+    "heightCm": 11.0,
+    "weightG": 220.0,
+    "volumeMl": 758.67
+  },
+  "000923": {
+    "sku": "000923",
+    "dept": "BEAUTY",
+    "lengthCm": 11.5,
+    "widthCm": 18.4,
+    "heightCm": 10.8,
+    "weightG": 522.0,
+    "volumeMl": 2285.28
+  },
+  "000886": {
+    "sku": "000886",
+    "dept": "FASHIONACCESSORIE",
+    "lengthCm": 6.9,
+    "widthCm": 7.5,
+    "heightCm": 2.2,
+    "weightG": 10.0,
+    "volumeMl": 113.85
+  },
+  "000831": {
+    "sku": "000831",
+    "dept": "BEAUTY",
+    "lengthCm": 9.7,
+    "widthCm": 21.2,
+    "heightCm": 3.7,
+    "weightG": 10.0,
+    "volumeMl": 760.87
+  },
+  "000705": {
+    "sku": "000705",
+    "dept": "BEAUTY",
+    "lengthCm": 9.1,
+    "widthCm": 14.4,
+    "heightCm": 8.4,
+    "weightG": 338.0,
+    "volumeMl": 1100.74
+  },
+  "000332": {
+    "sku": "000332",
+    "dept": "PVTLABEL",
+    "lengthCm": 6.5,
+    "widthCm": 11.3,
+    "heightCm": 15.5,
+    "weightG": 544.0,
+    "volumeMl": 1138.48
+  },
+  "000153": {
+    "sku": "000153",
+    "dept": "BEAUTY",
+    "lengthCm": 7.7,
+    "widthCm": 11.1,
+    "heightCm": 10.4,
+    "weightG": 314.0,
+    "volumeMl": 888.89
+  },
+  "000072": {
+    "sku": "000072",
+    "dept": "ORIENTALPERFUMES",
+    "lengthCm": 28.1,
+    "widthCm": 9.9,
+    "heightCm": 10.6,
+    "weightG": 392.0,
+    "volumeMl": 2948.81
+  },
+  "000034": {
+    "sku": "000034",
+    "dept": "PVTLABEL",
+    "lengthCm": 6.9,
+    "widthCm": 13.8,
+    "heightCm": 15.7,
+    "weightG": 344.0,
+    "volumeMl": 1494.95
+  },
+  "000025": {
+    "sku": "000025",
+    "dept": "BEAUTY",
+    "lengthCm": 14.2,
+    "widthCm": 5.8,
+    "heightCm": 1.5,
+    "weightG": 25.0,
+    "volumeMl": 123.54
+  }
+}

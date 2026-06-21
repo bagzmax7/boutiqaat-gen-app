@@ -1,0 +1,38 @@
+{
+  "SKU-SC-00000042": {
+    "sku": "SKU-SC-00000042",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 14.7,
+    "widthCm": 9.0,
+    "heightCm": 4.0,
+    "weightG": 62.0,
+    "volumeMl": 529.2
+  },
+  "SKU-SC-00000041": {
+    "sku": "SKU-SC-00000041",
+    "dept": "DERMABEAUTY",
+    "lengthCm": 18.9,
+    "widthCm": 6.2,
+    "heightCm": 4.1,
+    "weightG": 60.0,
+    "volumeMl": 480.44
+  },
+  "SKU-FR-00000007": {
+    "sku": "SKU-FR-00000007",
+    "dept": "BEAUTY",
+    "lengthCm": 8.5,
+    "widthCm": 9.6,
+    "heightCm": 13.8,
+    "weightG": 486.0,
+    "volumeMl": 1126.08
+  },
+  "SKU-FR-00000006": {
+    "sku": "SKU-FR-00000006",
+    "dept": "BEAUTY",
+    "lengthCm": 6.2,
+    "widthCm": 15.8,
+    "heightCm": 20.0,
+    "weightG": 430.0,
+    "volumeMl": 1959.2
+  }
+}
