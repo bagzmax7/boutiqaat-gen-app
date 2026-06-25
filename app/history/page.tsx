@@ -381,19 +381,9 @@ export default function HistoryPage() {
                                       try {
                                         setConvertingPsdIds(prev => new Set(prev).add(task.id));
                                         
-                                        const res = await fetch('/api/runninghub/create-psd-from-urls', {
-                                          method: 'POST',
-                                          headers: { 'Content-Type': 'application/json' },
-                                          body: JSON.stringify({
-                                            originalUrl: originalUrl,
-                                            maskUrl: task.outputs[0].fileUrl,
-                                            fileName: `masked-output-${task.id}.psd`
-                                          })
-                                        });
+                                        const { generatePsdClient } = await import('@/lib/psd-helper');
+                                        const blob = await generatePsdClient(originalUrl, task.outputs[0].fileUrl);
                                         
-                                        if (!res.ok) throw new Error(await res.text());
-                                        
-                                        const blob = await res.blob();
                                         const a = document.createElement('a');
                                         a.href = URL.createObjectURL(blob);
                                         a.download = `masked-output-${task.id}.psd`;

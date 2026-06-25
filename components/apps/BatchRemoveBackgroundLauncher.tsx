@@ -51,34 +51,21 @@ export default function BatchRemoveBackgroundLauncher({ app, onTaskStarted }: Ap
         !convertingRef.current.has(file.id)
       ) {
         convertingRef.current.add(file.id);
-        convertToPsd(file.id, file.originalUrl, outputUrl, task.taskId || file.id);
+        convertToPsd(file.id, file.file || file.originalUrl, outputUrl, task.taskId || file.id);
       }
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tasks, batchFiles]);
 
-  const convertToPsd = async (fileId: string, originalUrl: string, maskUrl: string, taskId: string) => {
+  const convertToPsd = async (fileId: string, originalSource: File | string, maskUrl: string, taskId: string) => {
     setBatchFiles(prev =>
       prev.map(f => f.id === fileId ? { ...f, psdStatus: 'converting' } : f)
     );
 
     try {
-      const res = await fetch('/api/runninghub/create-psd-from-urls', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          originalUrl,
-          maskUrl,
-          fileName: `masked-output-${taskId}.psd`,
-        }),
-      });
-
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(errText);
-      }
-
-      const blob = await res.blob();
+      const { generatePsdClient } = await import('@/lib/psd-helper');
+      const blob = await generatePsdClient(originalSource, maskUrl);
+      
       setBatchFiles(prev =>
         prev.map(f => f.id === fileId ? { ...f, psdStatus: 'ready', psdBlob: blob } : f)
       );
@@ -375,7 +362,7 @@ export default function BatchRemoveBackgroundLauncher({ app, onTaskStarted }: Ap
                           onClick={() => {
                             if (file.originalUrl && outputUrl) {
                               convertingRef.current.add(file.id);
-                              convertToPsd(file.id, file.originalUrl, outputUrl, task?.taskId || file.id);
+                              convertToPsd(file.id, file.file || file.originalUrl, outputUrl, task?.taskId || file.id);
                             }
                           }}
                           className="w-full py-1.5 px-2 rounded-lg bg-accent-red/80 hover:bg-accent-red text-xs font-semibold text-white flex items-center justify-center gap-1.5 transition-colors"
