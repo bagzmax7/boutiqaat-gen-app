@@ -12,6 +12,7 @@ import { TaskOutput } from '@/lib/types';
 interface HistoryTask {
   id: string;
   runninghub_task_id: string;
+  app_id?: string;
   app_name: string;
   status: string;
   outputs: TaskOutput[];
@@ -62,7 +63,7 @@ export default function HistoryPage() {
   const [expanded, setExpanded] = useState<string | null>(null);
   
   // High-fidelity tab switcher
-  const [activeTab, setActiveTab] = useState<'bundling' | 'console'>('bundling');
+  const [activeTab, setActiveTab] = useState<'bundling' | 'social-resize' | 'console'>('bundling');
   const [previewImage, setPreviewImage] = useState<any | null>(null);
 
   useEffect(() => {
@@ -110,10 +111,14 @@ export default function HistoryPage() {
     }
   };
 
-  const filteredTasks = tasks.filter(t => {
-    // Exclude Bundling Studio tasks from Console Tasks tab
-    if (t.app_name === 'Bundling Studio' || t.app_name === 'bundling') return false;
-    
+  const socialResizeTasks = tasks.filter(t => t.app_id === 'social-resize' || t.app_name === 'Social Resize');
+  const consoleTasks = tasks.filter(t => {
+    const isBundling = t.app_name === 'Bundling Studio' || t.app_name === 'bundling';
+    const isSocialResize = t.app_id === 'social-resize' || t.app_name === 'Social Resize';
+    return !isBundling && !isSocialResize;
+  });
+
+  const filteredTasks = (activeTab === 'social-resize' ? socialResizeTasks : consoleTasks).filter(t => {
     const matchSearch = t.app_name.toLowerCase().includes(search.toLowerCase());
     const matchStatus = filter === 'ALL' || t.status === filter;
     return matchSearch && matchStatus;
@@ -149,7 +154,7 @@ export default function HistoryPage() {
                   </p>
                 </div>
               </div>
-              {activeTab === 'console' && (
+              {(activeTab === 'console' || activeTab === 'social-resize') && (
                 <button
                   onClick={() => exportCSV(filteredTasks)}
                   className="flex items-center gap-2 text-xs font-semibold text-accent-gold border border-accent-gold/30 hover:bg-accent-gold/10 px-4 py-2 rounded-xl transition-all"
@@ -175,6 +180,17 @@ export default function HistoryPage() {
                 Bundling Studio ({sessions.length})
               </button>
               <button
+                onClick={() => { setActiveTab('social-resize'); setSearch(''); }}
+                className={cn(
+                  'pb-3 text-sm font-semibold border-b-2 transition-all outline-none',
+                  activeTab === 'social-resize' 
+                    ? 'border-accent-gold text-accent-gold font-bold' 
+                    : 'border-transparent text-text-muted hover:text-text-primary'
+                )}
+              >
+                Social Resize ({socialResizeTasks.length})
+              </button>
+              <button
                 onClick={() => { setActiveTab('console'); setSearch(''); }}
                 className={cn(
                   'pb-3 text-sm font-semibold border-b-2 transition-all outline-none',
@@ -183,7 +199,7 @@ export default function HistoryPage() {
                     : 'border-transparent text-text-muted hover:text-text-primary'
                 )}
               >
-                Console Tasks ({tasks.length})
+                Console Tasks ({consoleTasks.length})
               </button>
             </div>
 
@@ -198,7 +214,7 @@ export default function HistoryPage() {
                   className="w-full bg-bg-card border border-border rounded-xl pl-9 pr-4 py-2.5 text-sm text-text-primary placeholder-text-muted input-gold transition-all"
                 />
               </div>
-              {activeTab === 'console' && ['ALL', 'SUCCESS', 'FAILED', 'QUEUED', 'RUNNING'].map(s => (
+              {(activeTab === 'console' || activeTab === 'social-resize') && ['ALL', 'SUCCESS', 'FAILED', 'QUEUED', 'RUNNING'].map(s => (
                 <button
                   key={s}
                   onClick={() => setFilter(s)}
@@ -426,6 +442,35 @@ export default function HistoryPage() {
                           </div>
                           <StatusBadge status={task.status} />
                         </div>
+
+                        {task.app_id === 'social-resize' && (
+                          <div className="flex flex-wrap gap-1 mt-2.5">
+                            {(() => {
+                              const ratio = task.node_info_list?.find((n: any) => n.fieldName === 'aspectRatio')?.fieldValue;
+                              const modelName = task.node_info_list?.find((n: any) => n.fieldName === 'model')?.fieldValue;
+                              const resVal = task.node_info_list?.find((n: any) => n.fieldName === 'resolution')?.fieldValue;
+                              return (
+                                <>
+                                  {ratio && (
+                                    <span className="text-[9px] font-semibold bg-white/5 border border-white/10 px-2 py-0.5 rounded text-white/70">
+                                      Ratio: {ratio}
+                                    </span>
+                                  )}
+                                  {modelName && (
+                                    <span className="text-[9px] font-semibold bg-white/5 border border-white/10 px-2 py-0.5 rounded text-white/70">
+                                      {modelName}
+                                    </span>
+                                  )}
+                                  {resVal && (
+                                    <span className="text-[9px] font-semibold bg-white/5 border border-white/10 px-2 py-0.5 rounded text-white/70">
+                                      {resVal.toUpperCase()}
+                                    </span>
+                                  )}
+                                </>
+                              );
+                            })()}
+                          </div>
+                        )}
 
                         {task.api_key_type && (
                           <div className="mt-3">

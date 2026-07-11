@@ -11,12 +11,20 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { taskId, apiKeyType } = await req.json();
+    let taskId: string | undefined;
+    let apiKeyType: string | undefined;
+    try {
+      const body = await req.json();
+      taskId = body?.taskId;
+      apiKeyType = body?.apiKeyType;
+    } catch {
+      return NextResponse.json({ error: 'Invalid or empty request body' }, { status: 400 });
+    }
     if (!taskId) {
       return NextResponse.json({ error: 'taskId is required' }, { status: 400 });
     }
 
-    const result = await queryTask(taskId, apiKeyType);
+    const result = await queryTask(taskId, apiKeyType as 'enterprise' | 'consumer' | undefined);
     return NextResponse.json(result);
   } catch (error) {
     console.error('[query] Error:', error);

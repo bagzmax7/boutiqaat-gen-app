@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard, ImageIcon, Film, History, User, LogOut,
   ChevronLeft, ChevronRight, Sparkles, Zap, Shield, Users,
-  Activity, Layers, Package
+  Activity, Layers, Package, Bot, Crop
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
@@ -20,6 +20,7 @@ interface UserProfile {
 
 const EDITOR_NAV = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/image-agent', label: 'Image Agent ✨', icon: Bot },
   { href: '/studio', label: 'Image Studio', icon: ImageIcon },
   { href: '/video', label: 'Video Studio', icon: Film },
   { href: '/bundling', label: 'Bundling Studio', icon: Package },

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/layout/Sidebar';
 import TopBar from '@/components/layout/TopBar';
 import BatchRemoveBackgroundLauncher from '@/components/apps/BatchRemoveBackgroundLauncher';
@@ -9,7 +10,7 @@ import { useTasks } from '@/hooks/useTasks';
 import { AppDefinition } from '@/lib/types';
 import {
   ImageIcon, Layers, Wand2, Shirt, Palette, ArrowLeft,
-  Sparkles, Clock, Zap, ChevronRight
+  Sparkles, Clock, Zap, ChevronRight, Crop
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
@@ -24,6 +25,21 @@ const IMAGE_APPS: (AppDefinition & {
   tags: string[];
   estimatedTime: string;
 })[] = [
+  {
+    id: 'social-resize',
+    name: 'Social Resize',
+    description: 'Adapt one image to all social formats instantly with AI Generative Fill & Focal Cropping.',
+    category: 'image-editing',
+    icon: 'crop',
+    pinned: true,
+    status: 'live',
+    gradient: 'from-purple-500/20 to-pink-600/10',
+    iconBg: 'from-purple-500 to-pink-600',
+    iconColor: 'text-white',
+    tags: ['Resize', 'Outpaint', 'Social'],
+    estimatedTime: '~15 sec',
+    nodeInfoSchema: [],
+  },
   {
     id: '2063548168545071105',
     name: 'Batch Remove Background (Up to 20 Images)',
@@ -92,10 +108,12 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   shirt: <Shirt className="w-6 h-6" />,
   palette: <Palette className="w-6 h-6" />,
   wand2: <Wand2 className="w-6 h-6" />,
+  crop: <Crop className="w-6 h-6" />,
 };
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function ImageStudioPage() {
+  const router = useRouter();
   const { addTask } = useTasks();
   const [selectedApp, setSelectedApp] = useState<typeof IMAGE_APPS[0] | null>(null);
 
@@ -188,7 +206,13 @@ export default function ImageStudioPage() {
                       <AppCard
                         key={app.id}
                         app={app}
-                        onClick={() => setSelectedApp(app)}
+                        onClick={() => {
+                          if (app.id === 'social-resize') {
+                            router.push('/studio/social-resize');
+                          } else {
+                            setSelectedApp(app);
+                          }
+                        }}
                       />
                     ))}
                   </div>

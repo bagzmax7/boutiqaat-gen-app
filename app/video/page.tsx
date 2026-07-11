@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import TopBar from '@/components/layout/TopBar';
 import BatchVideoBgRemovalLauncher from '@/components/apps/BatchVideoBgRemovalLauncher';
+import BoutiqaatVideoGenLauncher from '@/components/apps/BoutiqaatVideoGenLauncher';
 import { useTasks } from '@/hooks/useTasks';
 import { AppDefinition } from '@/lib/types';
 import { Film, Zap, Clock, ArrowLeft, ChevronRight, Sparkles } from 'lucide-react';
@@ -19,6 +20,20 @@ const VIDEO_APPS: (AppDefinition & {
   tags: string[];
   estimatedTime: string;
 })[] = [
+  {
+    id: 'boutiqaat-video-gen',
+    name: 'Boutiqaat Video Gen',
+    description: 'Transform concepts into cinematic motion using a suite of top-tier AI models including Seedance, Kling, Veo, and Gemini.',
+    category: 'video-generation',
+    icon: 'film',
+    status: 'live',
+    gradient: 'from-green-500/20 to-emerald-600/10',
+    iconBg: 'from-green-500 to-emerald-600',
+    iconColor: 'text-white',
+    tags: ['Generation', 'Cinematic', 'Multi-Model'],
+    estimatedTime: '~1-2 min',
+    nodeInfoSchema: [],
+  },
   {
     id: '2015810111150759938', // Remove Video Background ComfyUI Workflow ID
     name: 'Video BG Removal',
@@ -164,8 +179,12 @@ export default function VideoStudioPage() {
                 <span className="text-sm font-semibold text-text-primary">{selectedApp.name}</span>
               </div>
 
-              <div className="px-6 py-6 max-w-4xl mx-auto">
-                <BatchVideoBgRemovalLauncher app={selectedApp} onTaskStarted={handleTaskStarted} />
+              <div className="px-6 py-6 max-w-5xl mx-auto">
+                {selectedApp.id === 'boutiqaat-video-gen' ? (
+                  <BoutiqaatVideoGenLauncher app={selectedApp} onTaskStarted={handleTaskStarted} />
+                ) : (
+                  <BatchVideoBgRemovalLauncher app={selectedApp} onTaskStarted={handleTaskStarted} />
+                )}
               </div>
             </div>
           ) : (

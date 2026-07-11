@@ -49,3 +49,6 @@ venv/
 # test/scratch files
 test-alpha.ts
 
+# agent data dir
+/appDataDir/
+

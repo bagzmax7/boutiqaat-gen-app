@@ -5,7 +5,7 @@ import { Toaster } from 'react-hot-toast';
 export const metadata: Metadata = {
   title: 'Boutiqaat Studio AI Hub',
   description: 'AI-powered Studio Platform for Boutiqaat Creative Team',
-  icons: { icon: '/favicon.ico' },
+  icons: { icon: '/Favicon.png' },
 };
 
 export default function RootLayout({

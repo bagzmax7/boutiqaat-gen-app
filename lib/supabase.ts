@@ -42,6 +42,25 @@ export type Database = {
           updated_at: string;
         };
       };
+      image_agent_sessions: {
+        Row: {
+          id: string;
+          user_id: string;
+          title: string;
+          messages: unknown;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id: string;
+          user_id: string;
+          title: string;
+          messages?: unknown;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database['public']['Tables']['image_agent_sessions']['Insert']>;
+      };
     };
   };
 };

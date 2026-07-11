@@ -193,7 +193,7 @@ function exportCSV(records: TaskRecord[]) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `runninghub-billing-records-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download = `studio-billing-records-${new Date().toISOString().slice(0, 10)}.csv`;
   a.click();
   URL.revokeObjectURL(url);
   toast.success('Billing records exported successfully!');

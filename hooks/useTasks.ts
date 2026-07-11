@@ -112,6 +112,13 @@ export function useTasks() {
       }
 
       for (const task of running) {
+        // Skip tasks with no valid taskId — prevents empty-body 400 errors on /api/runninghub/query
+        if (!task.taskId || typeof task.taskId !== 'string') {
+          setGlobalTasks(prev =>
+            prev.map(t => t.id === task.id ? { ...t, status: 'FAILED', error: 'Invalid taskId', updatedAt: Date.now() } : t)
+          );
+          continue;
+        }
         try {
           const res = await fetch('/api/runninghub/query', {
             method: 'POST',

@@ -41,6 +41,20 @@ CREATE INDEX IF NOT EXISTS idx_tasks_created_at ON tasks(created_at DESC);
 ALTER TABLE users DISABLE ROW LEVEL SECURITY;
 ALTER TABLE tasks DISABLE ROW LEVEL SECURITY;
 
+-- ── Image Agent Sessions Table ───────────────────────────────
+CREATE TABLE IF NOT EXISTS image_agent_sessions (
+  id TEXT PRIMARY KEY,
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  messages JSONB NOT NULL DEFAULT '[]',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_image_agent_sessions_user_id ON image_agent_sessions(user_id);
+CREATE INDEX IF NOT EXISTS idx_image_agent_sessions_updated_at ON image_agent_sessions(updated_at DESC);
+ALTER TABLE image_agent_sessions DISABLE ROW LEVEL SECURITY;
+
 -- ============================================================
 -- IMPORTANT: After running this schema, call the setup endpoint
 -- to create initial accounts:

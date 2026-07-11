@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 const ROUTE_TITLES: Record<string, { title: string; subtitle: string }> = {
   '/': { title: 'Studio Dashboard', subtitle: 'Welcome to your AI creative workspace' },
+  '/image-agent': { title: 'Image Agent ✨', subtitle: 'AI-powered image generation with intelligent prompt enhancement' },
   '/studio': { title: 'Image AI Studio', subtitle: 'Process and enhance product images with AI' },
   '/video': { title: 'Video AI Studio', subtitle: 'Generate and edit video content with AI' },
   '/history': { title: 'My History', subtitle: 'All your past AI generation tasks' },
@@ -15,6 +16,7 @@ const ROUTE_TITLES: Record<string, { title: string; subtitle: string }> = {
   '/admin': { title: 'Admin Dashboard', subtitle: 'Platform overview for developers' },
   '/admin/tasks': { title: 'Task Monitor', subtitle: 'Real-time task history' },
   '/admin/users': { title: 'User Management', subtitle: 'Manage editor accounts and access' },
+  '/studio/social-resize': { title: 'Social Resize', subtitle: 'Adapt one image to all social formats with AI Generative Fill & Focal Cropping.' },
 };
 
 export default function TopBar({ onRefresh }: { onRefresh?: () => void }) {
