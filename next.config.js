@@ -3,7 +3,9 @@ const nextConfig = {
   // Tell Next.js not to bundle sharp — load it at runtime so Vercel
   // uses its own pre-installed Linux x64 native binaries instead of
   // the Windows binaries bundled during npm install.
-  serverExternalPackages: ['sharp'],
+  experimental: {
+    serverComponentsExternalPackages: ['sharp'],
+  },
   images: {
     remotePatterns: [
       {
