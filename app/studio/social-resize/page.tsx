@@ -29,6 +29,7 @@ export default function SocialResizePage() {
   const [uploading, setUploading] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [selectedPresets, setSelectedPresets] = useState<Set<string>>(new Set());
+  const [generatedPresets, setGeneratedPresets] = useState<Set<string>>(new Set());
   
   const canvasRefs = useRef<Record<string, HTMLCanvasElement>>({});
   const cardRefs = useRef<Record<string, PreviewCardRef | null>>({});
@@ -99,21 +100,23 @@ export default function SocialResizePage() {
 
   // Export Batch ZIP
   const handleBatchExport = async () => {
-    if (activePresets.length === 0) return;
+    if (generatedPresets.size === 0) return;
     setIsExporting(true);
-    const toastId = toast.loading('Bundling images into ZIP...');
+    const toastId = toast.loading('Bundling generated images into ZIP...');
     try {
-      const items = activePresets.map(p => {
+      const items = Array.from(generatedPresets).map(id => {
+        const p = SOCIAL_PRESETS.find(preset => preset.id === id);
+        if (!p) return null;
         const canvas = canvasRefs.current[p.id];
         return {
           canvas,
-          baseName: 'social_resize',
+          baseName: 'social_resize_ai',
           presetName: p.name,
           platformName: p.platform
         };
-      }).filter(i => !!i.canvas);
+      }).filter(i => !!i && !!i.canvas) as any;
 
-      if (items.length === 0) throw new Error("No rendered canvases found");
+      if (items.length === 0) throw new Error("No generated canvases found");
 
       await downloadBatchZip(items);
       toast.success('ZIP downloaded successfully!', { id: toastId });
@@ -139,6 +142,18 @@ export default function SocialResizePage() {
     else next.add(id);
     setSelectedPresets(next);
   };
+
+  const handleGeneratedStateChange = useCallback((id: string, isGenerated: boolean) => {
+    setGeneratedPresets(prev => {
+      const next = new Set(prev);
+      if (isGenerated) {
+        next.add(id);
+      } else {
+        next.delete(id);
+      }
+      return next;
+    });
+  }, []);
 
   // Batch Generate
   const handleBatchGenerate = () => {
@@ -327,14 +342,16 @@ export default function SocialResizePage() {
               </button>
             )}
 
-            <button
-              onClick={handleBatchExport}
-              disabled={!sourceImageUrl || isExporting}
-              className="flex items-center gap-2 px-5 py-2 rounded-lg bg-gradient-gold text-white font-bold text-xs hover:brightness-110 disabled:opacity-50 disabled:grayscale transition-all shadow-gold"
-            >
-              {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-              Export ZIP ({activePresets.length})
-            </button>
+            {generatedPresets.size > 0 && (
+              <button
+                onClick={handleBatchExport}
+                disabled={isExporting}
+                className="flex items-center gap-2 px-5 py-2 rounded-lg bg-gradient-gold text-white font-bold text-xs hover:brightness-110 disabled:opacity-50 disabled:grayscale transition-all shadow-gold animate-fade-in"
+              >
+                {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                Export ZIP ({generatedPresets.size})
+              </button>
+            )}
           </div>
         </div>
 
@@ -357,6 +374,7 @@ export default function SocialResizePage() {
                   resolution={resolution}
                   isSelected={selectedPresets.has(preset.id)}
                   onToggleSelect={() => togglePresetSelect(preset.id)}
+                  onGeneratedStateChange={handleGeneratedStateChange}
                   onCanvasReady={(id, canvas) => {
                     canvasRefs.current[id] = canvas;
                   }}

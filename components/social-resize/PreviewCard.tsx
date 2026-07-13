@@ -20,6 +20,7 @@ interface PreviewCardProps {
   isSelected: boolean;
   onToggleSelect: () => void;
   onCanvasReady: (id: string, canvas: HTMLCanvasElement) => void;
+  onGeneratedStateChange?: (id: string, isGenerated: boolean) => void;
 }
 
 interface GeneratedImage {
@@ -38,7 +39,8 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
   resolution,
   isSelected,
   onToggleSelect,
-  onCanvasReady 
+  onCanvasReady,
+  onGeneratedStateChange
 }, ref) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
@@ -155,6 +157,13 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
   useEffect(() => {
     drawCanvas();
   }, [drawCanvas]);
+
+  // Notify parent of AI Fill state
+  useEffect(() => {
+    if (onGeneratedStateChange) {
+      onGeneratedStateChange(preset.id, useAIFill);
+    }
+  }, [preset.id, useAIFill, onGeneratedStateChange]);
 
   // Resolve user-friendly model name
   function getFriendlyModelName(modelId: string) {
