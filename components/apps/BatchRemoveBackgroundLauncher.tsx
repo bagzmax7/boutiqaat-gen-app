@@ -3,11 +3,12 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import toast from 'react-hot-toast';
-import { Loader2, Play, Upload, X, CheckCircle2, Download, Layers, Trash2 } from 'lucide-react';
+import { Loader2, Play, Upload, X, CheckCircle2, Download, Layers, Trash2, Eye, CheckSquare, Square, Archive } from 'lucide-react';
 import { cn, getFileNameFromUrl } from '@/lib/utils';
 import { useTasks } from '@/hooks/useTasks';
 import { AppDefinition } from '@/lib/types';
 import Image from 'next/image';
+import JSZip from 'jszip';
 
 interface AppLauncherProps {
   app: AppDefinition;
@@ -32,6 +33,9 @@ interface BatchFile {
 export default function BatchRemoveBackgroundLauncher({ app, onTaskStarted }: AppLauncherProps) {
   const [batchFiles, setBatchFiles] = useState<BatchFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<Set<string>>(new Set());
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [isZipping, setIsZipping] = useState(false);
   // Track which task IDs we've already started PSD conversion for (to avoid double-triggering)
   const convertingRef = useRef<Set<string>>(new Set());
   const { tasks } = useTasks();
@@ -209,6 +213,80 @@ export default function BatchRemoveBackgroundLauncher({ app, onTaskStarted }: Ap
       const isSuccess = task?.status === 'SUCCESS';
       return !isSuccess;
     }));
+    setSelectedFiles(new Set());
+  };
+
+  const toggleSelection = (fileId: string) => {
+    setSelectedFiles(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(fileId)) {
+        newSet.delete(fileId);
+      } else {
+        newSet.add(fileId);
+      }
+      return newSet;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    const successFiles = batchFiles.filter(f => {
+      const task = tasks.find(t => t.taskId === f.runningHubTaskId);
+      return task?.status === 'SUCCESS' && (task?.outputs?.[0]?.fileUrl || f.outputUrl);
+    });
+
+    if (selectedFiles.size === successFiles.length && successFiles.length > 0) {
+      // Deselect all
+      setSelectedFiles(new Set());
+    } else {
+      // Select all
+      setSelectedFiles(new Set(successFiles.map(f => f.id)));
+    }
+  };
+
+  const downloadSelectedAsZip = async () => {
+    if (selectedFiles.size === 0) return;
+    setIsZipping(true);
+    const toastId = toast.loading('Preparing ZIP file...');
+    try {
+      const zip = new JSZip();
+      let addedCount = 0;
+
+      for (const fileId of Array.from(selectedFiles)) {
+        const file = batchFiles.find(f => f.id === fileId);
+        if (!file) continue;
+        const task = tasks.find(t => t.taskId === file.runningHubTaskId);
+        const outputUrl = task?.outputs?.[0]?.fileUrl || file.outputUrl;
+        
+        if (outputUrl) {
+          const response = await fetch(outputUrl);
+          const blob = await response.blob();
+          const fileName = `removed-bg-${file.file.name.split('.')[0] || addedCount}.png`;
+          zip.file(fileName, blob);
+          addedCount++;
+        }
+      }
+
+      if (addedCount > 0) {
+        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        const url = URL.createObjectURL(zipBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Batch-Remove-Background-${new Date().getTime()}.zip`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        toast.success(`Successfully downloaded ${addedCount} images as ZIP!`, { id: toastId });
+        setSelectedFiles(new Set());
+      } else {
+        toast.error('No valid images found to zip.', { id: toastId });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to create ZIP file.', { id: toastId });
+    } finally {
+      setIsZipping(false);
+    }
   };
 
   return (
@@ -253,9 +331,39 @@ export default function BatchRemoveBackgroundLauncher({ app, onTaskStarted }: Ap
       {batchFiles.length > 0 && (
         <div className="animate-slide-up">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-semibold text-text-primary">
-              Processing Queue ({batchFiles.length})
-            </h3>
+            <div className="flex items-center gap-4">
+              <h3 className="text-sm font-semibold text-text-primary">
+                Processing Queue ({batchFiles.length})
+              </h3>
+              
+              {batchFiles.some(f => tasks.find(t => t.taskId === f.runningHubTaskId)?.status === 'SUCCESS') && (
+                <div className="flex items-center gap-2 border-l border-border pl-4">
+                  <button
+                    onClick={toggleSelectAll}
+                    className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-text-primary transition-colors"
+                  >
+                    {selectedFiles.size > 0 && selectedFiles.size === batchFiles.filter(f => tasks.find(t => t.taskId === f.runningHubTaskId)?.status === 'SUCCESS').length ? (
+                      <CheckSquare className="w-4 h-4 text-accent-gold" />
+                    ) : (
+                      <Square className="w-4 h-4" />
+                    )}
+                    Select All
+                  </button>
+                  
+                  {selectedFiles.size > 0 && (
+                    <button
+                      onClick={downloadSelectedAsZip}
+                      disabled={isZipping}
+                      className="flex items-center gap-1.5 text-xs bg-accent-gold text-white px-2 py-1 rounded-md hover:bg-accent-gold/90 transition-colors disabled:opacity-50"
+                    >
+                      {isZipping ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Archive className="w-3.5 h-3.5" />}
+                      Download ZIP ({selectedFiles.size})
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+            
             <button 
               onClick={clearCompleted}
               className="text-xs text-text-muted hover:text-text-primary transition-colors"
@@ -309,11 +417,30 @@ export default function BatchRemoveBackgroundLauncher({ app, onTaskStarted }: Ap
                       </div>
                     )}
 
-                    {/* Success Overlay */}
+                    {/* Success Overlay & Checkbox */}
                     {isTaskSuccess && !isConvertingPsd && (
-                      <div className="absolute top-2 left-2 bg-accent-green text-white rounded-full p-1 shadow-md z-20">
-                        <CheckCircle2 className="w-4 h-4" />
-                      </div>
+                      <>
+                        <div className="absolute top-2 left-2 bg-accent-green text-white rounded-full p-1 shadow-md z-20">
+                          <CheckCircle2 className="w-4 h-4" />
+                        </div>
+                        <button
+                          onClick={() => toggleSelection(file.id)}
+                          className="absolute top-2 right-2 bg-black/40 hover:bg-black/60 rounded-md p-1 backdrop-blur-sm z-30 transition-colors"
+                        >
+                          {selectedFiles.has(file.id) ? (
+                            <CheckSquare className="w-5 h-5 text-accent-gold" />
+                          ) : (
+                            <Square className="w-5 h-5 text-white" />
+                          )}
+                        </button>
+                        <button
+                          onClick={() => setPreviewImage(outputUrl || null)}
+                          className="absolute bottom-2 right-2 bg-black/50 hover:bg-black/70 rounded-full p-1.5 backdrop-blur-sm z-30 transition-colors shadow-lg"
+                          title="Preview Full Image"
+                        >
+                          <Eye className="w-4 h-4 text-white" />
+                        </button>
+                      </>
                     )}
 
                     {/* Error Overlay */}
@@ -415,6 +542,27 @@ export default function BatchRemoveBackgroundLauncher({ app, onTaskStarted }: Ap
               )}
             </button>
           )}
+        </div>
+      )}
+
+      {/* Full Screen Image Preview Modal */}
+      {previewImage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <button 
+            onClick={() => setPreviewImage(null)}
+            className="absolute top-6 right-6 text-white hover:text-accent-gold transition-colors bg-black/50 p-2 rounded-full"
+          >
+            <X className="w-8 h-8" />
+          </button>
+          <div className="relative w-full h-full max-w-6xl max-h-[90vh]">
+            <Image 
+              src={previewImage} 
+              alt="Full Preview" 
+              fill 
+              className="object-contain" 
+              sizes="100vw"
+            />
+          </div>
         </div>
       )}
     </div>
