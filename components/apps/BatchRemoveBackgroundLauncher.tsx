@@ -134,49 +134,54 @@ export default function BatchRemoveBackgroundLauncher({ app, onTaskStarted }: Ap
 
     setIsProcessing(true);
 
-    // Process all files in parallel
-    await Promise.all(filesToProcess.map(async (batchFile, index) => {
-      try {
-        // 1. Set status to uploading
-        setBatchFiles(prev => prev.map(f => f.id === batchFile.id ? { ...f, status: 'uploading' } : f));
-        
-        // 2. Upload file
-        const formData = new FormData();
-        formData.append('file', batchFile.file);
-        const uploadRes = await fetch('/api/runninghub/upload', { method: 'POST', body: formData });
-        const uploadData = await uploadRes.json();
-        
-        if (!uploadData.fileUrl) throw new Error(uploadData.error || 'Upload failed');
-        const originalUrl = uploadData.fileUrl;
+    // Process files in chunks to avoid network timeout and payload too large errors
+    const CONCURRENCY_LIMIT = 3;
+    for (let i = 0; i < filesToProcess.length; i += CONCURRENCY_LIMIT) {
+      const chunk = filesToProcess.slice(i, i + CONCURRENCY_LIMIT);
+      
+      await Promise.all(chunk.map(async (batchFile, indexInChunk) => {
+        const index = i + indexInChunk;
+        try {
+          // 1. Set status to uploading
+          setBatchFiles(prev => prev.map(f => f.id === batchFile.id ? { ...f, status: 'uploading' } : f));
+          
+          // 2. Upload file
+          const formData = new FormData();
+          formData.append('file', batchFile.file);
+          const uploadRes = await fetch('/api/runninghub/upload', { method: 'POST', body: formData });
+          const uploadData = await uploadRes.json();
+          
+          if (!uploadData.fileUrl) throw new Error(uploadData.error || 'Upload failed');
+          const originalUrl = uploadData.fileUrl;
 
-        // 3. Set status to processing
-        setBatchFiles(prev => prev.map(f => f.id === batchFile.id ? { ...f, status: 'processing', originalUrl } : f));
-        
-        // 4. Start RunningHub task via our new enterprise endpoint
-        const nodeInfoList = [
-          { nodeId: '7', fieldName: 'image', fieldValue: originalUrl }
-        ];
+          // 3. Set status to processing
+          setBatchFiles(prev => prev.map(f => f.id === batchFile.id ? { ...f, status: 'processing', originalUrl } : f));
+          
+          // 4. Start RunningHub task via our new enterprise endpoint
+          const nodeInfoList = [
+            { nodeId: '7', fieldName: 'image', fieldValue: originalUrl }
+          ];
 
-        const runRes = await fetch('/api/remove-background/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ imageUrl: originalUrl }),
-        });
-        const runData = await runRes.json();
-        
-        if (!runData.taskId) throw new Error(runData.error || runData.errorMessage || 'Task failed');
-        
-        // 5. Success! Wait for polling via useTasks hook
-        // runData.taskId is the localTaskId, runData.runningHubTaskId is the actual RunningHub Task ID
-        onTaskStarted(runData.runningHubTaskId, `${app.name} (${index + 1})`, nodeInfoList, 'enterprise');
-        
-        setBatchFiles(prev => prev.map(f => f.id === batchFile.id ? { ...f, runningHubTaskId: runData.runningHubTaskId } : f));
-        
-      } catch (err: any) {
-        setBatchFiles(prev => prev.map(f => f.id === batchFile.id ? { ...f, status: 'failed', error: err.message } : f));
-        toast.error(`Failed to process ${batchFile.file.name}: ${err.message}`);
-      }
-    }));
+          const runRes = await fetch('/api/remove-background/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imageUrl: originalUrl }),
+          });
+          const runData = await runRes.json();
+          
+          if (!runData.taskId) throw new Error(runData.error || runData.errorMessage || 'Task failed');
+          
+          // 5. Success! Wait for polling via useTasks hook
+          onTaskStarted(runData.runningHubTaskId, `${app.name} (${index + 1})`, nodeInfoList, 'enterprise');
+          
+          setBatchFiles(prev => prev.map(f => f.id === batchFile.id ? { ...f, runningHubTaskId: runData.runningHubTaskId } : f));
+          
+        } catch (err: any) {
+          setBatchFiles(prev => prev.map(f => f.id === batchFile.id ? { ...f, status: 'failed', error: err.message } : f));
+          toast.error(`Failed to process ${batchFile.file.name}: ${err.message}`);
+        }
+      }));
+    }
 
     setIsProcessing(false);
   };

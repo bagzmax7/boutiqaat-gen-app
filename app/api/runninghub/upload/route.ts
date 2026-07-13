@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSessionFromRequest } from '@/lib/auth';
 import { uploadResource } from '@/lib/runninghub';
 
+export const maxDuration = 60; // 60 seconds to allow for 4K image uploads
+
 export async function POST(req: NextRequest) {
   const session = await getSessionFromRequest(req);
   if (!session) {

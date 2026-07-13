@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
       appId: '2076728877666717698',
       nodeInfoList: initialNodeInfoList,
       apiKeyType: 'enterprise',
+      retainSeconds: 60, // Keep instance warm for batch processing
       webhookUrl: webhookUrl || `${process.env.NEXT_PUBLIC_APP_URL}/api/webhook/runninghub?secret=${process.env.WEBHOOK_SECRET}`
     });
 
