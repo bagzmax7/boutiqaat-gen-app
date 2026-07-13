@@ -1,11 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, forwardRef, useImperativeHandle } from 'react';
 import { SocialPreset } from '@/lib/social-resize/presets';
 import { Download, Loader2, Wand2, Crop, ChevronLeft, ChevronRight, Trash2, Eye, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { downloadSingleImage, downloadUrlDirectly, sanitizeFilename } from '@/lib/social-resize/export';
 import toast from 'react-hot-toast';
+
+export interface PreviewCardRef {
+  triggerAIFill: () => void;
+}
 
 interface PreviewCardProps {
   preset: SocialPreset;
@@ -13,6 +17,8 @@ interface PreviewCardProps {
   focalPoint: { x: number, y: number }; // 0 to 1
   aiModel: string;
   resolution: '1k' | '2k' | '4k';
+  isSelected: boolean;
+  onToggleSelect: () => void;
   onCanvasReady: (id: string, canvas: HTMLCanvasElement) => void;
 }
 
@@ -24,14 +30,16 @@ interface GeneratedImage {
   timestamp: number;
 }
 
-export default function PreviewCard({ 
+const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({ 
   preset, 
   sourceImage, 
   focalPoint, 
   aiModel, 
   resolution,
+  isSelected,
+  onToggleSelect,
   onCanvasReady 
-}: PreviewCardProps) {
+}, ref) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
   // AI Fill states
@@ -40,6 +48,14 @@ export default function PreviewCard({
   const [historyIndex, setHistoryIndex] = useState<number>(-1);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    triggerAIFill: () => {
+      if (!isGenerating && sourceImage && !useAIFill) {
+        handleAIFill(false);
+      }
+    }
+  }));
 
   // Active image URL for drawing
   const activeImageUrl = historyIndex >= 0 && generatedHistory[historyIndex] 
@@ -241,12 +257,23 @@ export default function PreviewCard({
   }
 
   return (
-    <div className="bg-bg-card border border-border rounded-2xl overflow-hidden flex flex-col shadow-card">
+    <div className={cn(
+      "bg-bg-card border rounded-2xl overflow-hidden flex flex-col shadow-card transition-all",
+      isSelected ? "border-accent-purple ring-1 ring-accent-purple" : "border-border"
+    )}>
       {/* Header */}
       <div className="px-3 py-2 border-b border-border flex items-center justify-between bg-bg-secondary">
-        <div>
-          <h4 className="text-xs font-semibold text-text-primary">{preset.platform}</h4>
-          <p className="text-[10px] text-text-muted">{preset.name} • {preset.width}×{preset.height}</p>
+        <div className="flex items-center gap-2">
+          <input 
+            type="checkbox" 
+            checked={isSelected} 
+            onChange={onToggleSelect}
+            className="w-4 h-4 rounded border-border bg-bg-card accent-accent-purple cursor-pointer"
+          />
+          <div>
+            <h4 className="text-xs font-semibold text-text-primary">{preset.platform}</h4>
+            <p className="text-[10px] text-text-muted">{preset.name} • {preset.width}×{preset.height}</p>
+          </div>
         </div>
         <div className="flex items-center gap-1.5">
           {/* Action Buttons */}
@@ -461,4 +488,7 @@ export default function PreviewCard({
       )}
     </div>
   );
-}
+});
+
+PreviewCard.displayName = 'PreviewCard';
+export default PreviewCard;

@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import Sidebar from '@/components/layout/Sidebar';
 import { cn } from '@/lib/utils';
 import { SOCIAL_PRESETS, SocialPreset } from '@/lib/social-resize/presets';
-import PreviewCard from '@/components/social-resize/PreviewCard';
+import PreviewCard, { PreviewCardRef } from '@/components/social-resize/PreviewCard';
 import { downloadBatchZip } from '@/lib/social-resize/export';
 
 const AI_MODELS = [
@@ -28,7 +28,10 @@ export default function SocialResizePage() {
   
   const [uploading, setUploading] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [selectedPresets, setSelectedPresets] = useState<Set<string>>(new Set());
+  
   const canvasRefs = useRef<Record<string, HTMLCanvasElement>>({});
+  const cardRefs = useRef<Record<string, PreviewCardRef | null>>({});
   
   const imageContainerRef = useRef<HTMLDivElement>(null);
 
@@ -118,6 +121,38 @@ export default function SocialResizePage() {
       toast.error('Export failed: ' + err.message, { id: toastId });
     } finally {
       setIsExporting(false);
+    }
+  };
+
+  // Selection Logic
+  const toggleSelectAll = () => {
+    if (selectedPresets.size === activePresets.length) {
+      setSelectedPresets(new Set());
+    } else {
+      setSelectedPresets(new Set(activePresets.map(p => p.id)));
+    }
+  };
+
+  const togglePresetSelect = (id: string) => {
+    const next = new Set(selectedPresets);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    setSelectedPresets(next);
+  };
+
+  // Batch Generate
+  const handleBatchGenerate = () => {
+    if (selectedPresets.size === 0) return;
+    let count = 0;
+    selectedPresets.forEach(id => {
+      const ref = cardRefs.current[id];
+      if (ref) {
+        ref.triggerAIFill();
+        count++;
+      }
+    });
+    if (count > 0) {
+      toast.success(`Triggered AI Fill for ${count} sizes!`);
     }
   };
 
@@ -248,30 +283,59 @@ export default function SocialResizePage() {
       {/* RIGHT PANEL - Previews */}
       <div className="flex-1 flex flex-col bg-bg-card relative">
         <div className="p-4 border-b border-border bg-bg-secondary flex items-center justify-between sticky top-0 z-10 shadow-sm">
-          {/* Filters */}
-          <div className="flex bg-bg-card border border-border p-1 rounded-lg gap-1">
-            {['all', 'social', 'ads', 'web'].map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat as any)}
-                className={cn(
-                  "px-4 py-1.5 rounded-md text-xs font-semibold capitalize transition-all",
-                  activeCategory === cat ? "bg-bg-secondary text-text-primary shadow-sm" : "text-text-muted hover:text-text-secondary"
-                )}
-              >
-                {cat}
-              </button>
-            ))}
+          {/* Filters & Selection */}
+          <div className="flex items-center gap-4">
+            <div className="flex bg-bg-card border border-border p-1 rounded-lg gap-1">
+              {['all', 'social', 'ads', 'web'].map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat as any)}
+                  className={cn(
+                    "px-4 py-1.5 rounded-md text-xs font-semibold capitalize transition-all",
+                    activeCategory === cat ? "bg-bg-secondary text-text-primary shadow-sm" : "text-text-muted hover:text-text-secondary"
+                  )}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            {/* Select All Checkbox */}
+            {sourceImageUrl && activePresets.length > 0 && (
+              <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-text-primary bg-bg-card border border-border px-3 py-1.5 rounded-lg hover:border-accent-purple/50 transition-all">
+                <input 
+                  type="checkbox" 
+                  checked={selectedPresets.size === activePresets.length && activePresets.length > 0}
+                  onChange={toggleSelectAll}
+                  className="w-4 h-4 rounded border-border bg-bg-card accent-accent-purple cursor-pointer"
+                />
+                Select All
+              </label>
+            )}
           </div>
 
-          <button
-            onClick={handleBatchExport}
-            disabled={!sourceImageUrl || isExporting}
-            className="flex items-center gap-2 px-5 py-2 rounded-lg bg-gradient-gold text-white font-bold text-xs hover:brightness-110 disabled:opacity-50 disabled:grayscale transition-all shadow-gold"
-          >
-            {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-            Export ZIP ({activePresets.length})
-          </button>
+          <div className="flex items-center gap-2">
+            {/* Generate Selected Button */}
+            {selectedPresets.size > 0 && (
+              <button
+                onClick={handleBatchGenerate}
+                disabled={!sourceImageUrl}
+                className="flex items-center gap-2 px-5 py-2 rounded-lg bg-accent-purple text-white font-bold text-xs hover:bg-accent-purple/90 disabled:opacity-50 disabled:grayscale transition-all"
+              >
+                <Wand2 className="w-4 h-4" />
+                Generate Selected ({selectedPresets.size})
+              </button>
+            )}
+
+            <button
+              onClick={handleBatchExport}
+              disabled={!sourceImageUrl || isExporting}
+              className="flex items-center gap-2 px-5 py-2 rounded-lg bg-gradient-gold text-white font-bold text-xs hover:brightness-110 disabled:opacity-50 disabled:grayscale transition-all shadow-gold"
+            >
+              {isExporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+              Export ZIP ({activePresets.length})
+            </button>
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto p-6">
@@ -285,11 +349,14 @@ export default function SocialResizePage() {
               {activePresets.map(preset => (
                 <PreviewCard
                   key={preset.id}
+                  ref={(el) => { cardRefs.current[preset.id] = el; }}
                   preset={preset}
                   sourceImage={sourceImage}
                   focalPoint={focalPoint}
                   aiModel={selectedModel}
                   resolution={resolution}
+                  isSelected={selectedPresets.has(preset.id)}
+                  onToggleSelect={() => togglePresetSelect(preset.id)}
                   onCanvasReady={(id, canvas) => {
                     canvasRefs.current[id] = canvas;
                   }}
