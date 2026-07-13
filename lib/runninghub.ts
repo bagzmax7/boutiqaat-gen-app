@@ -248,6 +248,7 @@ export async function generateImageI2I(payload: {
   customWidth?: number;    // Only for flux-2-edit
   customHight?: number;    // Only for flux-2-edit (spelled customHight in API)
   outputFormat?: string;   // Only for flux-2-edit
+  webhookUrl?: string;     // Optional — RunningHub will POST here when task completes (webhook mode)
 }, apiKeyType?: 'enterprise' | 'consumer'): Promise<ImageTaskResponse> {
   const { 
     model, 
@@ -259,7 +260,8 @@ export async function generateImageI2I(payload: {
     grokModel,
     customWidth,
     customHight,
-    outputFormat
+    outputFormat,
+    webhookUrl
   } = payload;
   const endpointPath = IMAGE_ENDPOINT_MAP[model]?.image;
   if (!endpointPath) throw new Error(`Unknown image model: ${model}`);
@@ -288,6 +290,9 @@ export async function generateImageI2I(payload: {
     if (aspectRatio) body.aspectRatio = aspectRatio;
     if (resolution) body.resolution = resolution;
   }
+
+  // Attach webhookUrl if provided — RunningHub will push result instead of requiring polling
+  if (webhookUrl) body.webhookUrl = webhookUrl;
 
   const res = await fetch(`${BASE_URL}/openapi/v2/${endpointPath}`, {
     method: 'POST',

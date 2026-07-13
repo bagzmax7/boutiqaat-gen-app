@@ -21,6 +21,29 @@ Every `git push` to `main` triggers a new Vercel build.
 
 ---
 
+## ⚠️ CRITICAL: Git Author Must Match Vercel Account Email
+
+**The commit author email MUST be `bagzmax21@gmail.com` (the Vercel account email).**
+If commits use a different email (e.g. `dev@boutiqaat.com`), Vercel will `BLOCK` the deployment with error `COMMIT_AUTHOR_REQUIRED`.
+
+Before making any commits, ensure git is configured correctly:
+
+```powershell
+git config user.email "bagzmax21@gmail.com"
+git config user.name "bagzmax7"
+
+# Verify:
+git config user.email   # Must output: bagzmax21@gmail.com
+```
+
+If you already committed with the wrong email, fix it:
+```powershell
+git commit --amend --reset-author --no-edit
+git push --force-with-lease origin main
+```
+
+---
+
 ## Standard Deploy Workflow
 
 Run these commands in order from the project root `c:\Jenna\Antigravity\Runninghub Api\boutiqaat-gen-app`:
@@ -115,9 +138,21 @@ If this succeeds with no errors (warnings about bcryptjs Edge Runtime are OK), t
 3. If status is **Ready** → hard refresh browser (`Ctrl+Shift+R`) or clear cache
 4. If status is still old → push an empty commit to re-trigger
 
+### Deployment status is "BLOCKED" (seatBlock: COMMIT_AUTHOR_REQUIRED)
+**Root cause:** The commit author email does not match the Vercel account email.
+
+Fix:
+```powershell
+git config user.email "bagzmax21@gmail.com"
+git config user.name "bagzmax7"
+git commit --amend --reset-author --no-edit
+git push --force-with-lease origin main
+```
+
 ### Build fails on Vercel but works locally
 Most likely cause: **Missing environment variables in Vercel**.
-Add all variables from the table above to Vercel Settings → Environment Variables, then redeploy.
+All 13 env vars are already configured in Vercel. If you add new ones locally to `.env.local`, you must also add them at:
+https://vercel.com/maxlumagas-projects/boutiqaat-gen-app/settings/environment-variables
 
 ### Supabase schema changes
 If you add new database tables or columns:
