@@ -3,7 +3,8 @@ import { generateImageI2I, queryTask, uploadResource } from '@/lib/runninghub';
 import { mapToAllowedRatio } from '@/lib/social-resize/presets';
 import { getSessionFromRequest } from '@/lib/auth';
 import { supabaseAdmin } from '@/lib/supabase';
-import { Jimp } from 'jimp';
+import sharp from 'sharp';
+
 
 const POLL_INTERVAL_MS = 2000;
 const MAX_POLL_ATTEMPTS = 60; // 60 * 2s = 120 seconds
@@ -110,32 +111,43 @@ export async function POST(request: NextRequest) {
     let finalImageUrl = imageUrl;
 
     if (model === 'flux-2-edit' && customWidth && customHight) {
-      console.log(`[Social Resize] Pre-padding input image to custom dimensions ${customWidth}x${customHight} using solid black backgrounds...`);
+      console.log(`[Social Resize] Pre-padding input image to custom dimensions ${customWidth}x${customHight} using solid black background...`);
       try {
         const imageRes = await fetch(imageUrl);
         if (!imageRes.ok) throw new Error(`Failed to fetch input image for padding: ${imageRes.statusText}`);
-        const arrayBuffer = await imageRes.arrayBuffer();
-        const inputBuffer = Buffer.from(arrayBuffer);
-        const originalImage = await Jimp.read(inputBuffer);
+        const inputBuffer = Buffer.from(await imageRes.arrayBuffer());
 
-        const srcW = originalImage.width;
-        const srcH = originalImage.height;
+        // sharp handles ALL formats: WebP, AVIF, JPEG, PNG, TIFF, etc.
+        const sourceMeta = await sharp(inputBuffer).metadata();
+        const srcW = sourceMeta.width ?? customWidth;
+        const srcH = sourceMeta.height ?? customHight;
 
-        // Calculate scaling factor to contain original image centered inside target custom dimensions
+        // Scale to fit inside target canvas, maintaining aspect ratio
         const scale = Math.min(customWidth / srcW, customHight / srcH);
         const scaledW = Math.round(srcW * scale);
         const scaledH = Math.round(srcH * scale);
 
-        originalImage.resize({ w: scaledW, h: scaledH });
-
-        // Create new solid black canvas (matching ComfyUI workflow)
-        const canvasImage = new Jimp({ width: customWidth, height: customHight, color: 0x000000ff });
         const offsetX = Math.round((customWidth - scaledW) / 2);
         const offsetY = Math.round((customHight - scaledH) / 2);
-        canvasImage.composite(originalImage, offsetX, offsetY);
 
-        // Export to buffer & upload to COS
-        const paddedBuffer = await canvasImage.getBuffer('image/png');
+        // Resize the source and place it centered on a black canvas
+        const resizedInput = await sharp(inputBuffer)
+          .resize(scaledW, scaledH, { fit: 'fill' })
+          .toFormat('png')
+          .toBuffer();
+
+        const paddedBuffer = await sharp({
+          create: {
+            width: customWidth,
+            height: customHight,
+            channels: 3,
+            background: { r: 0, g: 0, b: 0 },
+          },
+        })
+          .composite([{ input: resizedInput, left: offsetX, top: offsetY }])
+          .png()
+          .toBuffer();
+
         const uploadResult = await uploadResource(paddedBuffer, 'padded_input.png', 'image/png');
         if (uploadResult.code === 0 && uploadResult.data?.download_url) {
           finalImageUrl = uploadResult.data.download_url;
