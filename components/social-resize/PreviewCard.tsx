@@ -152,7 +152,7 @@ export default function PreviewCard({
     return maps[modelId] || modelId;
   }
 
-  // ── Trigger Generative Fill ───────────────────────────────────────────────────────────
+  // ── Trigger Generative Fill ────────────────────────────────────────────────
   async function handleAIFill(forceNew = false) {
     if (!sourceImage?.src) return;
 
@@ -165,13 +165,12 @@ export default function PreviewCard({
       return;
     }
 
-    // Case 2: Fire-and-forget — submit task, then poll Supabase for completion
+    // Case 2: Generating a new image (either first time or explicitly regenerating)
     setIsGenerating(true);
     const fillLabel = aiModel === 'flux-2-edit' ? 'Custom' : resolution.toUpperCase();
     const toastId = toast.loading(`Generating ${fillLabel} Fill with ${getFriendlyModelName(aiModel)}...`);
 
     try {
-      // Step A: Submit to RunningHub (returns in ~1.5s)
       const res = await fetch('/api/social-resize/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -185,95 +184,29 @@ export default function PreviewCard({
 
       const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to submit generation task');
+      if (!res.ok || !data.imageUrl) {
+        throw new Error(data.error || 'AI generation returned no image URL');
       }
 
-      // Synchronous success (rare — some models return immediately)
-      if (data.status === 'SUCCESS' && data.imageUrl) {
-        const resolvedLabel = aiModel === 'flux-2-edit' && data.width && data.height
-          ? `${data.width}×${data.height}`
-          : resolution.toUpperCase();
+      const resolvedResolutionLabel = aiModel === 'flux-2-edit' && data.width && data.height
+        ? `${data.width}×${data.height}`
+        : resolution.toUpperCase();
 
-        const newImg: GeneratedImage = {
-          url: data.imageUrl,
-          modelId: aiModel,
-          modelName: getFriendlyModelName(aiModel),
-          resolution: resolvedLabel,
-          timestamp: Date.now()
-        };
-
-        setGeneratedHistory(prev => {
-          const next = [...prev, newImg];
-          setHistoryIndex(next.length - 1);
-          return next;
-        });
-        setUseAIFill(true);
-        toast.success('AI Fill completed successfully!', { id: toastId });
-        return;
-      }
-
-      // Async mode — poll Supabase every 3s until done
-      const { localTaskId } = data;
-      if (!localTaskId) {
-        throw new Error('No localTaskId returned from server');
-      }
-
-      const POLL_INTERVAL = 3000;
-      const MAX_WAIT_MS = 5 * 60 * 1000; // 5 minutes max
-      const startedAt = Date.now();
-
-      const poll = async (): Promise<void> => {
-        if (Date.now() - startedAt > MAX_WAIT_MS) {
-          throw new Error('Generation timed out after 5 minutes');
-        }
-
-        const statusRes = await fetch(`/api/tasks/${localTaskId}`);
-        if (!statusRes.ok) {
-          // Retry on network errors
-          await new Promise(r => setTimeout(r, POLL_INTERVAL));
-          return poll();
-        }
-
-        const taskData = await statusRes.json();
-        const { status, outputs, error_message } = taskData;
-
-        if (status === 'SUCCESS') {
-          const imageUrl = outputs?.[0]?.fileUrl;
-          if (!imageUrl) throw new Error('Task succeeded but no image URL found');
-
-          const resolvedLabel = aiModel === 'flux-2-edit' && data.width && data.height
-            ? `${data.width}×${data.height}`
-            : resolution.toUpperCase();
-
-          const newImg: GeneratedImage = {
-            url: imageUrl,
-            modelId: aiModel,
-            modelName: getFriendlyModelName(aiModel),
-            resolution: resolvedLabel,
-            timestamp: Date.now()
-          };
-
-          setGeneratedHistory(prev => {
-            const next = [...prev, newImg];
-            setHistoryIndex(next.length - 1);
-            return next;
-          });
-          setUseAIFill(true);
-          toast.success('AI Fill completed successfully!', { id: toastId });
-          return;
-        }
-
-        if (status === 'FAILED' || status === 'CANCELED') {
-          throw new Error(error_message || 'Generation failed');
-        }
-
-        // Still RUNNING — wait and retry
-        await new Promise(r => setTimeout(r, POLL_INTERVAL));
-        return poll();
+      const newImg: GeneratedImage = {
+        url: data.imageUrl,
+        modelId: aiModel,
+        modelName: getFriendlyModelName(aiModel),
+        resolution: resolvedResolutionLabel,
+        timestamp: Date.now()
       };
 
-      await poll();
+      setGeneratedHistory(prev => {
+        const next = [...prev, newImg];
+        setHistoryIndex(next.length - 1);
+        return next;
+      });
+      setUseAIFill(true);
+      toast.success(`AI Fill completed successfully!`, { id: toastId });
 
     } catch (err: any) {
       toast.error(err.message || 'AI Fill failed', { id: toastId });
