@@ -42,7 +42,7 @@ const IMAGE_APPS: (AppDefinition & {
   },
   {
     id: '2063548168545071105',
-    name: 'Batch Remove Background (Up to 20 Images)',
+    name: 'Remove Background',
     description: 'Remove backgrounds from up to 20 product images at once. Outputs transparent PNG + PSD files ready for production.',
     category: 'image-editing',
     icon: 'layers',

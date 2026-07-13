@@ -14,7 +14,7 @@ import toast from 'react-hot-toast';
 const APPS: AppDefinition[] = [
   {
     id: '2063548168545071105',
-    name: 'Batch Remove Background (5 Images)',
+    name: 'Remove Background',
     description: 'Upload up to 5 images at once. The AI will remove the backgrounds for all of them concurrently.',
     category: 'image-editing',
     icon: 'grid',
