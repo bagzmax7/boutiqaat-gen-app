@@ -152,24 +152,25 @@ export default function BatchRemoveBackgroundLauncher({ app, onTaskStarted }: Ap
         // 3. Set status to processing
         setBatchFiles(prev => prev.map(f => f.id === batchFile.id ? { ...f, status: 'processing', originalUrl } : f));
         
-        // 4. Start RunningHub task
+        // 4. Start RunningHub task via our new enterprise endpoint
         const nodeInfoList = [
-          { nodeId: '4', fieldName: 'image', fieldValue: originalUrl }
+          { nodeId: '7', fieldName: 'image', fieldValue: originalUrl }
         ];
 
-        const runRes = await fetch('/api/runninghub/run-app', {
+        const runRes = await fetch('/api/remove-background/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ appId: app.id, nodeInfoList }),
+          body: JSON.stringify({ imageUrl: originalUrl }),
         });
         const runData = await runRes.json();
         
-        if (!runData.taskId) throw new Error(runData.errorMessage || runData.error || 'Task failed');
+        if (!runData.taskId) throw new Error(runData.error || runData.errorMessage || 'Task failed');
         
         // 5. Success! Wait for polling via useTasks hook
-        onTaskStarted(runData.taskId, `${app.name} (${index + 1})`, nodeInfoList, runData.apiKeyType);
+        // runData.taskId is the localTaskId, runData.runningHubTaskId is the actual RunningHub Task ID
+        onTaskStarted(runData.runningHubTaskId, `${app.name} (${index + 1})`, nodeInfoList, 'enterprise');
         
-        setBatchFiles(prev => prev.map(f => f.id === batchFile.id ? { ...f, runningHubTaskId: runData.taskId } : f));
+        setBatchFiles(prev => prev.map(f => f.id === batchFile.id ? { ...f, runningHubTaskId: runData.runningHubTaskId } : f));
         
       } catch (err: any) {
         setBatchFiles(prev => prev.map(f => f.id === batchFile.id ? { ...f, status: 'failed', error: err.message } : f));
