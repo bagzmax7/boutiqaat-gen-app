@@ -16,7 +16,7 @@ const IMAGE_MODELS: Record<string, {
 }> = {
   // ── Nano Banana 2 (Gemini 3.1 Flash) ─────────────────────────────────────
   'nano-banana-2': {
-    name: 'Nano Banana 2',
+    name: 'Nano Banana 2 (Low Cost)',
     rhModelId: 'nano-banana-2',
     supportedModes: ['text-to-image', 'image-to-image'],
     supportedAspectRatios: ['1:1', '16:9', '9:16', '4:3', '3:4', '3:2', '2:3', '5:4', '4:5', '21:9', '1:4', '4:1', '1:8', '8:1'],
@@ -36,7 +36,7 @@ const IMAGE_MODELS: Record<string, {
 
   // ── GPT Image 2.0 ─────────────────────────────────────────────────────────
   'gpt-2.0': {
-    name: 'GPT Image 2.0',
+    name: 'GPT Image 2.0 (Edit-Economy)',
     rhModelId: 'gpt-2.0',
     supportedModes: ['text-to-image', 'image-to-image'],
     supportedAspectRatios: ['1:1', '2:3', '3:2', '4:5', '5:4', '4:3', '3:4', '16:9', '9:16', '21:9', '9:21', '2:1', '1:2', '3:1', '1:3'],

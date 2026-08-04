@@ -23,19 +23,21 @@ interface AppLauncherProps {
 }
 
 const MODELS = [
-  { id: 'seedance-2.0-global', name: 'Seedance 2.0 Global' },
-  { id: 'seedance-2.0-fast', name: 'Seedance 2.0 Fast' },
-  { id: 'seedance-2.0-mini', name: 'Seedance 2.0 Mini' },
-  { id: 'kling-o1', name: 'Kling O1' },
-  { id: 'kling-v3.0-std', name: 'Kling 0.3 Std' },
-  { id: 'veo3.1-pro-low-cost', name: 'Veo 3.1 Pro-low cost' },
-  { id: 'veo3.1-fast-low-cost', name: 'Veo 3.1 Fast-Low cost' },
-  { id: 'gemini-omni-flash', name: 'Gemini Omni flash' },
+  { id: 'rhart-video/sparkvideo-2.0-mini/multimodal-video', name: 'Seedance 2.0-mini (Multimodal)' },
+  { id: 'bytedance/seedance-2.0-global/image-to-video', name: 'Seedance 2.0 Global' },
+  { id: 'rhart-video/sparkvideo-2.0/text-to-video', name: 'SparkVideo 2.0 (Text to Video)' },
+  { id: 'rhart-video/sparkvideo-2.0/image-to-video', name: 'SparkVideo 2.0 (Image to Video)' },
+  { id: 'rhart-video/sparkvideo-2.0/multimodal-video', name: 'SparkVideo 2.0 (Multimodal)' },
+  { id: 'seedance-2.0-global-fast/image-to-video', name: 'Seedance 2.0 Global Fast' },
+  { id: 'kling-video-o1/image-to-video', name: 'Kling O1 (Image to Video)' },
+  { id: 'kling-v3.0-std-image-to-video', name: 'Kling V3.0 Standard' },
+  { id: 'google/veo3.1-pro/start-end-to-video-channel-low-price', name: 'Veo 3.1 Pro (Low Cost)' },
+  { id: 'google/veo3.1-fast/start-end-to-video-channel-low-price', name: 'Veo 3.1 Fast (Low Cost)' },
 ];
 
 const RATIOS = ['Auto', '16:9', '4:3', '1:1', '3:4', '9:16', '21:9'];
 const QUALITIES = ['480p', '720p', '1080p', '2k', '4k'];
-const DURATIONS = ['3s', '6s', '10s', '15s'];
+const DURATIONS = ['5s', '6s', '10s', '15s'];
 
 export default function BoutiqaatVideoGenLauncher({ app, onTaskStarted }: AppLauncherProps) {
   const [prompt, setPrompt] = useState('');
@@ -86,26 +88,46 @@ export default function BoutiqaatVideoGenLauncher({ app, onTaskStarted }: AppLau
       return;
     }
     
+    // Validation: Image-to-video models require at least one image reference
+    if (selectedModel.includes('image-to-video') && uploadedFiles.length === 0) {
+      toast.error('This model requires at least 1 image reference file. Please upload an image.');
+      return;
+    }
+
     setIsGenerating(true);
     try {
-      // 1. Upload files first if any
-      const uploadedUrls = [];
+      // 1. Upload files first if any and categorize by type
+      const imageUrls: string[] = [];
+      const videoUrls: string[] = [];
+      const audioUrls: string[] = [];
+
       for (const file of uploadedFiles) {
         const formData = new FormData();
         formData.append('file', file);
         const uploadRes = await fetch('/api/runninghub/upload', { method: 'POST', body: formData });
         const uploadData = await uploadRes.json();
         if (!uploadData.fileUrl) throw new Error(uploadData.error || 'Upload failed');
-        uploadedUrls.push(uploadData.fileUrl);
+
+        if (file.type.startsWith('video/')) {
+          videoUrls.push(uploadData.fileUrl);
+        } else if (file.type.startsWith('audio/')) {
+          audioUrls.push(uploadData.fileUrl);
+        } else {
+          imageUrls.push(uploadData.fileUrl);
+        }
       }
 
-      // 2. Call our new video generation Next.js route
+      // 2. Call video generation Next.js route
       const payload = {
         model: selectedModel,
         prompt,
-        imageUrls: uploadedUrls,
+        imageUrls: imageUrls.length > 0 ? imageUrls : undefined,
+        videoUrls: videoUrls.length > 0 ? videoUrls : undefined,
+        audioUrls: audioUrls.length > 0 ? audioUrls : undefined,
         ratio,
+        aspect_ratio: ratio,
         quality,
+        resolution: quality,
         duration,
         realPerson: realPerson === 'On',
         audio: audio === 'On'
@@ -119,11 +141,10 @@ export default function BoutiqaatVideoGenLauncher({ app, onTaskStarted }: AppLau
       
       const genData = await genRes.json();
       if (!genRes.ok || !genData.taskId) {
-        throw new Error(genData.errorMessage || genData.error || 'Video generation failed');
+        throw new Error(genData.errorMessage || genData.msg || genData.error || 'Video generation failed');
       }
 
       // 3. Register task via onTaskStarted
-      // Using dummy nodeInfoList just to fulfill the signature and pass relevant metadata
       const nodeInfoList = [
         { nodeId: 'prompt', fieldName: 'text', fieldValue: prompt },
         { nodeId: 'model', fieldName: 'id', fieldValue: selectedModel }
@@ -341,19 +362,41 @@ export default function BoutiqaatVideoGenLauncher({ app, onTaskStarted }: AppLau
 
                   {/* Duration */}
                   <div>
-                    <label className="text-xs text-gray-400 font-semibold mb-2 flex items-center gap-2 uppercase tracking-wider">
-                      <Clock className="w-3.5 h-3.5" /> Video Duration
+                    <label className="text-xs text-gray-400 font-semibold mb-2 flex items-center justify-between uppercase tracking-wider">
+                      <span className="flex items-center gap-2">
+                        <Clock className="w-3.5 h-3.5" /> Video Duration
+                      </span>
+                      {selectedModel.toLowerCase().includes('seedance') || selectedModel.toLowerCase().includes('sparkvideo') ? (
+                        <span className="bg-[#242832] border border-white/10 text-white text-xs px-2.5 py-1 rounded-md font-mono">
+                          {duration.replace(/s$/, '')} s
+                        </span>
+                      ) : null}
                     </label>
-                    <div className="flex bg-black/30 p-1 rounded-lg border border-white/5">
-                      {DURATIONS.map(d => (
-                        <button 
-                          key={d} onClick={() => setDuration(d)}
-                          className={cn("flex-1 py-1.5 rounded-md text-xs font-medium transition-all text-center", duration === d ? "bg-white/10 text-white shadow" : "text-gray-500 hover:text-gray-300")}
-                        >
-                          {d}
-                        </button>
-                      ))}
-                    </div>
+                    
+                    {selectedModel.toLowerCase().includes('seedance') || selectedModel.toLowerCase().includes('sparkvideo') ? (
+                      <div className="flex items-center gap-3 pt-1">
+                        <input 
+                          type="range" 
+                          min={4} 
+                          max={15} 
+                          step={1}
+                          value={parseInt(duration.replace(/[^0-9]/g, ''), 10) || 5}
+                          onChange={(e) => setDuration(`${e.target.value}s`)}
+                          className="w-full h-2 bg-[#12141a] rounded-lg appearance-none cursor-pointer accent-lime-400"
+                        />
+                      </div>
+                    ) : (
+                      <div className="flex bg-black/30 p-1 rounded-lg border border-white/5">
+                        {DURATIONS.map(d => (
+                          <button 
+                            key={d} onClick={() => setDuration(d)}
+                            className={cn("flex-1 py-1.5 rounded-md text-xs font-medium transition-all text-center", duration === d ? "bg-white/10 text-white shadow" : "text-gray-500 hover:text-gray-300")}
+                          >
+                            {d}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex gap-4">

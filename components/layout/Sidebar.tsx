@@ -20,7 +20,7 @@ interface UserProfile {
 
 const EDITOR_NAV = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/image-agent', label: 'Image Agent ✨', icon: Bot },
+  { href: '/boutiqaat-flow', label: 'Boutiqaat Flow', icon: Zap },
   { href: '/studio', label: 'Image Studio', icon: ImageIcon },
   { href: '/video', label: 'Video Studio', icon: Film },
   { href: '/bundling', label: 'Bundling Studio', icon: Package },

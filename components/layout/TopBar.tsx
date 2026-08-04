@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 const ROUTE_TITLES: Record<string, { title: string; subtitle: string }> = {
   '/': { title: 'Studio Dashboard', subtitle: 'Welcome to your AI creative workspace' },
-  '/image-agent': { title: 'Image Agent ✨', subtitle: 'AI-powered image generation with intelligent prompt enhancement' },
+  '/boutiqaat-flow': { title: 'Boutiqaat Flow', subtitle: 'The ultimate AI creative workspace' },
   '/studio': { title: 'Image AI Studio', subtitle: 'Process and enhance product images with AI' },
   '/video': { title: 'Video AI Studio', subtitle: 'Generate and edit video content with AI' },
   '/history': { title: 'My History', subtitle: 'All your past AI generation tasks' },

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -11,13 +11,13 @@
 }
 
 :root {
-  --bg-primary: #08080E;
-  --bg-secondary: #0F0F1A;
-  --bg-card: #13131F;
-  --border: #1E1E30;
-  --accent-gold: #F59E0B;
+  --bg-primary: #050505;
+  --bg-secondary: #000000;
+  --bg-card: #121212;
+  --border: #1c1c1c;
+  --accent-gold: #D5FF40;
   --text-primary: #F1F5F9;
-  --text-secondary: #94A3B8;
+  --text-secondary: #C0C2B8;
 }
 
 html {
@@ -27,7 +27,7 @@ html {
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Poppins', 'Inter', system-ui, sans-serif;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

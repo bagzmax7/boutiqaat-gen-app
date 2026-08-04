@@ -52,3 +52,5 @@ test-alpha.ts
 # agent data dir
 /appDataDir/
 
+# MCP cache / Playwright files
+.playwright-mcp/

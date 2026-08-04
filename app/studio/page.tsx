@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/layout/Sidebar';
 import TopBar from '@/components/layout/TopBar';
 import BatchRemoveBackgroundLauncher from '@/components/apps/BatchRemoveBackgroundLauncher';
+import AutoRetouchLauncher from '@/components/apps/AutoRetouchLauncher';
 import AppLauncher from '@/components/apps/AppLauncher';
 import { useTasks } from '@/hooks/useTasks';
 import { AppDefinition } from '@/lib/types';
@@ -55,6 +56,47 @@ const IMAGE_APPS: (AppDefinition & {
     tags: ['Batch', 'PNG', 'PSD', 'Transparent'],
     estimatedTime: '~45 sec/image',
     nodeInfoSchema: [],
+  },
+  {
+    id: '2084718752813600769',
+    name: 'Auto Retouch Image',
+    description: 'Optimize and polish product images automatically, ensuring stunning skin tone, lighting correction, and high-fidelity output.',
+    category: 'image-editing',
+    icon: 'sparkles',
+    pinned: true,
+    status: 'live',
+    gradient: 'from-lime-500/20 to-emerald-600/10',
+    iconBg: 'from-lime-500 to-emerald-600',
+    iconColor: 'text-white',
+    tags: ['Retouch', 'Enhance', 'Lighting'],
+    estimatedTime: '~1 min/image',
+    nodeInfoSchema: [
+      {
+        nodeId: '51',
+        fieldName: 'image',
+        label: 'Source Image',
+        type: 'image-url',
+        required: true,
+      },
+      {
+        nodeId: '54',
+        fieldName: 'text',
+        label: 'Describe the scene/object',
+        type: 'textarea',
+        placeholder: 'e.g. Human, women model, white dress...',
+        defaultValue: 'Human, women model',
+        required: true,
+      },
+      {
+        nodeId: '37',
+        fieldName: 'value',
+        label: 'Effect Strength (0.0 - 1.0)',
+        type: 'number',
+        placeholder: 'e.g. 0.55',
+        defaultValue: '0.55',
+        required: true,
+      }
+    ],
   },
   {
     id: 'virtual-tryon',
@@ -109,6 +151,7 @@ const ICON_MAP: Record<string, React.ReactNode> = {
   palette: <Palette className="w-6 h-6" />,
   wand2: <Wand2 className="w-6 h-6" />,
   crop: <Crop className="w-6 h-6" />,
+  sparkles: <Sparkles className="w-6 h-6" />,
 };
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
@@ -165,9 +208,11 @@ export default function ImageStudioPage() {
                 <span className="text-sm font-semibold text-text-primary">{selectedApp.name}</span>
               </div>
 
-              <div className="px-6 py-6 max-w-4xl mx-auto">
+              <div className={cn("px-6 py-6 mx-auto", selectedApp.id === '2084718752813600769' ? "max-w-7xl" : "max-w-4xl")}>
                 {selectedApp.id === '2063548168545071105' ? (
                   <BatchRemoveBackgroundLauncher app={selectedApp} onTaskStarted={handleTaskStarted} />
+                ) : selectedApp.id === '2084718752813600769' ? (
+                  <AutoRetouchLauncher app={selectedApp} onTaskStarted={handleTaskStarted} />
                 ) : (
                   <AppLauncher app={selectedApp} onTaskStarted={handleTaskStarted} />
                 )}

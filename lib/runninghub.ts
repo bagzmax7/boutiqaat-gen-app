@@ -389,15 +389,30 @@ export async function generateVideoStandard(payload: {
   prompt: string;
   imageUrls?: string[];
   videoUrls?: string[];
+  audioUrls?: string[];
   ratio?: string;
+  aspect_ratio?: string;
   quality?: string;
+  resolution?: string;
   duration?: string;
   realPerson?: boolean;
   audio?: boolean;
+  generateAudio?: boolean;
+  realPersonMode?: boolean;
 }, apiKeyType?: 'enterprise' | 'consumer'): Promise<{ taskId: string; status: string; errorCode: string; errorMessage: string; results: any[]; clientId: string; promptTips: string }> {
   const headers = getAuthHeaders(apiKeyType);
-  const { model, ...bodyPayload } = payload;
-  const res = await fetch(`${BASE_URL}/openapi/v2/${model}`, {
+  const { model, ...rawBody } = payload;
+  const cleanModelPath = model.replace(/^\/+/, '');
+
+  // Filter out empty arrays and undefined/null properties to prevent API schema validation errors
+  const bodyPayload: Record<string, any> = {};
+  for (const [key, value] of Object.entries(rawBody)) {
+    if (value === undefined || value === null) continue;
+    if (Array.isArray(value) && value.length === 0) continue;
+    bodyPayload[key] = value;
+  }
+
+  const res = await fetch(`${BASE_URL}/openapi/v2/${cleanModelPath}`, {
     method: 'POST',
     headers,
     body: JSON.stringify(bodyPayload),
@@ -408,7 +423,13 @@ export async function generateVideoStandard(payload: {
     throw new Error(`RunningHub Video API error ${res.status}: ${errText}`);
   }
 
-  return res.json();
+  const data = await res.json();
+  if (data.code !== undefined && data.code !== 0) {
+    throw new Error(data.msg || data.errorMessage || `RunningHub API Error Code ${data.code}`);
+  }
+
+  const taskId = data.taskId || data.data?.taskId || data.data?.task_id;
+  return { ...data, taskId };
 }
 
 // ── Standard LLM Chat Completions API ──────────────────────
