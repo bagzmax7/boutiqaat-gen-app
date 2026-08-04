@@ -35,14 +35,23 @@ export async function GET(req: NextRequest) {
 
       const { data: fallbackTasks } = await fallbackQuery;
 
-      const mapped = (fallbackTasks || []).map(t => {
+      const seenTaskIds = new Set<string>();
+      const mapped: any[] = [];
+
+      for (const t of fallbackTasks || []) {
+        const taskId = t.runninghub_task_id || t.id;
+        if (!taskId || seenTaskIds.has(taskId)) {
+          continue;
+        }
+        seenTaskIds.add(taskId);
+
         const imageNode = t.node_info_list?.find((n: any) => n.nodeId === '51');
         const promptNode = t.node_info_list?.find((n: any) => n.nodeId === '54');
         const strengthNode = t.node_info_list?.find((n: any) => n.nodeId === '37');
 
-        return {
+        mapped.push({
           id: t.id,
-          task_id: t.runninghub_task_id || t.id,
+          task_id: taskId,
           prompt: promptNode?.fieldValue || 'Human, women model',
           strength: strengthNode?.fieldValue || '0.55',
           original_url: imageNode?.fieldValue || '',
@@ -51,8 +60,8 @@ export async function GET(req: NextRequest) {
           error_message: t.error || null,
           created_at: t.created_at,
           updated_at: t.updated_at,
-        };
-      });
+        });
+      }
 
       return NextResponse.json({ sessions: mapped });
     }
@@ -101,21 +110,37 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (error) {
-      // Fallback: insert to tasks table if dedicated table not yet migrated
-      await supabaseAdmin.from('tasks').insert({
-        id: payload.id,
-        runninghub_task_id: task_id,
-        user_id: session?.userId || null,
-        app_id: '2084718752813600769',
-        app_name: 'Auto Retouch Image',
-        status,
-        outputs: [],
-        node_info_list: [
-          { nodeId: '51', fieldName: 'image', fieldValue: original_url },
-          { nodeId: '54', fieldName: 'text', fieldValue: prompt },
-          { nodeId: '37', fieldName: 'value', fieldValue: strength }
-        ],
-      });
+      // Fallback: update the task row in 'tasks' table to include prompt and strength node info
+      // instead of creating a second row (since handleTaskStarted already inserts it).
+      const { data: updated } = await supabaseAdmin
+        .from('tasks')
+        .update({
+          node_info_list: [
+            { nodeId: '51', fieldName: 'image', fieldValue: original_url },
+            { nodeId: '54', fieldName: 'text', fieldValue: prompt },
+            { nodeId: '37', fieldName: 'value', fieldValue: strength }
+          ],
+        })
+        .eq('runninghub_task_id', task_id)
+        .select();
+
+      // If for some reason the row doesn't exist yet, insert it to be safe
+      if (!updated || updated.length === 0) {
+        await supabaseAdmin.from('tasks').insert({
+          id: id || `${Date.now()}-retouch`,
+          runninghub_task_id: task_id,
+          user_id: session?.userId || null,
+          app_id: '2084718752813600769',
+          app_name: 'Auto Retouch Image',
+          status,
+          outputs: [],
+          node_info_list: [
+            { nodeId: '51', fieldName: 'image', fieldValue: original_url },
+            { nodeId: '54', fieldName: 'text', fieldValue: prompt },
+            { nodeId: '37', fieldName: 'value', fieldValue: strength }
+          ],
+        });
+      }
     }
 
     return NextResponse.json({ success: true, session: data || payload });
