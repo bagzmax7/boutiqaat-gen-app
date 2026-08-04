@@ -1,25 +1,37 @@
-# Boutiqaat Flow Studio
+# Boutiqaat Creative Studio
 
-A premium, enterprise-grade AI creative workspace and generation dashboard built for the Boutiqaat team. Ditenagai oleh RunningHub OpenAPI, this application enables rapid generation of commercial visuals, cinematic campaign assets, and automated product batch processing.
+A premium, enterprise-grade AI creative workspace and generation dashboard built for the Boutiqaat team. Powered by RunningHub OpenAPI, this application enables rapid generation of commercial visuals, cinematic campaign assets, and automated product batch processing.
 
 ---
 
 ## ⚡ Core Creative Apps
 
-1. **Boutiqaat Flow** (formerly Quick Create Studio)
-   - Transform creative text prompts into commercial-quality visuals and video assets instantly.
-   - Keeps persistent generation history linked to your user account.
+1. **Boutiqaat Flow**
+   - Transform creative prompts into commercial visuals and cinematic campaign assets instantly.
+   - Retains persistent generation history linked to your user account.
 
-2. **Auto Retouch Image**
+2. **Auto Retouch Image** (under Image AI Studio)
    - Professional product photography optimizer with intelligent skin tone restoration, lighting correction, and high-fidelity output.
    - **Split Workflow Layout:** Keeps completed works in the top *Retouch History* panel (featuring interactive 1:1 Before/After sliding previews and batch ZIP downloads) while staging new uploads in the *New Retouch Tasks* inputs panel at the bottom.
    - **Concurrent Batch Processing:** Runs up to 10 images simultaneously by firing multiple API requests concurrently to eliminate queuing bottlenecks.
 
-3. **Batch Background Removal**
-   - Automatically detects and removes product backgrounds for up to 10 images at once.
+3. **Batch Background Removal** (under Image AI Studio)
+   - Automatically detects and removes product backgrounds for up to 10 images concurrently.
 
-4. **Video Studio & Social Resize**
-   - High-fidelity cinematic video generation tool with responsive social-resize capabilities for different target platform aspect ratios.
+4. **Social Resize** (under Image AI Studio)
+   - Automatically adapts aspect ratios of product images to fit social media platforms (1:1, 4:5, 9:16, etc.) with custom positioning.
+
+5. **Video Studio** (under Video Studio)
+   - High-fidelity cinematic video generation using text or image prompts.
+
+6. **Batch Video Background Removal** (under Video Studio)
+   - Seamlessly removes backgrounds from video files in batches.
+
+7. **Bundling Studio**
+   - Creative bundling workspace that automates product catalogs, asset grouping, and prompt-driven layout compositions.
+
+8. **Image Agent**
+   - Interactive chat agent that enhances, alters, and builds lifestyle brand assets dynamically.
 
 ---
 
@@ -66,7 +78,7 @@ npm install
 ### 2. Configure Environment Variables
 Create a `.env.local` file in the root directory:
 ```env
-NEXT_PUBLIC_APP_NAME="Boutiqaat Flow Studio"
+NEXT_PUBLIC_APP_NAME="Boutiqaat Creative Studio"
 NEXT_PUBLIC_SUPABASE_URL="https://your-project.supabase.co"
 SUPABASE_SERVICE_ROLE_KEY="your-supabase-service-role-key"
 
