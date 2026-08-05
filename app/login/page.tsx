@@ -124,10 +124,10 @@ export default function LoginPage() {
       <div className="w-full max-w-md relative z-10 animate-fade-in">
         {/* Brand */}
         <div className="text-center mb-10 flex flex-col items-center">
-          <div className="h-14 w-auto mb-3 flex items-center justify-center">
+          <div className="h-18 w-auto mb-3 flex items-center justify-center">
             <img src="/btq-logo.png" className="h-full w-auto object-contain" alt="Boutiqaat Logo" />
           </div>
-          <p className="text-text-muted text-xs tracking-[0.25em] uppercase font-semibold">Studio AI Hub</p>
+          <p className="text-text-muted text-xs tracking-[0.25em] uppercase font-semibold">Creative AI Studio</p>
         </div>
 
         {/* Card */}

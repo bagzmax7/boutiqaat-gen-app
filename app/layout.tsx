@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
-  title: 'Boutiqaat Studio AI Hub',
+  title: 'Boutiqaat Creative AI Studio',
   description: 'AI-powered Studio Platform for Boutiqaat Creative Team',
   icons: { icon: '/Favicon.png' },
 };

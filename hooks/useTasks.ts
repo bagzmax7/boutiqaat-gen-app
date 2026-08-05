@@ -32,6 +32,7 @@ function setGlobalTasks(action: Task[] | ((prev: Task[]) => Task[])) {
 }
 // --------------------
 
+let isSynced = false;
 let activePollingInterval: NodeJS.Timeout | null = null;
 
 export function useTasks() {
@@ -43,6 +44,59 @@ export function useTasks() {
     const listener = () => setTasks(getTasks());
     listeners.add(listener);
     return () => { listeners.delete(listener); };
+  }, []);
+
+  // Sync tasks from database on mount (once)
+  useEffect(() => {
+    if (isSynced) return;
+    isSynced = true;
+
+    async function syncWithDatabase() {
+      try {
+        const res = await fetch('/api/tasks?limit=50');
+        if (!res.ok) return;
+        const data = await res.json();
+        
+        const dbTasks: Task[] = (data.tasks || []).map((t: any) => ({
+          id: t.id,
+          taskId: t.runninghub_task_id,
+          appId: t.app_id || '',
+          appName: t.app_name || '',
+          status: t.status as TaskStatus,
+          createdAt: new Date(t.created_at).getTime(),
+          updatedAt: new Date(t.updated_at || t.created_at).getTime(),
+          nodeInfoList: t.node_info_list,
+          outputs: t.outputs,
+          error: t.error_message,
+          apiKeyType: t.api_key_type
+        }));
+
+        setGlobalTasks(prev => {
+          const mergedMap = new Map<string, Task>();
+          
+          dbTasks.forEach((t) => {
+            mergedMap.set(t.id, t);
+          });
+          
+          prev.forEach((t) => {
+            const dbVer = mergedMap.get(t.id);
+            if (dbVer) {
+              if (t.updatedAt > dbVer.updatedAt) {
+                mergedMap.set(t.id, t);
+              }
+            } else {
+              mergedMap.set(t.id, t);
+            }
+          });
+          
+          return Array.from(mergedMap.values()).sort((a, b) => b.createdAt - a.createdAt);
+        });
+      } catch (err) {
+        console.error('Failed to sync tasks with database:', err);
+      }
+    }
+
+    syncWithDatabase();
   }, []);
 
   // ── Add a new task ──────────────────────────────────────

@@ -32,13 +32,15 @@ const VIDEO_MODELS = [
   { id: 'kling-video-o1/image-to-video', name: 'Kling O1 (Image to Video)' },
   { id: 'kling-v3.0-std-image-to-video', name: 'Kling V3.0 Standard' },
   { id: 'google/veo3.1-pro/start-end-to-video-channel-low-price', name: 'Veo 3.1 Pro (Low Cost)' },
+  { id: 'google/veo3.1-fast/start-end-to-video-channel-low-price', name: 'Veo 3.1 Fast (Low Cost)' },
 ];
 
 const NANO_BANANA_RATIOS = ['Auto', '1:1', '2:3', '3:2', '4:5', '5:4', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1', '1:8', '8:1'];
 const GPT_IMAGE_RATIOS = ['Auto', '1:1', '2:3', '3:2', '4:5', '5:4', '4:3', '3:4', '16:9', '9:16', '21:9', '9:21', '2:1', '1:2', '3:1', '1:3'];
 const GROK_IMAGE_RATIOS = ['Auto', '960x960', '720x1280', '1280x720', '1168x784', '784x1168'];
 const VIDEO_RATIOS = ['Auto', '16:9', '4:3', '1:1', '3:4', '9:16', '21:9'];
-const QUALITIES = ['1k', '2k', '4k'];
+const IMAGE_QUALITIES = ['1k', '2k', '4k'];
+const VIDEO_QUALITIES = ['480p', '720p', '1080p', '2k', '4k'];
 
 // Helper SVG graphic icon for aspect ratio tiles
 function AspectRatioGraphic({ ratio, className = "w-4 h-4" }: { ratio: string; className?: string }) {
@@ -262,7 +264,11 @@ function QuickCreateContent() {
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsDragging(true);
+    const types = e.dataTransfer.types;
+    const hasFiles = types.includes('Files') || types.includes('application/json') || types.includes('text/plain') || types.includes('text/uri-list');
+    if (hasFiles) {
+      setIsDragging(true);
+    }
   };
 
   const handleDragLeave = (e: React.DragEvent) => {
@@ -684,7 +690,10 @@ function QuickCreateContent() {
                 {/* Mode Switcher Buttons inside dock */}
                 <div className="flex flex-col gap-1 bg-[#121316] border border-white/10 p-1 rounded-2xl flex-shrink-0">
                   <button
-                    onClick={() => setActiveMode('image')}
+                    onClick={() => {
+                      setActiveMode('image');
+                      setQuality('1k');
+                    }}
                     className={cn(
                       'p-2 rounded-xl transition-all',
                       activeMode === 'image' ? 'bg-lime-500/20 text-lime-400 border border-lime-500/40 shadow-sm' : 'text-gray-400 hover:text-white'
@@ -694,7 +703,10 @@ function QuickCreateContent() {
                     <ImageIcon className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={() => setActiveMode('video')}
+                    onClick={() => {
+                      setActiveMode('video');
+                      setQuality('720p');
+                    }}
                     className={cn(
                       'p-2 rounded-xl transition-all',
                       activeMode === 'video' ? 'bg-lime-500/20 text-lime-400 border border-lime-500/40 shadow-sm' : 'text-gray-400 hover:text-white'
@@ -898,13 +910,21 @@ function QuickCreateContent() {
                       className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#24272e] border border-white/10 text-xs font-semibold text-lime-400 hover:border-lime-500/40 transition-all"
                     >
                       <AspectRatioGraphic ratio={ratio} className="w-3.5 h-3.5 text-lime-400" />
-                      <span>{ratio} / {quality}</span>
+                      <span>{ratio} / {quality}{activeMode === 'video' && ` / ${duration}`}</span>
                       <ChevronDown className="w-3.5 h-3.5 text-gray-400 ml-0.5" />
                     </button>
 
                     {/* Popover Card Modal */}
                     {isRatioOpen && (
-                      <div className="absolute left-0 bottom-full mb-3 w-[340px] bg-[#141517] border border-white/15 rounded-2xl shadow-2xl p-4 z-50 animate-in fade-in slide-in-from-bottom-2 duration-150 space-y-4">
+                      <div 
+                        onClick={e => e.stopPropagation()}
+                        onDragStart={e => e.stopPropagation()}
+                        onDragOver={e => e.stopPropagation()}
+                        onDragEnter={e => e.stopPropagation()}
+                        onDragLeave={e => e.stopPropagation()}
+                        onDrop={e => e.stopPropagation()}
+                        className="absolute left-0 bottom-full mb-3 w-[340px] bg-[#141517] border border-white/15 rounded-2xl shadow-2xl p-4 z-50 animate-in fade-in slide-in-from-bottom-2 duration-150 space-y-4"
+                      >
                         <div className="space-y-2">
                           <span className="text-xs font-semibold text-gray-400 tracking-wide block">Aspect Ratio</span>
                           <div className="grid grid-cols-6 gap-2 max-h-56 overflow-y-auto pr-1">
@@ -932,8 +952,11 @@ function QuickCreateContent() {
 
                         <div className="space-y-2 pt-2 border-t border-white/10">
                           <span className="text-xs font-semibold text-gray-400 tracking-wide block">Resolution</span>
-                          <div className="grid grid-cols-3 gap-2 bg-[#0d0e10] p-1 rounded-xl border border-white/5">
-                            {QUALITIES.map(q => {
+                          <div className={cn(
+                            "grid gap-2 bg-[#0d0e10] p-1 rounded-xl border border-white/5",
+                            activeMode === 'video' ? "grid-cols-5" : "grid-cols-3"
+                          )}>
+                            {(activeMode === 'video' ? VIDEO_QUALITIES : IMAGE_QUALITIES).map(q => {
                               const isSelected = quality === q;
                               return (
                                 <button
@@ -941,9 +964,9 @@ function QuickCreateContent() {
                                   type="button"
                                   onClick={() => setQuality(q)}
                                   className={cn(
-                                    'py-2 text-center rounded-lg text-xs font-bold transition-all',
+                                    'py-2 text-center rounded-lg text-[10px] font-bold transition-all',
                                     isSelected
-                                      ? 'bg-[#24272e] text-white border border-white/15 shadow-md'
+                                      ? 'bg-[#24272e] text-white border border-white/15 shadow-md font-extrabold'
                                       : 'text-gray-400 hover:text-gray-200'
                                   )}
                                 >
@@ -953,6 +976,101 @@ function QuickCreateContent() {
                             })}
                           </div>
                         </div>
+
+                        {/* Video Settings Toggles */}
+                        {activeMode === 'video' && (
+                          <>
+                            {/* Duration */}
+                            <div className="space-y-2 pt-2 border-t border-white/10">
+                              <label className="text-xs font-semibold text-gray-400 tracking-wide flex items-center justify-between uppercase">
+                                <span className="flex items-center gap-2">
+                                  <Clock className="w-3.5 h-3.5" /> Video Duration
+                                </span>
+                                {(selectedVideoModel.toLowerCase().includes('seedance') || selectedVideoModel.toLowerCase().includes('sparkvideo')) && (
+                                  <span className="bg-[#242832] border border-white/10 text-white text-xs px-2 py-0.5 rounded-md font-mono">
+                                    {duration.replace(/s$/, '')} s
+                                  </span>
+                                )}
+                              </label>
+
+                              {selectedVideoModel.toLowerCase().includes('seedance') || selectedVideoModel.toLowerCase().includes('sparkvideo') ? (
+                                <div className="flex items-center gap-3 pt-1">
+                                  <input 
+                                    type="range" 
+                                    min={4} 
+                                    max={15} 
+                                    step={1}
+                                    value={parseInt(duration.replace(/[^0-9]/g, ''), 10) || 6}
+                                    onChange={(e) => setDuration(`${e.target.value}s`)}
+                                    className="w-full h-2 bg-[#0d0e10] rounded-lg appearance-none cursor-pointer accent-lime-400"
+                                  />
+                                </div>
+                              ) : (
+                                <div className="grid grid-cols-4 gap-2 bg-[#0d0e10] p-1 rounded-xl border border-white/5">
+                                  {['5s', '6s', '10s', '15s'].map(d => {
+                                    const isSelected = duration === d;
+                                    return (
+                                      <button 
+                                        key={d}
+                                        type="button"
+                                        onClick={() => setDuration(d)}
+                                        className={cn(
+                                          "py-1.5 text-center rounded-lg text-xs font-bold transition-all",
+                                          isSelected ? "bg-[#24272e] text-white border border-white/15 shadow-md" : "text-gray-500 hover:text-gray-300"
+                                        )}
+                                      >
+                                        {d}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Real Person & Generate Audio Toggles */}
+                            <div className="flex gap-4 pt-2 border-t border-white/10">
+                              {/* Real Person */}
+                              <div className="flex-1 space-y-2">
+                                <span className="text-[11px] font-semibold text-gray-400 block uppercase">Real Person</span>
+                                <div className="grid grid-cols-2 gap-1 bg-[#0d0e10] p-0.5 rounded-lg border border-white/5">
+                                  {['On', 'Off'].map(v => (
+                                    <button 
+                                      key={v}
+                                      type="button"
+                                      onClick={() => setRealPerson(v)}
+                                      className={cn(
+                                        "py-1.5 text-center rounded text-[10px] font-bold transition-all",
+                                        realPerson === v ? "bg-[#24272e] text-white shadow-sm" : "text-gray-500"
+                                      )}
+                                    >
+                                      {v}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+
+                              {/* Audio */}
+                              <div className="flex-1 space-y-2">
+                                <span className="text-[11px] font-semibold text-gray-400 block uppercase">Audio</span>
+                                <div className="grid grid-cols-2 gap-1 bg-[#0d0e10] p-0.5 rounded-lg border border-white/5">
+                                  {['On', 'Off'].map(v => (
+                                    <button 
+                                      key={v}
+                                      type="button"
+                                      onClick={() => setAudio(v)}
+                                      className={cn(
+                                        "py-1.5 text-center rounded text-[10px] font-bold transition-all",
+                                        audio === v ? "bg-[#24272e] text-white shadow-sm" : "text-gray-500"
+                                      )}
+                                    >
+                                      {v}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </>
+                        )}
                       </div>
                     )}
                   </div>

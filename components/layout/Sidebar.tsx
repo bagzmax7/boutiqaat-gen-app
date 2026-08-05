@@ -82,13 +82,13 @@ export default function Sidebar() {
       {/* Brand */}
       <div className={cn('flex items-center gap-3 p-4 border-b border-border h-16 flex-shrink-0', collapsed && 'justify-center px-2')}>
         {collapsed ? (
-          <div className="w-8 h-8 flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
             <img src="/btq-logo.png" className="w-full h-full object-contain" alt="Boutiqaat Logo" />
           </div>
         ) : (
           <div className="flex flex-col items-start overflow-hidden animate-fade-in">
-            <img src="/btq-logo.png" className="h-7 w-auto object-contain" alt="Boutiqaat Logo" />
-            <p className="text-[8px] text-text-muted leading-none font-semibold tracking-[0.2em] uppercase mt-1 pl-0.5">STUDIO AI HUB</p>
+            <img src="/btq-logo.png" className="h-9 w-auto object-contain" alt="Boutiqaat Logo" />
+            <p className="text-[8px] text-text-muted leading-none font-semibold tracking-[0.2em] uppercase mt-1.5 pl-0.5">CREATIVE AI STUDIO</p>
           </div>
         )}
       </div>
