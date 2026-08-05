@@ -23,16 +23,12 @@ const IMAGE_MODELS = [
 ];
 
 const VIDEO_MODELS = [
-  { id: 'rhart-video/sparkvideo-2.0-mini/multimodal-video', name: 'Seedance 2.0-mini (Multimodal)' },
-  { id: 'bytedance/seedance-2.0-global/image-to-video', name: 'Seedance 2.0 Global' },
-  { id: 'rhart-video/sparkvideo-2.0/text-to-video', name: 'SparkVideo 2.0 (Text to Video)' },
-  { id: 'rhart-video/sparkvideo-2.0/image-to-video', name: 'SparkVideo 2.0 (Image to Video)' },
-  { id: 'rhart-video/sparkvideo-2.0/multimodal-video', name: 'SparkVideo 2.0 (Multimodal)' },
-  { id: 'seedance-2.0-global-fast/image-to-video', name: 'Seedance 2.0 Global Fast' },
-  { id: 'kling-video-o1/image-to-video', name: 'Kling O1 (Image to Video)' },
-  { id: 'kling-v3.0-std-image-to-video', name: 'Kling V3.0 Standard' },
-  { id: 'google/veo3.1-pro/start-end-to-video-channel-low-price', name: 'Veo 3.1 Pro (Low Cost)' },
-  { id: 'google/veo3.1-fast/start-end-to-video-channel-low-price', name: 'Veo 3.1 Fast (Low Cost)' },
+  { id: 'seedance-2.0-mini', name: 'Seedance 2.0 Mini (Recommended)' },
+  { id: 'seedance-2.0-official', name: 'Seedance 2.0 (Official)' },
+  { id: 'gemini-omni-flash', name: 'Gemini Omni Flash (Recommended)' },
+  { id: 'veo-3.1-fast', name: 'Veo 3.1 Fast (Recommended)' },
+  { id: 'minimax-h3', name: 'MiniMax H3 (New)' },
+  { id: 'ltx-2.3', name: 'LTX 2.3 (New)' },
 ];
 
 const NANO_BANANA_RATIOS = ['Auto', '1:1', '2:3', '3:2', '4:5', '5:4', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1', '1:8', '8:1'];

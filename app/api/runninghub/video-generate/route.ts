@@ -44,87 +44,100 @@ export async function POST(request: Request) {
     const useAudio = audio !== undefined ? audio : (generateAudio !== undefined ? generateAudio : true);
     const useRealPerson = realPerson !== undefined ? realPerson : (realPersonMode !== undefined ? realPersonMode : false);
 
-    // ── Model-specific mapping ──
-    if (model.includes('kling-v3.0-std') || model.includes('kling-video-o1')) {
-      // Kling models
-      targetPath = model.includes('kling-v3.0-std') 
-        ? 'kling-v3.0-std/image-to-video'
-        : 'kling-video-o1/image-to-video';
-      
-      mappedPayload = {
-        prompt,
-        firstImageUrl: imageUrls[0] || null,
-        lastImageUrl: imageUrls[1] || null,
-        duration: String(durationNum),
-        sound: useAudio,
-        resolution: cleanQuality
-      };
-    } else if (model.includes('google/veo3.1-pro') || model.includes('rhart-video-v3.1-pro')) {
-      // Google Veo 3.1 Pro (Low cost channel)
-      targetPath = 'rhart-video-v3.1-pro/start-end-to-video';
-      mappedPayload = {
-        prompt,
-        firstFrameUrl: imageUrls[0] || null,
-        lastFrameUrl: imageUrls[1] || null,
-        aspectRatio: cleanRatio,
-        duration: String(durationNum),
-        resolution: cleanQuality
-      };
-    } else if (model.includes('google/veo3.1-fast') || model.includes('rhart-video-v3.1-fast')) {
-      // Google Veo 3.1 Fast (Low cost channel)
-      targetPath = 'rhart-video-v3.1-fast/start-end-to-video';
-      mappedPayload = {
-        prompt,
-        firstFrameUrl: imageUrls[0] || null,
-        lastFrameUrl: imageUrls[1] || null,
-        aspectRatio: cleanRatio,
-        duration: String(durationNum),
-        resolution: cleanQuality
-      };
-    } else if (model.includes('sparkvideo-2.0') && model.includes('image-to-video')) {
-      // SparkVideo 2.0 (Image to Video)
-      targetPath = 'rhart-video/sparkvideo-2.0/image-to-video';
-      mappedPayload = {
-        prompt,
-        firstFrameUrl: imageUrls[0] || null,
-        lastFrameUrl: imageUrls[1] || null,
-        generateAudio: useAudio,
-        duration: String(durationNum),
-        resolution: cleanQuality
-      };
-    } else if (model.includes('seedance-2.0-global-fast') || model.includes('seedance-2.0-global')) {
-      // Seedance 2.0 Global / Global Fast (image-to-video)
-      const isFast = model.includes('fast') || model.includes('global-fast');
-      targetPath = isFast 
-        ? 'rhart-video/sparkvideo-2.0-fast/image-to-video'
-        : 'rhart-video/sparkvideo-2.0/image-to-video';
-      
-      mappedPayload = {
-        prompt,
-        firstFrameUrl: imageUrls[0] || null,
-        lastFrameUrl: imageUrls[1] || null,
-        generateAudio: useAudio,
-        duration: String(durationNum),
-        resolution: cleanQuality
-      };
-    } else if (model.includes('text-to-video')) {
-      // Text-to-Video models
-      targetPath = 'rhart-video/sparkvideo-2.0/text-to-video';
+    const hasImages = imageUrls.length > 0;
+    const hasVideos = videoUrls.length > 0;
+    const hasAudio = audioUrls.length > 0;
+    const isMultimodal = (imageUrls.length > 1 && model !== 'veo-3.1-fast') || hasVideos || hasAudio;
+
+    // ── Model-specific endpoint path routing ──
+    if (model === 'seedance-2.0-mini') {
+      if (isMultimodal) {
+        targetPath = 'rhart-video/sparkvideo-2.0-mini/multimodal-video';
+      } else if (hasImages) {
+        targetPath = 'rhart-video/sparkvideo-2.0-mini/image-to-video';
+      } else {
+        targetPath = 'rhart-video/sparkvideo-2.0-mini/text-to-video';
+      }
+    } else if (model === 'seedance-2.0-official') {
+      if (isMultimodal) {
+        targetPath = 'rhart-video/sparkvideo-2.0/multimodal-video';
+      } else if (hasImages) {
+        targetPath = 'rhart-video/sparkvideo-2.0/image-to-video';
+      } else {
+        targetPath = 'rhart-video/sparkvideo-2.0/text-to-video';
+      }
+    } else if (model === 'gemini-omni-flash') {
+      if (isMultimodal) {
+        targetPath = 'gemini-omni-flash/video-edit';
+      } else if (hasImages) {
+        targetPath = 'gemini-omni-flash/image-to-video';
+      } else {
+        targetPath = 'gemini-omni-flash/text-to-video';
+      }
+    } else if (model === 'veo-3.1-fast') {
+      if (imageUrls.length === 2) {
+        targetPath = 'rhart-video-v3.1-fast/start-end-to-video';
+      } else if (hasImages) {
+        targetPath = 'rhart-video-v3.1-fast/image-to-video';
+      } else {
+        targetPath = 'rhart-video-v3.1-fast/text-to-video';
+      }
+    } else if (model === 'minimax-h3') {
+      if (isMultimodal) {
+        targetPath = 'minimax/hailuo-h3/multimodal-to-video';
+      } else if (hasImages) {
+        targetPath = 'minimax/hailuo-h3/image-to-video';
+      } else {
+        targetPath = 'minimax/hailuo-h3/text-to-video';
+      }
+    } else if (model === 'ltx-2.3') {
+      if (hasImages) {
+        targetPath = 'rhart-video/ltx-2.3/image-to-video';
+      } else {
+        targetPath = 'rhart-video/ltx-2.3/text-to-video';
+      }
+    }
+
+    // ── Build payload parameters based on target endpoint ──
+    if (targetPath.endsWith('/text-to-video')) {
       mappedPayload = {
         prompt,
         ratio: cleanRatio,
+        aspectRatio: cleanRatio,
         duration: String(durationNum),
         resolution: cleanQuality
       };
+    } else if (targetPath.endsWith('/image-to-video') || targetPath.endsWith('/start-end-to-video')) {
+      if (targetPath === 'rhart-video-v3.1-fast/image-to-video') {
+        mappedPayload = {
+          prompt,
+          image: imageUrls[0],
+          aspectRatio: cleanRatio,
+          duration: String(durationNum),
+          resolution: cleanQuality,
+          generateAudio: useAudio
+        };
+      } else {
+        mappedPayload = {
+          prompt,
+          firstFrameUrl: imageUrls[0] || null,
+          lastFrameUrl: imageUrls[1] || null,
+          duration: String(durationNum),
+          resolution: cleanQuality,
+          generateAudio: useAudio,
+          aspectRatio: cleanRatio,
+          ratio: cleanRatio
+        };
+      }
     } else {
-      // Default Multimodal or Fallback
-      // e.g. rhart-video/sparkvideo-2.0-mini/multimodal-video
+      // Multimodal / Video Edit endpoints
       mappedPayload = {
         prompt,
         imageUrls: imageUrls.length > 0 ? imageUrls : undefined,
         videoUrls: videoUrls.length > 0 ? videoUrls : undefined,
         audioUrls: audioUrls.length > 0 ? audioUrls : undefined,
         ratio: cleanRatio,
+        aspectRatio: cleanRatio,
         resolution: cleanQuality,
         duration: String(durationNum),
         generateAudio: useAudio,
