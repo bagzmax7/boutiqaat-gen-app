@@ -1,5 +1,6 @@
-﻿import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
+import { queryTask } from '@/lib/runninghub';
 
 /**
  * POST /api/webhook/runninghub
@@ -48,7 +49,7 @@ export async function POST(req: NextRequest) {
   // 3. Lookup local task by RunningHub taskId
   const { data: task, error: fetchErr } = await supabaseAdmin
     .from('tasks')
-    .select('id, status')
+    .select('id, status, api_key_type, node_info_list')
     .eq('runninghub_task_id', rhTaskId)
     .single();
 
@@ -70,9 +71,36 @@ export async function POST(req: NextRequest) {
       fileType: r.outputType || 'png',
     }));
 
+    // Fetch usage details from RunningHub API
+    let usageObj = null;
+    try {
+      const statusRes = await queryTask(rhTaskId, task.api_key_type || undefined);
+      if (statusRes.usage) {
+        usageObj = statusRes.usage;
+      }
+    } catch (queryErr) {
+      console.error(`[Webhook] Failed to query usage for RunningHub task ${rhTaskId}:`, queryErr);
+    }
+
+    const nodeInfo = task.node_info_list || [];
+    if (usageObj) {
+      const filtered = nodeInfo.filter((n: any) => n.nodeId !== 'USAGE');
+      filtered.push({
+        nodeId: 'USAGE',
+        fieldName: 'usage',
+        fieldValue: JSON.stringify(usageObj)
+      });
+      task.node_info_list = filtered;
+    }
+
     const { error: updateErr } = await supabaseAdmin
       .from('tasks')
-      .update({ status: 'SUCCESS', outputs, updated_at: new Date().toISOString() })
+      .update({ 
+        status: 'SUCCESS', 
+        outputs, 
+        node_info_list: task.node_info_list,
+        updated_at: new Date().toISOString() 
+      })
       .eq('id', task.id);
 
     if (updateErr) {
@@ -80,7 +108,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'DB update failed' }, { status: 500 });
     }
 
-    console.log(`[Webhook] Task ${task.id} -> SUCCESS (${outputs.length} outputs)`);
+    console.log(`[Webhook] Task ${task.id} -> SUCCESS (${outputs.length} outputs, usage updated)`);
 
   } else if (status === 'FAILED' || status === 'CANCELED') {
     const errorMsg = errorMessage || JSON.stringify(failedReason || {}) || 'Generation failed';

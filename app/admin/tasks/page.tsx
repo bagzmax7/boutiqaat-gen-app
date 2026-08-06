@@ -222,6 +222,26 @@ export default function AdminTaskMonitorPage() {
   const [selectedTask, setSelectedTask] = useState<TaskRecord | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showApiKey, setShowApiKey] = useState(false);
+  const [syncingBills, setSyncingBills] = useState(false);
+
+  const handleSyncBills = async () => {
+    setSyncingBills(true);
+    const toastId = toast.loading('Syncing task bills from RunningHub...');
+    try {
+      const res = await fetch('/api/admin/tasks/sync', { method: 'POST' });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        toast.success(`Synced ${data.syncedCount} tasks successfully!`, { id: toastId });
+        fetchData();
+      } else {
+        toast.error('Sync failed: ' + (data.error || 'Unknown error'), { id: toastId });
+      }
+    } catch (err: any) {
+      toast.error('Sync failed: ' + err.message, { id: toastId });
+    } finally {
+      setSyncingBills(false);
+    }
+  };
 
   // Column config
   const [visibleColumns, setVisibleColumns] = useState<string[]>([
@@ -405,6 +425,18 @@ export default function AdminTaskMonitorPage() {
                 className="border border-[#2a2d35] text-[#a0a5b5] font-semibold text-xs px-5 py-2 rounded-lg hover:bg-[#181a1f] hover:text-white transition-colors"
               >
                 Export
+              </button>
+              <button
+                onClick={handleSyncBills}
+                disabled={syncingBills}
+                className="flex items-center gap-1.5 border border-accent-purple/40 text-accent-purple font-semibold text-xs px-5 py-2 rounded-lg hover:bg-accent-purple/10 disabled:opacity-50 disabled:pointer-events-none transition-colors"
+              >
+                {syncingBills ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <RefreshCw className="w-3.5 h-3.5" />
+                )}
+                Sync bills
               </button>
             </div>
 
