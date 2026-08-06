@@ -38,9 +38,12 @@ interface BillingStats {
   successCount: number;
   failedCount: number;
   runningCount: number;
+  queuedCount: number;
+  missingBillingCount: number;
   totalDuration: number;
   totalCoins: number;
   totalAmount: number;
+  totalThirdParty: number;
 }
 
 // ─── Utility Functions ──────────────────────────────────────────────────────────
@@ -193,14 +196,21 @@ export default function AdminBillingPage() {
     return () => clearInterval(iv);
   }, [fetchData]);
 
-  const handleSyncBills = async () => {
+  const handleSyncBills = async (days = 90) => {
     setSyncingBills(true);
-    const toastId = toast.loading('Syncing billing data from RunningHub...');
+    const toastId = toast.loading(`Syncing billing data (last ${days} days)...`);
     try {
-      const res = await fetch('/api/admin/tasks/sync', { method: 'POST' });
+      const res = await fetch('/api/admin/tasks/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ days }),
+      });
       const data = await res.json();
       if (res.ok && data.success) {
-        toast.success(`Synced ${data.syncedCount} tasks!`, { id: toastId });
+        toast.success(
+          `Synced ${data.syncedCount}/${data.totalTargeted} tasks (${data.totalScanned} scanned in ${days} days)`,
+          { id: toastId, duration: 5000 }
+        );
         fetchData();
       } else {
         toast.error('Sync failed: ' + (data.error || 'Unknown'), { id: toastId });
@@ -271,14 +281,23 @@ export default function AdminBillingPage() {
                 <RefreshCw className={cn('w-3.5 h-3.5', refreshing && 'animate-spin')} />
                 Refresh
               </button>
-              <button
-                onClick={handleSyncBills}
-                disabled={syncingBills}
-                className="flex items-center gap-1.5 border border-violet-500/40 text-xs font-semibold text-violet-400 bg-violet-500/5 px-3.5 py-2 rounded-lg hover:bg-violet-500/10 disabled:opacity-50 transition-all"
-              >
-                {syncingBills ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5" />}
-                Sync Bills
-              </button>
+              <div className="relative group">
+                <button
+                  onClick={() => handleSyncBills(90)}
+                  disabled={syncingBills}
+                  className="flex items-center gap-1.5 border border-violet-500/40 text-xs font-semibold text-violet-400 bg-violet-500/5 px-3.5 py-2 rounded-lg hover:bg-violet-500/10 disabled:opacity-50 transition-all"
+                >
+                  {syncingBills ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5" />}
+                  Sync Bills (90d)
+                </button>
+                {/* Dropdown for extended sync */}
+                <div className="absolute right-0 top-full mt-1 hidden group-hover:block z-50 bg-[#111316] border border-[#22252e] rounded-xl shadow-xl overflow-hidden min-w-[160px]">
+                  <button onClick={() => handleSyncBills(30)} className="w-full px-4 py-2.5 text-xs text-left text-[#a0a5b5] hover:bg-[#181b21] hover:text-white transition-colors">Sync last 30 days</button>
+                  <button onClick={() => handleSyncBills(90)} className="w-full px-4 py-2.5 text-xs text-left text-[#a0a5b5] hover:bg-[#181b21] hover:text-white transition-colors">Sync last 90 days</button>
+                  <button onClick={() => handleSyncBills(180)} className="w-full px-4 py-2.5 text-xs text-left text-[#a0a5b5] hover:bg-[#181b21] hover:text-white transition-colors">Sync last 180 days</button>
+                  <button onClick={() => handleSyncBills(365)} className="w-full px-4 py-2.5 text-xs text-left text-[#a0a5b5] hover:bg-[#181b21] hover:text-white transition-colors font-semibold text-amber-400">Sync last 365 days</button>
+                </div>
+              </div>
               <button
                 onClick={() => exportCSV(filtered)}
                 className="flex items-center gap-1.5 border border-[#2a2d35] text-xs font-semibold text-[#a0a5b5] bg-[#111316] px-3.5 py-2 rounded-lg hover:text-white hover:border-[#3a3d45] transition-all"
@@ -302,7 +321,7 @@ export default function AdminBillingPage() {
               icon={Activity}
               label="Total Tasks"
               value={stats?.total || 0}
-              sub={`${stats?.successCount || 0} success · ${stats?.failedCount || 0} failed`}
+              sub={`✓ ${stats?.successCount || 0} · ✗ ${stats?.failedCount || 0} · ⏳ ${stats?.runningCount || 0}`}
               color="bg-blue-500/15"
             />
             <StatCard
@@ -315,15 +334,15 @@ export default function AdminBillingPage() {
             <StatCard
               icon={Zap}
               label="RH Coins Used"
-              value={stats?.totalCoins?.toFixed(2) || '0'}
-              sub="Enterprise API total"
+              value={(stats?.totalCoins || 0).toFixed(2)}
+              sub={`${stats?.missingBillingCount || 0} tasks missing billing data`}
               color="bg-violet-500/15"
             />
             <StatCard
               icon={DollarSign}
-              label="Wallet Amount"
+              label="Final Amount (USD)"
               value={`$${(stats?.totalAmount || 0).toFixed(4)}`}
-              sub="Total billed (USD)"
+              sub={`3rd Party: $${(stats?.totalThirdParty || 0).toFixed(4)}`}
               color="bg-emerald-500/15"
             />
           </div>
@@ -381,7 +400,7 @@ export default function AdminBillingPage() {
 
               {/* Search button */}
               <button
-                onClick={() => fetchData()}
+                onClick={() => { setPage(1); fetchData(); }}
                 className="bg-emerald-500 text-[#0a0b0d] font-bold text-xs px-5 py-1.5 rounded-lg hover:bg-emerald-400 transition-colors"
               >
                 Query
@@ -496,7 +515,12 @@ export default function AdminBillingPage() {
                         {visibleCols.includes('saved') && <td className="px-4 py-3 text-xs align-middle whitespace-nowrap text-[#606575]">—</td>}
                         {visibleCols.includes('amount') && (
                           <td className="px-4 py-3 text-xs align-middle whitespace-nowrap font-semibold">
-                            {r.amount > 0 ? <span className="text-emerald-400">${r.amount.toFixed(4)}</span> : <span className="text-[#606575]">—</span>}
+                            {r.amount > 0 
+                              ? <span className="text-emerald-400">${r.amount.toFixed(4)}</span> 
+                              : r.taskStatus?.toUpperCase() === 'SUCCESS'
+                                ? <span className="text-amber-500 text-[10px] font-semibold">⚠ Pending Sync</span>
+                                : <span className="text-[#606575]">—</span>
+                            }
                           </td>
                         )}
                         {visibleCols.includes('mode') && <td className="px-4 py-3 text-xs align-middle whitespace-nowrap text-[#a0a5b5]">Standard</td>}

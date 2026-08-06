@@ -4,14 +4,15 @@ import { supabaseAdmin } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
-const BASE_URL = process.env.RUNNINGHUB_BASE_URL || 'https://www.runninghub.cn';
-const ENTERPRISE_KEY = process.env.RUNNINGHUB_API_KEY_ENTERPRISE || '';
-
 /**
  * GET /api/admin/tasks/rh-billing
- * Fetch billing records directly from RunningHub API for the Enterprise key.
- * RunningHub API: POST /task/openapi/outputs
- * Used to get the raw outputs + billing info for all tasks via enterprise key.
+ * Returns all enterprise tasks with billing data from our Supabase database.
+ *
+ * Billing field mapping from RunningHub /task/openapi/outputs:
+ *   consumeCoins       → RH Coins consumed (the primary billing unit)
+ *   consumeMoney       → Final Amount in USD (what RunningHub charges)
+ *   taskCostTime       → Duration in seconds
+ *   thirdPartyConsumeMoney → 3rd party API cost (e.g. OpenAI fees)
  */
 export async function GET(req: NextRequest) {
   const session = await getSessionFromRequest(req);
@@ -19,7 +20,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
-  // Fetch enterprise tasks from our DB within date range
   const url = new URL(req.url);
   const dateFrom = url.searchParams.get('from') || '';
   const dateTo = url.searchParams.get('to') || '';
@@ -27,22 +27,38 @@ export async function GET(req: NextRequest) {
 
   let query = supabaseAdmin
     .from('tasks')
-    .select('id, runninghub_task_id, app_name, status, created_at, user_id, outputs, node_info_list, users(name, email)')
+    .select(`
+      id,
+      runninghub_task_id,
+      app_name,
+      status,
+      created_at,
+      user_id,
+      outputs,
+      node_info_list,
+      users(name, email)
+    `)
     .eq('api_key_type', 'enterprise')
     .not('runninghub_task_id', 'is', null);
 
-  if (status) query = query.eq('status', status);
+  if (status) query = query.eq('status', status.toUpperCase());
 
   if (dateFrom) {
-    const fromStr = dateFrom.includes(' ') ? dateFrom : dateFrom + ' 00:00:00';
-    query = query.gte('created_at', new Date(fromStr).toISOString());
+    try {
+      const d = new Date(dateFrom);
+      d.setHours(0, 0, 0, 0);
+      query = query.gte('created_at', d.toISOString());
+    } catch {}
   }
   if (dateTo) {
-    const toStr = dateTo.includes(' ') ? dateTo : dateTo + ' 23:59:59';
-    query = query.lte('created_at', new Date(toStr).toISOString());
+    try {
+      const d = new Date(dateTo);
+      d.setHours(23, 59, 59, 999);
+      query = query.lte('created_at', d.toISOString());
+    } catch {}
   }
 
-  query = query.order('created_at', { ascending: false }).limit(500);
+  query = query.order('created_at', { ascending: false }).limit(1000);
 
   const { data: tasks, error } = await query;
 
@@ -50,56 +66,85 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  // Calculate summary stats
+  // ─── Stats Aggregates ───────────────────────────────────────
   let totalDuration = 0;
   let totalCoins = 0;
   let totalAmount = 0;
+  let totalThirdParty = 0;
   let successCount = 0;
   let failedCount = 0;
   let runningCount = 0;
+  let queuedCount = 0;
+  let missingBillingCount = 0;
 
   const records = (tasks || []).map((t: any) => {
-    const nodeInfoList = t.node_info_list || [];
-    const usageNode = nodeInfoList.find((n: any) => n.nodeId === 'USAGE' && n.fieldName === 'usage');
+    const nodeInfoList: any[] = t.node_info_list || [];
+
+    // Find USAGE node — this is set by our sync/webhook
+    const usageNode = nodeInfoList.find(
+      (n: any) => n.nodeId === 'USAGE' && n.fieldName === 'usage'
+    );
+
     let usage: any = null;
     if (usageNode?.fieldValue) {
       try { usage = JSON.parse(usageNode.fieldValue); } catch {}
     }
 
-    const duration = usage ? parseInt(usage.taskCostTime || '0') : 0;
-    const coins = usage ? parseFloat(usage.consumeCoins || '0') : 0;
-    const amount = usage ? parseFloat(usage.consumeMoney || '0') : 0;
-    const thirdParty = usage ? parseFloat(usage.thirdPartyConsumeMoney || '0') : 0;
+    // ── Parse billing fields ──────────────────────────────────
+    // consumeCoins  = RH coins used  (shown as "RH Coin" in RunningHub)
+    // consumeMoney  = USD amount     (shown as "Final Amount($)" in RunningHub)
+    // taskCostTime  = seconds        (shown as "Duration" in RunningHub)
+    // thirdPartyConsumeMoney = external API cost in USD
+    const coins = usage?.consumeCoins != null ? parseFloat(usage.consumeCoins) : 0;
+    const amount = usage?.consumeMoney != null ? parseFloat(usage.consumeMoney) : 0;
+    const duration = usage?.taskCostTime != null ? parseInt(usage.taskCostTime) : 0;
+    const thirdParty = usage?.thirdPartyConsumeMoney != null ? parseFloat(usage.thirdPartyConsumeMoney) : 0;
+    const hasBilling = usage !== null && (coins > 0 || amount > 0 || duration > 0);
 
-    if (t.status === 'SUCCESS') successCount++;
-    else if (t.status === 'FAILED') failedCount++;
-    else if (t.status === 'RUNNING') runningCount++;
+    // ── Status counters ───────────────────────────────────────
+    const s = (t.status || '').toUpperCase();
+    if (s === 'SUCCESS') {
+      successCount++;
+      if (hasBilling) {
+        totalDuration += duration;
+        totalCoins += coins;
+        totalAmount += amount;
+        totalThirdParty += thirdParty;
+      } else {
+        missingBillingCount++;
+      }
+    } else if (s === 'FAILED') failedCount++;
+    else if (s === 'RUNNING') runningCount++;
+    else if (s === 'QUEUED') queuedCount++;
 
-    if (t.status === 'SUCCESS') {
-      totalDuration += duration;
-      totalCoins += coins;
-      totalAmount += amount;
-    }
+    // ── Task name resolution ──────────────────────────────────
+    // Priority: stored app_name > usage.taskName > "Untitled Task"
+    const taskName = t.app_name 
+      || usage?.taskName 
+      || 'Untitled Task';
+
+    // ── Outputs ───────────────────────────────────────────────
+    const outputs = Array.isArray(t.outputs) ? t.outputs : [];
 
     return {
       taskId: t.runninghub_task_id || t.id,
       dbId: t.id,
-      taskName: t.app_name || 'Untitled',
+      taskName,
       taskStatus: t.status,
       taskStartTime: t.created_at,
-      userAccount: (t.users as any)?.name || (t.users as any)?.email || 'Unknown',
+      userAccount: (t.users as any)?.name || (t.users as any)?.email || '—',
       userEmail: (t.users as any)?.email || '',
       userId: t.user_id || '',
-      outputs: t.outputs || [],
+      outputs,
       apiKeyType: 'enterprise',
       apiKeyMasked: '1c81****e474',
-      apiKeyFull: ENTERPRISE_KEY,
       // Billing
-      duration,
-      coins,
-      amount,
-      thirdParty,
-      // Raw
+      duration,          // seconds
+      coins,             // RH Coins
+      amount,            // USD final amount
+      thirdParty,        // USD 3rd party
+      hasBilling,
+      // Raw for debugging
       nodeInfoList,
     };
   });
@@ -111,9 +156,12 @@ export async function GET(req: NextRequest) {
       successCount,
       failedCount,
       runningCount,
+      queuedCount,
+      missingBillingCount,
       totalDuration,
       totalCoins,
       totalAmount,
+      totalThirdParty,
     },
   });
 }
