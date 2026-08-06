@@ -4,7 +4,7 @@ export interface SocialPreset {
   platform: string;
   width: number;
   height: number;
-  category: 'social' | 'ads' | 'web';
+  category: 'social' | 'ads' | 'web' | 'boutiqaat';
 }
 
 export const SOCIAL_PRESETS: SocialPreset[] = [
@@ -38,7 +38,23 @@ export const SOCIAL_PRESETS: SocialPreset[] = [
 
   // Web
   { id: 'web-hero', name: 'Hero Banner', platform: 'Web', width: 1920, height: 1080, category: 'web' },
-  { id: 'web-standard', name: 'Standard Image', platform: 'Web', width: 1200, height: 900, category: 'web' } // 4:3
+  { id: 'web-standard', name: 'Standard Image', platform: 'Web', width: 1200, height: 900, category: 'web' }, // 4:3
+
+  // Boutiqaat Social Size
+  { id: 'bq-468-60', name: 'Banner (468x60)', platform: 'Boutiqaat', width: 468, height: 60, category: 'boutiqaat' },
+  { id: 'bq-320-50', name: 'Mobile (320x50)', platform: 'Boutiqaat', width: 320, height: 50, category: 'boutiqaat' },
+  { id: 'bq-728-90', name: 'Leaderboard (728x90)', platform: 'Boutiqaat', width: 728, height: 90, category: 'boutiqaat' },
+  { id: 'bq-970-250', name: 'Large Leaderboard (970x250)', platform: 'Boutiqaat', width: 970, height: 250, category: 'boutiqaat' },
+  { id: 'bq-600-315', name: 'Landscape (600x315)', platform: 'Boutiqaat', width: 600, height: 315, category: 'boutiqaat' },
+  { id: 'bq-240-400', name: 'Vertical Rectangle (240x400)', platform: 'Boutiqaat', width: 240, height: 400, category: 'boutiqaat' },
+  { id: 'bq-200-300', name: 'Portrait (200x300)', platform: 'Boutiqaat', width: 200, height: 300, category: 'boutiqaat' },
+  { id: 'bq-500-500', name: 'Square Medium (500x500)', platform: 'Boutiqaat', width: 500, height: 500, category: 'boutiqaat' },
+  { id: 'bq-200-200', name: 'Square Small (200x200)', platform: 'Boutiqaat', width: 200, height: 200, category: 'boutiqaat' },
+  { id: 'bq-120-600', name: 'Skyscraper (120x600)', platform: 'Boutiqaat', width: 120, height: 600, category: 'boutiqaat' },
+  { id: 'bq-160-600', name: 'Wide Skyscraper (160x600)', platform: 'Boutiqaat', width: 160, height: 600, category: 'boutiqaat' },
+  { id: 'bq-300-600', name: 'Half-Page (300x600)', platform: 'Boutiqaat', width: 300, height: 600, category: 'boutiqaat' },
+  { id: 'bq-336-280', name: 'Large Rectangle (336x280)', platform: 'Boutiqaat', width: 336, height: 280, category: 'boutiqaat' },
+  { id: 'bq-300-250', name: 'Medium Rectangle (300x250)', platform: 'Boutiqaat', width: 300, height: 250, category: 'boutiqaat' }
 ];
 
 export function getAspectRatio(width: number, height: number): string {

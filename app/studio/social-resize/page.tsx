@@ -56,7 +56,7 @@ export default function SocialResizePage() {
   const [selectedModel, setSelectedModel] = useState(AI_MODELS[0].id);
   const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
   const [resolution, setResolution] = useState<'1k' | '2k' | '4k'>('1k');
-  const [activeCategory, setActiveCategory] = useState<'all' | 'social' | 'ads' | 'web'>('all');
+  const [activeCategory, setActiveCategory] = useState<'all' | 'social' | 'ads' | 'web' | 'boutiqaat'>('all');
   
   const [uploading, setUploading] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -402,7 +402,7 @@ export default function SocialResizePage() {
           {/* Filters & Selection */}
           <div className="flex items-center gap-4">
             <div className="flex bg-bg-card border border-border p-1 rounded-lg gap-1">
-              {['all', 'social', 'ads', 'web'].map(cat => (
+              {['all', 'social', 'ads', 'web', 'boutiqaat'].map(cat => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat as any)}
@@ -411,7 +411,7 @@ export default function SocialResizePage() {
                     activeCategory === cat ? "bg-bg-secondary text-text-primary shadow-sm" : "text-text-muted hover:text-text-secondary"
                   )}
                 >
-                  {cat}
+                  {cat === 'boutiqaat' ? 'Boutiqaat Size' : cat}
                 </button>
               ))}
             </div>
