@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback, forwardRef, useImperativeHandle } from 'react';
+import { createPortal } from 'react-dom';
 import { SocialPreset } from '@/lib/social-resize/presets';
 import { Download, Loader2, Wand2, Crop, ChevronLeft, ChevronRight, Trash2, Eye, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -44,6 +45,28 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
 }, ref) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
+  // Portal & Preview Data Url states
+  const [mounted, setMounted] = useState(false);
+  const [previewDataUrl, setPreviewDataUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const downloadCroppedImage = () => {
+    if (!previewDataUrl) return;
+    const safePlatform = sanitizeFilename(preset.platform);
+    const safePreset = sanitizeFilename(preset.name);
+    const filename = `image_${safePlatform}_${safePreset}.png`;
+    
+    const link = document.createElement('a');
+    link.href = previewDataUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // AI Fill states
   const [useAIFill, setUseAIFill] = useState(false);
   const [generatedHistory, setGeneratedHistory] = useState<GeneratedImage[]>([]);
@@ -122,6 +145,7 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
 
       ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
       onCanvasReady(preset.id, canvas);
+      setPreviewDataUrl(canvas.toDataURL('image/png'));
       return;
     } else if (useAIFill && !activeImage && !loadError) {
       // Still loading the AI image, clear and wait
@@ -141,6 +165,8 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawManualCrop(ctx, canvas);
+    onCanvasReady(preset.id, canvas);
+    setPreviewDataUrl(canvas.toDataURL('image/png'));
   }, [sourceImage, activeImage, loadError, focalPoint, preset, useAIFill, onCanvasReady]);
 
   function drawManualCrop(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
@@ -367,39 +393,22 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
         {/* Hover Action Overlay */}
         {!isGenerating && (
           <div className="absolute inset-0 flex items-center justify-center gap-4 bg-black/60 opacity-0 group-hover/canvas:opacity-100 transition-opacity duration-200 rounded-xl pointer-events-none group-hover/canvas:pointer-events-auto z-10">
-            {/* Eye / Preview button (only for AI fill result) */}
-            {useAIFill && activeImageUrl && (
-              <button
-                onClick={() => setIsPreviewOpen(true)}
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-white/15 hover:bg-white/25 text-white backdrop-blur-md border border-white/25 shadow-lg transition-all transform hover:scale-105 active:scale-95"
-                title="Preview full size image"
-              >
-                <Eye className="w-5 h-5" />
-              </button>
-            )}
+            {/* Eye / Preview button */}
+            <button
+              onClick={() => setIsPreviewOpen(true)}
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-white/15 hover:bg-white/25 text-white backdrop-blur-md border border-white/25 shadow-lg transition-all transform hover:scale-105 active:scale-95 pointer-events-auto"
+              title="Preview full size image"
+            >
+              <Eye className="w-5 h-5" />
+            </button>
 
             {/* Download Button (for both modes) */}
             <button
-              onClick={async (e) => {
+              onClick={(e) => {
                 e.stopPropagation();
-                if (useAIFill && activeImageUrl) {
-                  const toastId = toast.loading('Downloading high-res image...');
-                  try {
-                    const safePlatform = sanitizeFilename(preset.platform);
-                    const safePreset = sanitizeFilename(preset.name);
-                    const ext = activeImageUrl.split('.').pop()?.split('?')[0] || 'png';
-                    const filename = `image_${safePlatform}_${safePreset}_ai.${ext}`;
-                    await downloadUrlDirectly(activeImageUrl, filename);
-                    toast.success('Download completed!', { id: toastId });
-                  } catch (err: any) {
-                    toast.error('Download failed, opening in new tab', { id: toastId });
-                    window.open(activeImageUrl, '_blank');
-                  }
-                } else if (canvasRef.current) {
-                  downloadSingleImage(canvasRef.current, 'image', preset.name, preset.platform);
-                }
+                downloadCroppedImage();
               }}
-              className="w-10 h-10 flex items-center justify-center rounded-full bg-accent-purple hover:bg-accent-purple/85 text-white shadow-lg transition-all transform hover:scale-105 active:scale-95 border border-accent-purple/20"
+              className="w-10 h-10 flex items-center justify-center rounded-full bg-accent-purple hover:bg-accent-purple/85 text-white shadow-lg transition-all transform hover:scale-105 active:scale-95 border border-accent-purple/20 pointer-events-auto"
               title="Download image"
             >
               <Download className="w-5 h-5" />
@@ -450,65 +459,60 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
       )}
 
       {/* Full screen Lightbox Preview Modal */}
-      {isPreviewOpen && activeImageUrl && (
-        <div className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-between p-6 backdrop-blur-md animate-fade-in">
-          {/* Modal Header */}
-          <div className="w-full max-w-[90vw] flex items-center justify-between gap-4 z-50 bg-black/40 p-3 rounded-xl border border-border/10">
-            <div className="text-left text-xs">
-              <p className="font-bold text-text-primary">{preset.platform} — {preset.name}</p>
-              <p className="text-[10px] text-text-muted mt-0.5">
-                {generatedHistory[historyIndex]?.modelName} ({generatedHistory[historyIndex]?.resolution})
-              </p>
+      {isPreviewOpen && previewDataUrl && mounted && createPortal(
+        <div className="fixed inset-0 z-[9999] bg-black/90 flex flex-col items-center justify-center p-6 backdrop-blur-md animate-fade-in">
+          {/* Backdrop zoom-out closer click handler */}
+          <div className="absolute inset-0 z-0 cursor-zoom-out" onClick={() => setIsPreviewOpen(false)} />
+
+          {/* Modal Content container */}
+          <div className="relative z-10 w-full max-w-[90vw] h-full max-h-[90vh] flex flex-col items-center justify-between pointer-events-none">
+            {/* Modal Header */}
+            <div className="w-full flex items-center justify-between gap-4 bg-black/60 p-3 rounded-xl border border-white/10 backdrop-blur-md pointer-events-auto shrink-0 shadow-2xl">
+              <div className="text-left text-xs">
+                <p className="font-bold text-gray-100">{preset.platform} — {preset.name}</p>
+                <p className="text-[10px] text-gray-400 mt-0.5">
+                  {preset.width} × {preset.height} px {useAIFill ? `• AI ${generatedHistory[historyIndex]?.modelName} (${generatedHistory[historyIndex]?.resolution})` : '• Manual Crop'}
+                </p>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                {/* Download in lightbox */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    downloadCroppedImage();
+                  }}
+                  className="p-2 rounded-lg bg-accent-purple hover:bg-accent-purple/80 text-white transition-colors flex items-center justify-center pointer-events-auto shadow-md"
+                  title="Download image"
+                >
+                  <Download className="w-4 h-4" />
+                </button>
+
+                {/* Close modal */}
+                <button
+                  onClick={() => setIsPreviewOpen(false)}
+                  className="p-2 rounded-lg bg-[#1a1c20] hover:bg-[#252830] text-gray-300 border border-white/10 transition-colors flex items-center justify-center pointer-events-auto shadow-md"
+                  title="Close preview"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Image container */}
+            <div className="flex-1 w-full my-6 flex items-center justify-center min-h-0 relative select-none pointer-events-auto">
+              <img 
+                src={previewDataUrl} 
+                alt={`${preset.platform} ${preset.name} Full Size Preview`}
+                className="max-w-full max-h-full object-contain rounded-xl shadow-[0_0_50px_rgba(0,0,0,0.85)] border border-white/5" 
+              />
             </div>
             
-            <div className="flex items-center gap-2">
-              {/* Download in lightbox */}
-              <button
-                onClick={async (e) => {
-                  e.stopPropagation();
-                  const toastId = toast.loading('Downloading high-res image...');
-                  try {
-                    const safePlatform = sanitizeFilename(preset.platform);
-                    const safePreset = sanitizeFilename(preset.name);
-                    const ext = activeImageUrl.split('.').pop()?.split('?')[0] || 'png';
-                    const filename = `image_${safePlatform}_${safePreset}_ai.${ext}`;
-                    await downloadUrlDirectly(activeImageUrl, filename);
-                    toast.success('Download completed!', { id: toastId });
-                  } catch (err: any) {
-                    toast.error('Download failed, opening in new tab', { id: toastId });
-                    window.open(activeImageUrl, '_blank');
-                  }
-                }}
-                className="p-2 rounded-lg bg-accent-purple hover:bg-accent-purple/80 text-white transition-colors flex items-center justify-center"
-                title="Download image"
-              >
-                <Download className="w-4 h-4" />
-              </button>
-
-              {/* Close modal */}
-              <button
-                onClick={() => setIsPreviewOpen(false)}
-                className="p-2 rounded-lg bg-bg-card hover:bg-bg-hover text-text-primary border border-border transition-colors flex items-center justify-center"
-                title="Close preview"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
+            {/* Spacer footer */}
+            <div className="h-4 w-full shrink-0" />
           </div>
-
-          {/* Modal Image container */}
-          <div className="flex-1 w-full max-w-[90vw] my-4 flex items-center justify-center min-h-0 relative select-none">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src={activeImageUrl} 
-              alt={`${preset.platform} ${preset.name} Full Size Preview`}
-              className="max-w-full max-h-full object-contain rounded-xl shadow-2xl border border-border/20" 
-            />
-          </div>
-          
-          {/* Spacer footer to balance the layout */}
-          <div className="h-2 w-full" />
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
