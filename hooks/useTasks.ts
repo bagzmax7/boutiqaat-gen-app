@@ -79,10 +79,18 @@ export function useTasks() {
           });
           
           prev.forEach((t) => {
-            const dbVer = mergedMap.get(t.id);
+            let dbVer = mergedMap.get(t.id);
+            if (!dbVer && t.taskId) {
+              dbVer = Array.from(mergedMap.values()).find(dt => dt.taskId === t.taskId);
+            }
+
             if (dbVer) {
               if (t.updatedAt > dbVer.updatedAt) {
-                mergedMap.set(t.id, t);
+                mergedMap.set(dbVer.id, {
+                  ...dbVer,
+                  ...t,
+                  id: dbVer.id
+                });
               }
             } else {
               mergedMap.set(t.id, t);

@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Sidebar from '@/components/layout/Sidebar';
-import TopBar from '@/components/layout/TopBar';
 import { useTasks } from '@/hooks/useTasks';
 import {
   Sparkles, Send, Plus, Image as ImageIcon, Film, X, ChevronDown,
@@ -16,20 +15,106 @@ import toast from 'react-hot-toast';
 
 // ─── Model Configs ─────────────────────────────────────────────────────────
 const IMAGE_MODELS = [
-  { id: 'nano-banana-2', name: 'Nano Banana 2 (Low Cost)' },
-  { id: 'nano-banana-pro', name: 'Nano Banana Pro (Edit)' },
-  { id: 'gpt-2.0', name: 'GPT Image 2.0 (Edit-Economy)' },
-  { id: 'grok-image', name: 'Grok Image' },
+  { id: 'nano-banana-pro', name: 'Nano Banana Pro (Recommended)', logo: '/model-logos/Gemini.png', stats: ['1K-4K', 'High Quality'] },
+  { id: 'nano-banana-2', name: 'Nano Banana 2 (Recommended)', logo: '/model-logos/Gemini.png', stats: ['1K-4K', 'Balanced'] },
+  { id: 'nano-banana-2-lite', name: 'Nano Banana 2 Lite (Faster Low Quality)', logo: '/model-logos/Gemini.png', stats: ['1K-2K', 'Fastest'] },
+  { id: 'gpt-2.0', name: 'GPT Image 2.0 (New)', logo: '/model-logos/GPT.png', stats: ['1K-4K', 'Standard'] },
+  { id: 'flux-2-edit', name: 'Flux 2 Edit (Standard)', logo: '/model-logos/Flux.png', stats: ['1K-4K', 'Pro Edit'] },
+  { id: 'grok-image', name: 'Grok Image', logo: '/model-logos/Flux.png', stats: ['1K-2K', 'Dynamic'] },
 ];
 
 const VIDEO_MODELS = [
-  { id: 'seedance-2.0-mini', name: 'Seedance 2.0 Mini (Recommended)' },
-  { id: 'seedance-2.0-official', name: 'Seedance 2.0 (Official)' },
-  { id: 'gemini-omni-flash', name: 'Gemini Omni Flash (Recommended)' },
-  { id: 'veo-3.1-fast', name: 'Veo 3.1 Fast (Recommended)' },
-  { id: 'minimax-h3', name: 'MiniMax H3 (New)' },
-  { id: 'ltx-2.3', name: 'LTX 2.3 (New)' },
+  { id: 'seedance-2.0-mini', name: 'Seedance 2.0 Mini (Recommended)', logo: '/model-logos/Seedance.png', stats: ['720p-4K', '4s-15s'] },
+  { id: 'seedance-2.0-official', name: 'Seedance 2.0 (Official)', logo: '/model-logos/Seedance.png', stats: ['720p-4K', '4s-15s'] },
+  { id: 'gemini-omni-flash', name: 'Gemini Omni Flash (Recommended)', logo: '/model-logos/Gemini.png', stats: ['720p-4K', '4s-10s'] },
+  { id: 'veo-3.1-fast', name: 'Veo 3.1 Fast (Recommended)', logo: '/model-logos/Gemini.png', stats: ['720p-4K', '8s'] },
+  { id: 'minimax-h3', name: 'MiniMax H3 (New)', logo: '/model-logos/MiniMax.png', stats: ['768p-2K', '5s-15s'] },
+  { id: 'ltx-2.3', name: 'LTX 2.3 (New)', logo: '/model-logos/Ltx.png', stats: ['480p-1080p', '5s-15s'] },
 ];
+
+interface VideoModelConfig {
+  ratios: string[];
+  resolutions: string[];
+  defaultResolution: string;
+  durationMode: 'slider' | 'tiles';
+  durations: string[];
+  minDuration?: number;
+  maxDuration?: number;
+  defaultDuration: string;
+  supportsRealPerson: boolean;
+  supportsAudio: boolean;
+}
+
+const VIDEO_MODEL_CONFIGS: Record<string, VideoModelConfig> = {
+  'seedance-2.0-mini': {
+    ratios: ['Auto', '16:9', '4:3', '1:1', '3:4', '9:16', '21:9'],
+    resolutions: ['480p', '720p', '1080p', '2k', '4k'],
+    defaultResolution: '720p',
+    durationMode: 'slider',
+    durations: [],
+    minDuration: 4,
+    maxDuration: 15,
+    defaultDuration: '6s',
+    supportsRealPerson: true,
+    supportsAudio: true,
+  },
+  'seedance-2.0-official': {
+    ratios: ['Auto', '16:9', '4:3', '1:1', '3:4', '9:16', '21:9'],
+    resolutions: ['480p', '720p', '1080p', '2k', '4k'],
+    defaultResolution: '720p',
+    durationMode: 'slider',
+    durations: [],
+    minDuration: 4,
+    maxDuration: 15,
+    defaultDuration: '6s',
+    supportsRealPerson: true,
+    supportsAudio: true,
+  },
+  'gemini-omni-flash': {
+    ratios: ['Auto', '16:9', '9:16'],
+    resolutions: ['720p', '1080p', '4k'],
+    defaultResolution: '720p',
+    durationMode: 'tiles',
+    durations: ['4s', '6s', '8s', '10s'],
+    defaultDuration: '6s',
+    supportsRealPerson: false,
+    supportsAudio: false,
+  },
+  'veo-3.1-fast': {
+    ratios: ['Auto', '16:9', '9:16'],
+    resolutions: ['720p', '1080p', '4k'],
+    defaultResolution: '720p',
+    durationMode: 'tiles',
+    durations: ['8s'],
+    defaultDuration: '8s',
+    supportsRealPerson: false,
+    supportsAudio: true,
+  },
+  'minimax-h3': {
+    ratios: ['Auto', '21:9', '16:9', '4:3', '1:1', '3:4', '9:16'],
+    resolutions: ['768P', '2K'],
+    defaultResolution: '768P',
+    durationMode: 'slider',
+    durations: [],
+    minDuration: 5,
+    maxDuration: 15,
+    defaultDuration: '5s',
+    supportsRealPerson: false,
+    supportsAudio: true,
+  },
+  'ltx-2.3': {
+    ratios: ['Auto', '16:9', '9:16'],
+    resolutions: ['480p', '720p', '1080p'],
+    defaultResolution: '720p',
+    durationMode: 'slider',
+    durations: [],
+    minDuration: 5,
+    maxDuration: 15,
+    defaultDuration: '5s',
+    supportsRealPerson: false,
+    supportsAudio: false,
+  },
+};
 
 const NANO_BANANA_RATIOS = ['Auto', '1:1', '2:3', '3:2', '4:5', '5:4', '4:3', '3:4', '16:9', '9:16', '21:9', '1:4', '4:1', '1:8', '8:1'];
 const GPT_IMAGE_RATIOS = ['Auto', '1:1', '2:3', '3:2', '4:5', '5:4', '4:3', '3:4', '16:9', '9:16', '21:9', '9:21', '2:1', '1:2', '3:1', '1:3'];
@@ -68,6 +153,41 @@ function AspectRatioGraphic({ ratio, className = "w-4 h-4" }: { ratio: string; c
       <rect x={x} y={y} width={width} height={height} rx="2" />
     </svg>
   );
+}
+
+function parseModelName(fullName: string) {
+  const match = fullName.match(/^(.*?)\s*\((.*?)\)$/);
+  if (match) {
+    return {
+      displayName: match[1].trim(),
+      badge: match[2].trim()
+    };
+  }
+  return {
+    displayName: fullName.trim(),
+    badge: null
+  };
+}
+
+function ModelBadge({ text }: { text: string }) {
+  let colorClass = 'bg-lime-500/10 text-lime-400 border border-lime-500/20';
+  const cleanText = text.toUpperCase();
+  if (cleanText.includes('NEW')) {
+    colorClass = 'bg-[#a3e635] text-[#0d0e10] font-black italic px-1.5 py-0.5 rounded text-[8px] tracking-wider';
+  } else if (cleanText.includes('EXCLUSIVE')) {
+    colorClass = 'bg-[#a3e635] text-[#0d0e10] font-black italic px-1.5 py-0.5 rounded text-[8px] tracking-wider';
+  } else if (cleanText.includes('RECOMMENDED')) {
+    colorClass = 'bg-lime-500/20 text-lime-400 font-extrabold italic px-1.5 py-0.5 rounded border border-lime-500/30 text-[8px] tracking-wider';
+  } else if (cleanText.includes('FASTER LOW QUALITY')) {
+    colorClass = 'bg-amber-500/20 text-amber-400 font-extrabold italic px-1.5 py-0.5 rounded border border-amber-500/30 text-[8px] tracking-wider';
+  } else if (cleanText.includes('STANDARD')) {
+    colorClass = 'bg-white/10 text-gray-300 font-bold px-1.5 py-0.5 rounded text-[8px] tracking-wider';
+  } else if (cleanText.includes('COMING SOON')) {
+    colorClass = 'bg-blue-500/20 text-blue-400 font-extrabold italic px-1.5 py-0.5 rounded border border-blue-500/30 text-[8px] tracking-wider';
+  } else {
+    colorClass = 'bg-white/10 text-gray-300 font-bold px-1.5 py-0.5 rounded text-[8px] tracking-wider';
+  }
+  return <span className={cn("uppercase text-[8px] font-bold px-1 py-0.5 rounded scale-90 inline-block align-middle", colorClass)}>{text}</span>;
 }
 
 // Convert ratio string to CSS aspect-ratio class
@@ -132,14 +252,31 @@ function QuickCreateContent() {
   } | null>(null);
 
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<{ url: string; type: 'image' | 'video' | 'audio' }[]>([]);
   const [attachedUrls, setAttachedUrls] = useState<{ url: string; type: 'image' | 'video' | 'audio' }[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const promptTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Sync uploaded files with object URLs and perform resource cleanup on changes
+  useEffect(() => {
+    const urls = uploadedFiles.map(file => ({
+      url: URL.createObjectURL(file),
+      type: file.type.startsWith('video/') ? 'video' : file.type.startsWith('audio/') ? 'audio' : 'image' as 'image' | 'video' | 'audio'
+    }));
+    setPreviewUrls(urls);
+
+    return () => {
+      urls.forEach(item => URL.revokeObjectURL(item.url));
+    };
+  }, [uploadedFiles]);
+
+  const currentVideoConfig = VIDEO_MODEL_CONFIGS[selectedVideoModel] || VIDEO_MODEL_CONFIGS['seedance-2.0-mini'];
 
   // Compute available ratios based on active mode & model
   const currentAvailableRatios = activeMode === 'video'
-    ? VIDEO_RATIOS
+    ? currentVideoConfig.ratios
     : selectedImageModel === 'nano-banana-2'
     ? NANO_BANANA_RATIOS
     : selectedImageModel === 'gpt-2.0'
@@ -148,12 +285,34 @@ function QuickCreateContent() {
     ? GROK_IMAGE_RATIOS
     : NANO_BANANA_RATIOS;
 
+  const currentAvailableResolutions = activeMode === 'video'
+    ? currentVideoConfig.resolutions
+    : selectedImageModel === 'nano-banana-2-lite'
+    ? ['1k', '2k']
+    : selectedImageModel === 'grok-image'
+    ? ['1k']
+    : IMAGE_QUALITIES;
+
+  // Auto-adjust ratio and quality when model or mode changes
+  useEffect(() => {
+    if (currentAvailableRatios.length > 0 && !currentAvailableRatios.includes(ratio)) {
+      setRatio(currentAvailableRatios[0]);
+    }
+    if (currentAvailableResolutions.length > 0 && !currentAvailableResolutions.includes(quality)) {
+      setQuality(currentAvailableResolutions[0]);
+    }
+  }, [selectedImageModel, selectedVideoModel, activeMode, currentAvailableRatios, currentAvailableResolutions, ratio, quality]);
+
   // Load persistent canvas items from dedicated database API on mount
   useEffect(() => {
     try {
       const saved = localStorage.getItem('quick_create_canvas_items');
       if (saved) {
-        setCanvasItems(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          parsed.sort((a: any, b: any) => b.timestamp - a.timestamp);
+          setCanvasItems(parsed);
+        }
       }
     } catch (e) {
       console.error('Failed to load local canvas items:', e);
@@ -173,12 +332,14 @@ function QuickCreateContent() {
             model: s.model || 'Standard',
             ratio: s.ratio || '16:9',
             quality: s.quality || '1k',
-            timestamp: new Date(s.created_at || Date.now()).getTime(),
+            timestamp: new Date(s.updated_at || s.created_at || Date.now()).getTime(),
             attachments: s.attachments || [],
             status: s.status || (s.outputs && s.outputs.length > 0 ? 'SUCCESS' : 'QUEUED'),
             outputs: s.outputs || [],
           }));
 
+          // Sort chronologically by date modified (newest first)
+          dbCanvasItems.sort((a, b) => b.timestamp - a.timestamp);
           setCanvasItems(dbCanvasItems);
         }
       } catch (e) {
@@ -192,8 +353,8 @@ function QuickCreateContent() {
   // Sync active task updates with dedicated database endpoint
   useEffect(() => {
     if (tasks.length > 0) {
-      setCanvasItems(prev =>
-        prev.map(item => {
+      setCanvasItems(prev => {
+        const nextItems = prev.map(item => {
           const match = tasks.find(t => t.id === item.taskId || t.taskId === item.taskId);
           if (match && (match.status === 'SUCCESS' || match.status === 'FAILED')) {
             if (item.status !== match.status || (match.outputs && match.outputs.length !== (item.outputs?.length || 0))) {
@@ -213,12 +374,16 @@ function QuickCreateContent() {
                 ...item,
                 status: match.status,
                 outputs: match.outputs || [],
+                timestamp: Date.now(), // Update timestamp to reflect modified time
               };
             }
           }
           return item;
-        })
-      );
+        });
+
+        // Re-sort elements by date modified so completed tasks move to the top
+        return [...nextItems].sort((a, b) => b.timestamp - a.timestamp);
+      });
     }
   }, [tasks]);
 
@@ -232,6 +397,40 @@ function QuickCreateContent() {
       }
     }
   }, [canvasItems]);
+
+  // Auto-resize the prompt textarea height to fit long prompts dynamically
+  useEffect(() => {
+    if (promptTextareaRef.current) {
+      const textarea = promptTextareaRef.current;
+      textarea.style.height = 'auto';
+      textarea.style.height = `${Math.min(textarea.scrollHeight, 160)}px`;
+    }
+  }, [prompt]);
+
+  // Reset video parameters if they don't match the selected video model's supported enums
+  useEffect(() => {
+    if (activeMode === 'video') {
+      const config = VIDEO_MODEL_CONFIGS[selectedVideoModel];
+      if (config) {
+        if (!config.resolutions.includes(quality)) {
+          setQuality(config.defaultResolution);
+        }
+        if (!config.ratios.includes(ratio)) {
+          setRatio(config.ratios[0]);
+        }
+        if (config.durationMode === 'slider') {
+          const num = parseInt(duration, 10);
+          if (isNaN(num) || num < (config.minDuration || 4) || num > (config.maxDuration || 15)) {
+            setDuration(config.defaultDuration);
+          }
+        } else {
+          if (!config.durations.includes(duration)) {
+            setDuration(config.defaultDuration);
+          }
+        }
+      }
+    }
+  }, [selectedVideoModel, activeMode]);
 
   // Handle initial submission from URL params
   const initialTriggerRef = useRef(false);
@@ -366,6 +565,29 @@ function QuickCreateContent() {
 
       const activeModel = activeMode === 'image' ? selectedImageModel : selectedVideoModel;
 
+      // Resolve prompt mentions to actual uploaded URLs for the API call
+      let processedPrompt = currentPrompt;
+      const imagesList = allAttachments.filter(a => a.type === 'image');
+      const videosList = allAttachments.filter(a => a.type === 'video');
+      const audiosList = allAttachments.filter(a => a.type === 'audio');
+
+      imagesList.forEach((item, idx) => {
+        // Handle both case variations and optional index formats
+        processedPrompt = processedPrompt
+          .replaceAll(`@Image ${idx + 1}`, item.url)
+          .replaceAll(`@image ${idx + 1}`, item.url);
+      });
+      videosList.forEach((item, idx) => {
+        processedPrompt = processedPrompt
+          .replaceAll(`@Video ${idx + 1}`, item.url)
+          .replaceAll(`@video ${idx + 1}`, item.url);
+      });
+      audiosList.forEach((item, idx) => {
+        processedPrompt = processedPrompt
+          .replaceAll(`@Audio ${idx + 1}`, item.url)
+          .replaceAll(`@audio ${idx + 1}`, item.url);
+      });
+
       // Process batch generation (1x to 4x) cleanly without endpoint collisions
       for (let b = 0; b < batchCount; b++) {
         if (b > 0) {
@@ -378,7 +600,7 @@ function QuickCreateContent() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              prompt: currentPrompt,
+              prompt: processedPrompt,
               model: selectedImageModel,
               aspectRatio: ratio !== 'Auto' ? ratio : '16:9',
               resolution: quality.includes('4k') ? '4k' : quality.includes('2k') ? '2k' : '1k',
@@ -389,14 +611,14 @@ function QuickCreateContent() {
           if (!res.ok || !data.taskId) throw new Error(data.errorMessage || data.error || 'Image generation failed');
           taskId = data.taskId;
 
-          addTask(taskId, 'quick-create-image', `Image: ${currentPrompt.slice(0, 25)}...`, [{ nodeId: 'prompt', fieldName: 'text', fieldValue: currentPrompt }], 'enterprise');
+          addTask(taskId, 'quick-create-image', `Image: ${currentPrompt.slice(0, 25)}...`, [{ nodeId: 'prompt', fieldName: 'text', fieldValue: processedPrompt }], 'enterprise');
         } else {
           const res = await fetch('/api/runninghub/video-generate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               model: selectedVideoModel,
-              prompt: currentPrompt,
+              prompt: processedPrompt,
               imageUrls: imageUrls.length > 0 ? imageUrls : undefined,
               videoUrls: videoUrls.length > 0 ? videoUrls : undefined,
               audioUrls: audioUrls.length > 0 ? audioUrls : undefined,
@@ -411,7 +633,7 @@ function QuickCreateContent() {
           if (!res.ok || !data.taskId) throw new Error(data.errorMessage || data.error || 'Video generation failed');
           taskId = data.taskId;
 
-          addTask(taskId, 'quick-create-video', `Video: ${currentPrompt.slice(0, 25)}...`, [{ nodeId: 'prompt', fieldName: 'text', fieldValue: currentPrompt }], 'enterprise');
+          addTask(taskId, 'quick-create-video', `Video: ${currentPrompt.slice(0, 25)}...`, [{ nodeId: 'prompt', fieldName: 'text', fieldValue: processedPrompt }], 'enterprise');
         }
 
         const localId = `${Date.now()}-${b}-canvas`;
@@ -469,12 +691,12 @@ function QuickCreateContent() {
   return (
     <div className="flex h-screen bg-[#070707] text-white overflow-hidden font-sans">
       <Sidebar />
-      <div className="flex flex-col flex-1 min-w-0 overflow-hidden relative">
-        <TopBar />
+      <div className="flex flex-col flex-1 min-w-0 overflow-hidden relative bg-[#070707]">
+        {/* Viewport-fixed background gradient to avoid background color splits/cuts on scroll */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-lime-950/15 via-[#070707] to-[#070707] pointer-events-none z-0" />
 
         {/* Main Background Canvas Workspace */}
-        <main className="flex-1 overflow-y-auto relative flex flex-col items-center justify-between p-4 sm:p-6 pb-28">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-lime-950/20 via-black to-black pointer-events-none" />
+        <main className="flex-1 overflow-y-auto relative flex flex-col items-center justify-between p-4 sm:p-6 pb-28 z-10">
 
           {/* Top Banner Heading */}
           <div className="relative z-10 text-center space-y-1 pt-2 flex flex-col items-center">
@@ -487,9 +709,9 @@ function QuickCreateContent() {
           </div>
 
           {/* Canvas Showcase Gallery */}
-          <div className="relative z-10 w-full max-w-7xl my-6">
+          <div className="relative z-10 w-full max-w-full px-2 sm:px-4 my-6">
             {canvasItems.length > 0 && (
-              <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
+              <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6 2xl:columns-8 gap-4 space-y-4">
                 {canvasItems.map((item) => {
                   const taskObj = tasks.find(t => t.id === item.taskId || t.taskId === item.taskId);
                   const isSuccess = taskObj?.status === 'SUCCESS' || item.status === 'SUCCESS' || (item.outputs && item.outputs.length > 0);
@@ -497,7 +719,7 @@ function QuickCreateContent() {
                   const outputs = (taskObj?.outputs && taskObj.outputs.length > 0) ? taskObj.outputs : (item.outputs || []);
 
                   const aspectClass = getAspectRatioClass(item.ratio);
-                  const mediaType = item.mode === 'video' || (outputs[0]?.fileUrl && outputs[0].fileUrl.endsWith('.mp4')) ? 'video' : 'image';
+                  const mediaType = item.mode === 'video' || (outputs[0]?.fileUrl && (outputs[0].fileUrl.toLowerCase().includes('.mp4') || outputs[0].fileUrl.toLowerCase().includes('.webm') || outputs[0].fileUrl.toLowerCase().includes('.mov'))) ? 'video' : 'image';
 
                   return (
                     <div
@@ -620,32 +842,38 @@ function QuickCreateContent() {
                                 model: item.model,
                                 ratio: item.ratio
                               })}
-                              className="absolute inset-x-0 bottom-0 z-20 p-4 bg-gradient-to-t from-black via-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end space-y-2 cursor-pointer"
+                              className="absolute inset-x-0 bottom-0 z-20 p-3 bg-gradient-to-t from-black via-black/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end space-y-1.5 cursor-pointer"
                             >
                               {/* Reference Media Thumbnails */}
                               {item.attachments && item.attachments.length > 0 && (
-                                <div className="flex items-center gap-1.5 pt-1">
-                                  <span className="text-[10px] text-gray-400 font-semibold uppercase">Refs:</span>
+                                <div className="flex items-center gap-1 pt-0.5">
+                                  <span className="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Refs:</span>
                                   {item.attachments.map((att, i) => (
-                                    <div key={i} className="w-6 h-6 rounded-md overflow-hidden border border-white/30 bg-black">
-                                      <img src={att.url} alt="ref" className="w-full h-full object-cover" />
+                                    <div key={i} className="w-5.5 h-5.5 rounded overflow-hidden border border-white/20 bg-black flex items-center justify-center">
+                                      {att.type === 'video' ? (
+                                        <video src={att.url} className="w-full h-full object-cover" muted playsInline />
+                                      ) : att.type === 'audio' ? (
+                                        <FileAudio className="w-3 h-3 text-lime-400" />
+                                      ) : (
+                                        <img src={att.url} alt="ref" className="w-full h-full object-cover" />
+                                      )}
                                     </div>
                                   ))}
                                 </div>
                               )}
 
-                              <p className="text-xs text-gray-200 line-clamp-2 font-medium">
+                              <p className="text-[11px] text-gray-200 line-clamp-2 font-semibold leading-snug">
                                 {item.prompt}
                               </p>
 
-                              <div className="flex items-center gap-2 pt-1">
-                                <span className="text-[10px] px-2 py-0.5 rounded-md bg-lime-500/20 text-lime-400 font-bold border border-lime-500/30 truncate max-w-[120px]">
+                              <div className="flex items-center gap-1.5 pt-0.5 flex-wrap">
+                                <span className="text-[9px] px-1.5 py-0.5 rounded bg-lime-500/20 text-lime-400 font-extrabold border border-lime-500/30 truncate max-w-[100px]">
                                   {item.model}
                                 </span>
-                                <span className="text-[10px] px-2 py-0.5 rounded-md bg-white/10 text-gray-300 font-mono">
+                                <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-gray-300 font-mono font-bold">
                                   {item.ratio}
                                 </span>
-                                <span className="text-[10px] px-2 py-0.5 rounded-md bg-white/10 text-gray-300 font-mono">
+                                <span className="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-gray-300 font-mono font-bold">
                                   {item.quality}
                                 </span>
                               </div>
@@ -736,7 +964,7 @@ function QuickCreateContent() {
                     </div>
                   ) : (
                     <div className="relative w-full h-full flex items-center justify-center">
-                      {[...uploadedFiles.map(f => ({ url: URL.createObjectURL(f), type: f.type.startsWith('video/') ? 'video' : f.type.startsWith('audio/') ? 'audio' : 'image' })), ...attachedUrls].slice(0, 3).map((item, idx) => {
+                      {[...previewUrls, ...attachedUrls].slice(0, 3).map((item, idx) => {
                         const isTop = idx === 0;
                         const offsetRotate = idx === 0 ? '-6deg' : idx === 1 ? '4deg' : '0deg';
                         const offsetTranslateX = idx === 0 ? '-3px' : idx === 1 ? '3px' : '0px';
@@ -753,7 +981,14 @@ function QuickCreateContent() {
                             }}
                           >
                             {item.type === 'video' ? (
-                              <FileVideo className="w-6 h-6 text-lime-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+                              <video 
+                                src={item.url} 
+                                className="w-full h-full object-cover" 
+                                autoPlay 
+                                muted 
+                                loop 
+                                playsInline 
+                              />
                             ) : item.type === 'audio' ? (
                               <FileAudio className="w-6 h-6 text-lime-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
                             ) : (
@@ -806,9 +1041,9 @@ function QuickCreateContent() {
                         handleGenerate();
                       }
                     }}
+                    ref={promptTextareaRef}
                     placeholder="Describe the scene you imagine... (Type @ to mention attached media or drag generated images here)"
-                    rows={2}
-                    className="w-full bg-transparent border-none outline-none text-sm text-gray-200 placeholder:text-gray-500 resize-none pt-1"
+                    className="w-full bg-transparent border-none outline-none text-sm text-gray-200 placeholder:text-gray-500 resize-none pt-1 max-h-[160px] overflow-y-auto"
                   />
 
                   {/* Possible Mentions Popup */}
@@ -818,7 +1053,7 @@ function QuickCreateContent() {
                         Possible mentions
                       </span>
                       <div className="space-y-1 mt-1 max-h-48 overflow-y-auto">
-                        {[...uploadedFiles.map(f => ({ url: URL.createObjectURL(f), type: f.type })), ...attachedUrls].map((item, idx) => {
+                        {[...previewUrls, ...attachedUrls].map((item, idx) => {
                           const tagLabel = item.type.includes('video')
                             ? `Video ${idx + 1}`
                             : item.type.includes('audio')
@@ -830,8 +1065,29 @@ function QuickCreateContent() {
                               key={idx}
                               type="button"
                               onClick={() => {
-                                const newText = prompt.replace(/@([a-zA-Z0-9_]*)$/, `@${tagLabel} `);
-                                setPrompt(newText);
+                                if (promptTextareaRef.current) {
+                                  const textarea = promptTextareaRef.current;
+                                  const text = textarea.value;
+                                  const cursorIndex = textarea.selectionStart;
+                                  
+                                  const textBeforeCursor = text.slice(0, cursorIndex);
+                                  const lastAtIndex = textBeforeCursor.lastIndexOf('@');
+                                  
+                                  if (lastAtIndex !== -1) {
+                                    const textAfterCursor = text.slice(cursorIndex);
+                                    const newText = textBeforeCursor.slice(0, lastAtIndex) + `@${tagLabel} ` + textAfterCursor;
+                                    setPrompt(newText);
+                                    
+                                    const newCursorPos = lastAtIndex + tagLabel.length + 2; // @ + tag + space
+                                    setTimeout(() => {
+                                      textarea.focus();
+                                      textarea.setSelectionRange(newCursorPos, newCursorPos);
+                                    }, 10);
+                                  }
+                                } else {
+                                  const newText = prompt.replace(/@([a-zA-Z0-9_]*)$/, `@${tagLabel} `);
+                                  setPrompt(newText);
+                                }
                                 setShowMentionPopup(false);
                               }}
                               className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-lime-500/15 text-left text-xs transition-colors group"
@@ -839,7 +1095,7 @@ function QuickCreateContent() {
                               <div className="flex items-center gap-2.5">
                                 <div className="w-7 h-7 rounded-md overflow-hidden bg-black/60 border border-white/10 flex-shrink-0 flex items-center justify-center">
                                   {item.type.includes('video') ? (
-                                    <FileVideo className="w-4 h-4 text-lime-400" />
+                                    <video src={item.url} className="w-full h-full object-cover" muted playsInline />
                                   ) : item.type.includes('audio') ? (
                                     <FileAudio className="w-4 h-4 text-lime-400" />
                                   ) : (
@@ -868,33 +1124,70 @@ function QuickCreateContent() {
                   <div className="relative">
                     <button
                       onClick={() => { setIsModelOpen(!isModelOpen); setIsRatioOpen(false); }}
-                      className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#24272e] border border-white/10 text-xs font-medium text-gray-200 hover:border-lime-500/40 transition-all"
+                      className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-[#24272e] border border-white/10 text-xs font-medium text-gray-200 hover:border-lime-500/40 transition-all max-w-[260px]"
                     >
-                      <span className="w-2 h-2 rounded-full bg-lime-400 shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
-                      <span className="truncate max-w-[140px]">{activeModelObj?.name}</span>
-                      <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+                      {activeModelObj?.logo ? (
+                        <div className="w-4 h-4 rounded bg-white/5 flex items-center justify-center border border-white/10 shrink-0">
+                          <img src={activeModelObj.logo} alt="" className="w-3.5 h-3.5 object-contain" />
+                        </div>
+                      ) : (
+                        <span className="w-2 h-2 rounded-full bg-lime-400 shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
+                      )}
+                      <span className="truncate text-left font-semibold text-gray-200">
+                        {parseModelName(activeModelObj?.name || '').displayName}
+                      </span>
+                      {parseModelName(activeModelObj?.name || '').badge && (
+                        <ModelBadge text={parseModelName(activeModelObj?.name || '').badge!} />
+                      )}
+                      <ChevronDown className="w-3.5 h-3.5 text-gray-400 shrink-0 ml-0.5" />
                     </button>
 
                     {isModelOpen && (
-                      <div className="absolute left-0 bottom-full mb-2 w-64 bg-[#1e2127] border border-white/10 rounded-2xl shadow-2xl p-2 z-50 space-y-1">
-                        {(activeMode === 'image' ? IMAGE_MODELS : VIDEO_MODELS).map(m => (
-                          <button
-                            key={m.id}
-                            onClick={() => {
-                              if (activeMode === 'image') setSelectedImageModel(m.id);
-                              else setSelectedVideoModel(m.id);
-                              setIsModelOpen(false);
-                            }}
-                            className={cn(
-                              'w-full text-left px-3 py-2 rounded-xl text-xs font-medium transition-all flex items-center justify-between',
-                              (activeMode === 'image' ? selectedImageModel : selectedVideoModel) === m.id
-                                ? 'bg-lime-500/15 text-lime-400 font-bold border border-lime-500/30'
-                                : 'text-gray-300 hover:bg-white/5'
-                            )}
-                          >
-                            <span>{m.name}</span>
-                          </button>
-                        ))}
+                      <div className="absolute left-0 bottom-full mb-2 w-72 bg-[#1e2127] border border-white/10 rounded-2xl shadow-2xl p-2 z-50 space-y-1">
+                        {(activeMode === 'image' ? IMAGE_MODELS : VIDEO_MODELS).map(m => {
+                          const { displayName, badge } = parseModelName(m.name);
+                          const isSelected = (activeMode === 'image' ? selectedImageModel : selectedVideoModel) === m.id;
+                          return (
+                            <button
+                              key={m.id}
+                              onClick={() => {
+                                if (activeMode === 'image') setSelectedImageModel(m.id);
+                                else setSelectedVideoModel(m.id);
+                                setIsModelOpen(false);
+                              }}
+                              className={cn(
+                                'w-full text-left p-2 rounded-xl text-xs font-medium transition-all flex items-center gap-3',
+                                isSelected
+                                  ? 'bg-lime-500/10 text-lime-400 font-bold border border-lime-500/20 shadow-md'
+                                  : 'text-gray-300 hover:bg-white/5 border border-transparent'
+                              )}
+                            >
+                              <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 shrink-0">
+                                {m.logo ? (
+                                  <img src={m.logo} alt="" className="w-5 h-5 object-contain" />
+                                ) : (
+                                  <Sparkles className="w-4 h-4 text-gray-400" />
+                                )}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-1.5 flex-wrap">
+                                  <span className="font-semibold text-gray-200">{displayName}</span>
+                                  {badge && <ModelBadge text={badge} />}
+                                </div>
+                                {m.stats && (
+                                  <div className="flex items-center gap-2 mt-1 text-[9px] text-gray-500 font-semibold">
+                                    <span className="flex items-center gap-1 bg-white/5 px-1.5 py-0.5 rounded border border-white/5">
+                                      <Zap className="w-2.5 h-2.5 text-lime-400" /> {m.stats[0]}
+                                    </span>
+                                    <span className="flex items-center gap-1 bg-white/5 px-1.5 py-0.5 rounded border border-white/5">
+                                      <Clock className="w-2.5 h-2.5 text-gray-400" /> {m.stats[1]}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                            </button>
+                          );
+                        })}
                       </div>
                     )}
                   </div>
@@ -948,11 +1241,15 @@ function QuickCreateContent() {
 
                         <div className="space-y-2 pt-2 border-t border-white/10">
                           <span className="text-xs font-semibold text-gray-400 tracking-wide block">Resolution</span>
-                          <div className={cn(
-                            "grid gap-2 bg-[#0d0e10] p-1 rounded-xl border border-white/5",
-                            activeMode === 'video' ? "grid-cols-5" : "grid-cols-3"
-                          )}>
-                            {(activeMode === 'video' ? VIDEO_QUALITIES : IMAGE_QUALITIES).map(q => {
+                          <div 
+                            className="grid gap-2 bg-[#0d0e10] p-1 rounded-xl border border-white/5"
+                            style={{ 
+                              gridTemplateColumns: `repeat(${
+                                activeMode === 'video' ? currentAvailableResolutions.length : 3
+                              }, minmax(0, 1fr))` 
+                            }}
+                          >
+                            {currentAvailableResolutions.map(q => {
                               const isSelected = quality === q;
                               return (
                                 <button
@@ -982,19 +1279,19 @@ function QuickCreateContent() {
                                 <span className="flex items-center gap-2">
                                   <Clock className="w-3.5 h-3.5" /> Video Duration
                                 </span>
-                                {(selectedVideoModel.toLowerCase().includes('seedance') || selectedVideoModel.toLowerCase().includes('sparkvideo')) && (
+                                {currentVideoConfig.durationMode === 'slider' && (
                                   <span className="bg-[#242832] border border-white/10 text-white text-xs px-2 py-0.5 rounded-md font-mono">
                                     {duration.replace(/s$/, '')} s
                                   </span>
                                 )}
                               </label>
 
-                              {selectedVideoModel.toLowerCase().includes('seedance') || selectedVideoModel.toLowerCase().includes('sparkvideo') ? (
+                              {currentVideoConfig.durationMode === 'slider' ? (
                                 <div className="flex items-center gap-3 pt-1">
                                   <input 
                                     type="range" 
-                                    min={4} 
-                                    max={15} 
+                                    min={currentVideoConfig.minDuration || 4} 
+                                    max={currentVideoConfig.maxDuration || 15} 
                                     step={1}
                                     value={parseInt(duration.replace(/[^0-9]/g, ''), 10) || 6}
                                     onChange={(e) => setDuration(`${e.target.value}s`)}
@@ -1002,8 +1299,11 @@ function QuickCreateContent() {
                                   />
                                 </div>
                               ) : (
-                                <div className="grid grid-cols-4 gap-2 bg-[#0d0e10] p-1 rounded-xl border border-white/5">
-                                  {['5s', '6s', '10s', '15s'].map(d => {
+                                <div 
+                                  className="grid gap-2 bg-[#0d0e10] p-1 rounded-xl border border-white/5"
+                                  style={{ gridTemplateColumns: `repeat(${currentVideoConfig.durations.length}, minmax(0, 1fr))` }}
+                                >
+                                  {currentVideoConfig.durations.map(d => {
                                     const isSelected = duration === d;
                                     return (
                                       <button 
@@ -1024,47 +1324,53 @@ function QuickCreateContent() {
                             </div>
 
                             {/* Real Person & Generate Audio Toggles */}
-                            <div className="flex gap-4 pt-2 border-t border-white/10">
-                              {/* Real Person */}
-                              <div className="flex-1 space-y-2">
-                                <span className="text-[11px] font-semibold text-gray-400 block uppercase">Real Person</span>
-                                <div className="grid grid-cols-2 gap-1 bg-[#0d0e10] p-0.5 rounded-lg border border-white/5">
-                                  {['On', 'Off'].map(v => (
-                                    <button 
-                                      key={v}
-                                      type="button"
-                                      onClick={() => setRealPerson(v)}
-                                      className={cn(
-                                        "py-1.5 text-center rounded text-[10px] font-bold transition-all",
-                                        realPerson === v ? "bg-[#24272e] text-white shadow-sm" : "text-gray-500"
-                                      )}
-                                    >
-                                      {v}
-                                    </button>
-                                  ))}
-                                </div>
-                              </div>
+                            {(currentVideoConfig.supportsRealPerson || currentVideoConfig.supportsAudio) && (
+                              <div className="flex gap-4 pt-2 border-t border-white/10">
+                                {/* Real Person */}
+                                {currentVideoConfig.supportsRealPerson && (
+                                  <div className="flex-1 space-y-2">
+                                    <span className="text-[11px] font-semibold text-gray-400 block uppercase">Real Person</span>
+                                    <div className="grid grid-cols-2 gap-1 bg-[#0d0e10] p-0.5 rounded-lg border border-white/5">
+                                      {['On', 'Off'].map(v => (
+                                        <button 
+                                          key={v}
+                                          type="button"
+                                          onClick={() => setRealPerson(v)}
+                                          className={cn(
+                                            "py-1.5 text-center rounded text-[10px] font-bold transition-all",
+                                            realPerson === v ? "bg-[#24272e] text-white shadow-sm" : "text-gray-500"
+                                          )}
+                                        >
+                                          {v}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
 
-                              {/* Audio */}
-                              <div className="flex-1 space-y-2">
-                                <span className="text-[11px] font-semibold text-gray-400 block uppercase">Audio</span>
-                                <div className="grid grid-cols-2 gap-1 bg-[#0d0e10] p-0.5 rounded-lg border border-white/5">
-                                  {['On', 'Off'].map(v => (
-                                    <button 
-                                      key={v}
-                                      type="button"
-                                      onClick={() => setAudio(v)}
-                                      className={cn(
-                                        "py-1.5 text-center rounded text-[10px] font-bold transition-all",
-                                        audio === v ? "bg-[#24272e] text-white shadow-sm" : "text-gray-500"
-                                      )}
-                                    >
-                                      {v}
-                                    </button>
-                                  ))}
-                                </div>
+                                {/* Audio */}
+                                {currentVideoConfig.supportsAudio && (
+                                  <div className="flex-1 space-y-2">
+                                    <span className="text-[11px] font-semibold text-gray-400 block uppercase">Audio</span>
+                                    <div className="grid grid-cols-2 gap-1 bg-[#0d0e10] p-0.5 rounded-lg border border-white/5">
+                                      {['On', 'Off'].map(v => (
+                                        <button 
+                                          key={v}
+                                          type="button"
+                                          onClick={() => setAudio(v)}
+                                          className={cn(
+                                            "py-1.5 text-center rounded text-[10px] font-bold transition-all",
+                                            audio === v ? "bg-[#24272e] text-white shadow-sm" : "text-gray-500"
+                                          )}
+                                        >
+                                          {v}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
                               </div>
-                            </div>
+                            )}
                           </>
                         )}
                       </div>

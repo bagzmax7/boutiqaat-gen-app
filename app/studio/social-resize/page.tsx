@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, Download, Loader2, Sparkles, Wand2, X } from 'lucide-react';
+import { Upload, Download, Loader2, Sparkles, Wand2, X, ChevronDown, Clock, Zap } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Sidebar from '@/components/layout/Sidebar';
 import { cn } from '@/lib/utils';
@@ -11,18 +11,50 @@ import PreviewCard, { PreviewCardRef } from '@/components/social-resize/PreviewC
 import { downloadBatchZip } from '@/lib/social-resize/export';
 
 const AI_MODELS = [
-  { id: 'nano-banana-pro', name: 'Nano Banana Pro', desc: 'Best for seamless generative fill' },
-  { id: 'nano-banana-2', name: 'Nano Banana 2', desc: 'Fast & balanced quality' },
-  { id: 'nano-banana-2-lite', name: 'Nano Banana 2 Lite', desc: 'Fastest generation' },
-  { id: 'gpt-2.0', name: 'GPT Image 2.0', desc: 'Standard outpainting' },
-  { id: 'flux-2-edit', name: 'Flux 2 Edit', desc: 'Flux.2 Klein 9B Image Edit' }
+  { id: 'nano-banana-pro', name: 'Nano Banana Pro (Recommended)', logo: '/model-logos/Gemini.png', stats: ['1K-4K', 'High Quality'] },
+  { id: 'nano-banana-2', name: 'Nano Banana 2 (Recommended)', logo: '/model-logos/Gemini.png', stats: ['1K-4K', 'Balanced'] },
+  { id: 'nano-banana-2-lite', name: 'Nano Banana 2 Lite (Faster Low Quality)', logo: '/model-logos/Gemini.png', stats: ['1K-2K', 'Fastest'] },
+  { id: 'gpt-2.0', name: 'GPT Image 2.0 (New)', logo: '/model-logos/GPT.png', stats: ['1K-4K', 'Standard'] },
+  { id: 'flux-2-edit', name: 'Flux 2 Edit (Standard)', logo: '/model-logos/Flux.png', stats: ['1K-4K', 'Pro Edit'] }
 ];
+
+function parseModelName(fullName: string) {
+  const match = fullName.match(/^(.*?)\s*\((.*?)\)$/);
+  if (match) {
+    return {
+      displayName: match[1].trim(),
+      badge: match[2].trim()
+    };
+  }
+  return {
+    displayName: fullName.trim(),
+    badge: null
+  };
+}
+
+function ModelBadge({ text }: { text: string }) {
+  let colorClass = 'bg-lime-500/10 text-lime-400 border border-lime-500/20';
+  const cleanText = text.toUpperCase();
+  if (cleanText.includes('RECOMMENDED')) {
+    colorClass = 'bg-lime-500/20 text-lime-400 font-extrabold italic px-1.5 py-0.5 rounded border border-lime-500/30 text-[8px] tracking-wider';
+  } else if (cleanText.includes('NEW')) {
+    colorClass = 'bg-[#a3e635] text-[#0d0e10] font-black italic px-1.5 py-0.5 rounded text-[8px] tracking-wider';
+  } else if (cleanText.includes('FASTER LOW QUALITY')) {
+    colorClass = 'bg-amber-500/20 text-amber-400 font-extrabold italic px-1.5 py-0.5 rounded border border-amber-500/30 text-[8px] tracking-wider';
+  } else if (cleanText.includes('EXCLUSIVE')) {
+    colorClass = 'bg-[#a3e635] text-[#0d0e10] font-black italic px-1.5 py-0.5 rounded text-[8px] tracking-wider';
+  } else {
+    colorClass = 'bg-white/10 text-gray-300 font-bold px-1.5 py-0.5 rounded text-[8px] tracking-wider';
+  }
+  return <span className={cn("uppercase text-[8px] font-bold px-1 py-0.5 rounded scale-90 inline-block align-middle", colorClass)}>{text}</span>;
+}
 
 export default function SocialResizePage() {
   const [sourceImageUrl, setSourceImageUrl] = useState<string | null>(null);
   const [sourceImage, setSourceImage] = useState<HTMLImageElement | null>(null);
   const [focalPoint, setFocalPoint] = useState({ x: 0.5, y: 0.5 });
   const [selectedModel, setSelectedModel] = useState(AI_MODELS[0].id);
+  const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
   const [resolution, setResolution] = useState<'1k' | '2k' | '4k'>('1k');
   const [activeCategory, setActiveCategory] = useState<'all' | 'social' | 'ads' | 'web'>('all');
   
@@ -280,17 +312,86 @@ export default function SocialResizePage() {
           <div>
             <label className="text-sm font-semibold block mb-2">AI Generative Model</label>
             <p className="text-[10px] text-text-muted mb-3">Model used when you click "AI Fill" on a preview card.</p>
-            <select
-              value={selectedModel}
-              onChange={(e) => setSelectedModel(e.target.value)}
-              className="w-full p-3 rounded-xl border border-border bg-bg-card text-text-primary text-xs font-bold focus:border-accent-purple focus:outline-none transition-all cursor-pointer"
-            >
-              {AI_MODELS.map(model => (
-                <option key={model.id} value={model.id} className="bg-bg-secondary text-text-primary">
-                  {model.name} ({model.desc})
-                </option>
-              ))}
-            </select>
+            
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setIsModelDropdownOpen(!isModelDropdownOpen)}
+                className="w-full flex items-center justify-between p-3 rounded-xl border border-border bg-[#141517] hover:border-white/20 text-text-primary text-xs font-bold transition-all"
+              >
+                {(() => {
+                  const activeModelObj = AI_MODELS.find(m => m.id === selectedModel) || AI_MODELS[0];
+                  const { displayName, badge } = parseModelName(activeModelObj.name);
+                  return (
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      {activeModelObj.logo && (
+                        <div className="w-5 h-5 rounded bg-white/5 flex items-center justify-center border border-white/10 shrink-0">
+                          <img src={activeModelObj.logo} alt="" className="w-3.5 h-3.5 object-contain" />
+                        </div>
+                      )}
+                      <span className="truncate text-left text-gray-200 font-semibold">{displayName}</span>
+                      {badge && <ModelBadge text={badge} />}
+                    </div>
+                  );
+                })()}
+                <ChevronDown className="w-4 h-4 text-text-muted shrink-0 ml-2" />
+              </button>
+
+              {isModelDropdownOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setIsModelDropdownOpen(false)}
+                  />
+                  <div className="absolute left-0 bottom-full mb-2 w-full bg-[#1e2127] border border-white/10 rounded-2xl shadow-2xl p-2 z-50 space-y-1 animate-in fade-in slide-in-from-bottom-2 duration-150 max-h-80 overflow-y-auto">
+                    {AI_MODELS.map(m => {
+                      const { displayName, badge } = parseModelName(m.name);
+                      const isSelected = selectedModel === m.id;
+                      return (
+                        <button
+                          key={m.id}
+                          type="button"
+                          onClick={() => {
+                            setSelectedModel(m.id);
+                            setIsModelDropdownOpen(false);
+                          }}
+                          className={cn(
+                            'w-full text-left p-2.5 rounded-xl text-xs font-medium transition-all flex items-center gap-3',
+                            isSelected
+                              ? 'bg-lime-500/10 text-lime-400 font-bold border border-lime-500/20 shadow-md'
+                              : 'text-gray-300 hover:bg-white/5 border border-transparent'
+                          )}
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 shrink-0">
+                            {m.logo ? (
+                              <img src={m.logo} alt="" className="w-5 h-5 object-contain" />
+                            ) : (
+                              <Sparkles className="w-4 h-4 text-gray-400" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="font-semibold text-gray-200">{displayName}</span>
+                              {badge && <ModelBadge text={badge} />}
+                            </div>
+                            {m.stats && (
+                              <div className="flex items-center gap-2 mt-1 text-[9px] text-gray-500 font-semibold">
+                                <span className="flex items-center gap-1 bg-white/5 px-1.5 py-0.5 rounded border border-white/5">
+                                  <Zap className="w-2.5 h-2.5 text-lime-400" /> {m.stats[0]}
+                                </span>
+                                <span className="flex items-center gap-1 bg-white/5 px-1.5 py-0.5 rounded border border-white/5">
+                                  <Clock className="w-2.5 h-2.5 text-gray-400" /> {m.stats[1]}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>

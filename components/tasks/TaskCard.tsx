@@ -188,9 +188,15 @@ export default function TaskCard({ task, onCancel, defaultExpanded = false }: Ta
                           />
                         </div>
                       ) : isVid ? (
-                        <div className="aspect-square flex flex-col items-center justify-center gap-2">
-                          <Film className="w-8 h-8 text-accent-purple" />
-                          <p className="text-xs text-text-muted">Video</p>
+                        <div className="aspect-square relative w-full h-full">
+                          <video
+                            src={output.fileUrl}
+                            className="w-full h-full object-cover absolute inset-0"
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                          />
                         </div>
                       ) : (
                         <div className="aspect-square flex flex-col items-center justify-center gap-2">

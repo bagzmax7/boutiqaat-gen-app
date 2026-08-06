@@ -16,7 +16,7 @@ const IMAGE_MODELS: Record<string, {
 }> = {
   // ── Nano Banana 2 (Gemini 3.1 Flash) ─────────────────────────────────────
   'nano-banana-2': {
-    name: 'Nano Banana 2 (Low Cost)',
+    name: 'Nano Banana 2 (Recommended)',
     rhModelId: 'nano-banana-2',
     supportedModes: ['text-to-image', 'image-to-image'],
     supportedAspectRatios: ['1:1', '16:9', '9:16', '4:3', '3:4', '3:2', '2:3', '5:4', '4:5', '21:9', '1:4', '4:1', '1:8', '8:1'],
@@ -26,7 +26,7 @@ const IMAGE_MODELS: Record<string, {
 
   // ── Nano Banana Pro (Edit endpoint only) ─────────────────────────────────
   'nano-banana-pro': {
-    name: 'Nano Banana Pro',
+    name: 'Nano Banana Pro (Recommended)',
     rhModelId: 'nano-banana-pro',
     supportedModes: ['image-to-image'], // Pro only supports edit/i2i
     supportedAspectRatios: ['1:1', '16:9', '9:16', '4:3', '3:4', '3:2', '2:3', '5:4', '4:5', '21:9'],
@@ -34,12 +34,32 @@ const IMAGE_MODELS: Record<string, {
     defaultResolution: '1k',
   },
 
+  // ── Nano Banana 2 Lite ───────────────────────────────────────────────────
+  'nano-banana-2-lite': {
+    name: 'Nano Banana 2 Lite (Faster Low Quality)',
+    rhModelId: 'nano-banana-2-lite',
+    supportedModes: ['text-to-image', 'image-to-image'],
+    supportedAspectRatios: ['1:1', '16:9', '9:16', '4:3', '3:4', '3:2', '2:3', '5:4', '4:5', '21:9', '1:4', '4:1', '1:8', '8:1'],
+    supportedResolutions: ['1k', '2k'],
+    defaultResolution: '1k',
+  },
+
   // ── GPT Image 2.0 ─────────────────────────────────────────────────────────
   'gpt-2.0': {
-    name: 'GPT Image 2.0 (Edit-Economy)',
+    name: 'GPT Image 2.0 (New)',
     rhModelId: 'gpt-2.0',
     supportedModes: ['text-to-image', 'image-to-image'],
     supportedAspectRatios: ['1:1', '2:3', '3:2', '4:5', '5:4', '4:3', '3:4', '16:9', '9:16', '21:9', '9:21', '2:1', '1:2', '3:1', '1:3'],
+    supportedResolutions: ['1k', '2k', '4k'],
+    defaultResolution: '1k',
+  },
+
+  // ── Flux 2 Edit ──────────────────────────────────────────────────────────
+  'flux-2-edit': {
+    name: 'Flux 2 Edit (Standard)',
+    rhModelId: 'flux-2-edit',
+    supportedModes: ['image-to-image'],
+    supportedAspectRatios: ['1:1', '16:9', '9:16', '4:3', '3:4', '3:2', '2:3', '5:4', '4:5', '21:9'],
     supportedResolutions: ['1k', '2k', '4k'],
     defaultResolution: '1k',
   },
@@ -94,12 +114,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: `Unknown model: ${model}` }, { status: 400 });
     }
 
-    // Validate Nano Banana Pro: requires at least one image
-    if (model === 'nano-banana-pro') {
+    // Validate Nano Banana Pro and Flux 2 Edit: requires at least one image
+    if (model === 'nano-banana-pro' || model === 'flux-2-edit') {
       const hasImage = (imageUrls && imageUrls.length > 0) || !!imageUrl;
       if (!hasImage) {
         return NextResponse.json(
-          { error: 'Nano Banana Pro requires at least one reference image (image-to-image / edit mode only)' },
+          { error: `${modelCfg.name} requires at least one reference image (image-to-image / edit mode only)` },
           { status: 400 }
         );
       }
@@ -110,6 +130,42 @@ export async function POST(request: Request) {
         ? resolution
         : modelCfg.defaultResolution;
 
+    let customWidth: number | undefined;
+    let customHight: number | undefined;
+    if (model === 'flux-2-edit') {
+      customWidth = 1024;
+      customHight = 1024;
+      if (aspectRatio === '16:9') {
+        customWidth = 1024;
+        customHight = 576;
+      } else if (aspectRatio === '9:16') {
+        customWidth = 576;
+        customHight = 1024;
+      } else if (aspectRatio === '4:3') {
+        customWidth = 1024;
+        customHight = 768;
+      } else if (aspectRatio === '3:4') {
+        customWidth = 768;
+        customHight = 1024;
+      } else if (aspectRatio === '21:9') {
+        customWidth = 1216;
+        customHight = 512;
+      }
+    }
+
+    let resolvedAspectRatio = aspectRatio;
+    if (model === 'grok-image') {
+      if (!modelCfg.supportedAspectRatios.includes(aspectRatio)) {
+        if (aspectRatio === '16:9') resolvedAspectRatio = '1280x720';
+        else if (aspectRatio === '9:16') resolvedAspectRatio = '720x1280';
+        else resolvedAspectRatio = '960x960';
+      }
+    } else if (model !== 'flux-2-edit') {
+      if (aspectRatio && !modelCfg.supportedAspectRatios.includes(aspectRatio)) {
+        resolvedAspectRatio = modelCfg.supportedAspectRatios[0];
+      }
+    }
+
     const countVal = typeof count === 'number' ? Math.max(1, Math.min(4, count)) : 1;
 
     // Call generateImage concurrently based on selected count
@@ -119,9 +175,11 @@ export async function POST(request: Request) {
         prompt,
         imageUrls,
         imageUrl,
-        aspectRatio,
+        aspectRatio: resolvedAspectRatio,
         resolution: resolvedResolution,
         grokModel,
+        customWidth,
+        customHight,
       }, 'enterprise')
     );
 

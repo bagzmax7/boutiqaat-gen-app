@@ -147,10 +147,7 @@ export default function TaskDetailModal({ task, onClose }: TaskDetailModalProps)
                         {isImg ? (
                           <Image src={out.fileUrl} alt="Output" fill className="object-contain p-2" sizes="200px" />
                         ) : isVid ? (
-                          <div className="w-full h-full flex flex-col items-center justify-center text-accent-purple bg-accent-purple/5">
-                            <Film className="w-8 h-8 mb-2"/>
-                            <span className="text-xs font-medium">VIDEO</span>
-                          </div>
+                          <video src={out.fileUrl} controls className="w-full h-full object-contain" />
                         ) : isPsd ? (
                           <div className="w-full h-full flex flex-col items-center justify-center text-accent-blue bg-accent-blue/5">
                             <ImageIcon className="w-8 h-8 mb-2"/>

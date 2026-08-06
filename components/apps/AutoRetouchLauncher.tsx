@@ -191,13 +191,14 @@ export default function AutoRetouchLauncher({ app, onTaskStarted }: AppLauncherP
         strength: '0.55',
         status: 'idle' as const,
       }));
-      
-      const totalFiles = [...prev, ...newFiles];
-      if (totalFiles.length > 10) {
+      const activeQueueFiles = prev.filter(f => f.status === 'idle' || f.status === 'uploading' || f.status === 'processing');
+      if (activeQueueFiles.length + newFiles.length > 10) {
         toast.error("You can only process up to 10 images at once.");
-        return totalFiles.slice(0, 10);
+        const allowedCount = 10 - activeQueueFiles.length;
+        if (allowedCount <= 0) return prev;
+        return [...prev, ...newFiles.slice(0, allowedCount)];
       }
-      return totalFiles;
+      return [...prev, ...newFiles];
     });
   }, []);
 

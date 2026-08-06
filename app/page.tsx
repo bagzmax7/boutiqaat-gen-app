@@ -10,7 +10,7 @@ import {
   TrendingUp, Star, Package
 } from 'lucide-react';
 import { useTasks } from '@/hooks/useTasks';
-import { cn } from '@/lib/utils';
+import { cn, isVideoUrl } from '@/lib/utils';
 
 interface UserProfile {
   name: string;
@@ -60,7 +60,7 @@ export default function EditorDashboard() {
   const recentOutputs = tasks
     .filter((t) => t.status === 'SUCCESS' && t.outputs && t.outputs.length > 0)
     .slice(0, 6)
-    .flatMap((t) => t.outputs?.slice(0, 2).map((o) => ({ url: o.fileUrl, label: t.appName })) || []);
+    .flatMap((t) => t.outputs?.slice(0, 1).map((o) => ({ url: o.fileUrl, label: t.appName, isVideo: isVideoUrl(o.fileUrl) })) || []);
 
   return (
     <div className="flex h-screen bg-bg-primary overflow-hidden">
@@ -210,14 +210,25 @@ export default function EditorDashboard() {
                       style={{ aspectRatio: '1/1' }}
                     >
                       {item.url && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={item.url}
-                          alt={item.label}
-                          loading="lazy"
-                          decoding="async"
-                          className="w-full h-full object-cover"
-                        />
+                        item.isVideo ? (
+                          <video
+                            src={item.url}
+                            className="w-full h-full object-cover"
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                          />
+                        ) : (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={item.url}
+                            alt={item.label}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-cover"
+                          />
+                        )
                       )}
                       <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <Download className="w-4 h-4 text-white" />

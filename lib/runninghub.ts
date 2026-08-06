@@ -312,6 +312,9 @@ export async function generateImage(payload: {
   aspectRatio?: string;
   resolution?: '1k' | '2k' | '4k';
   grokModel?: 'g-3' | 'g-4' | 'g-4.1' | 'g-4.2';
+  customWidth?: number;
+  customHight?: number;
+  outputFormat?: string;
 }, apiKeyType?: 'enterprise' | 'consumer'): Promise<ImageTaskResponse> {
   const hasImages = (payload.imageUrls && payload.imageUrls.length > 0) || !!payload.imageUrl;
 

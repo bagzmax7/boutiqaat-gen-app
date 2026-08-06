@@ -6,7 +6,7 @@ import TopBar from '@/components/layout/TopBar';
 import Image from 'next/image';
 import { History, Download, CheckCircle2, XCircle, Clock, Loader2, Search, Filter, Eye, X, Layers } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { cn } from '@/lib/utils';
+import { cn, isVideoUrl } from '@/lib/utils';
 import { TaskOutput } from '@/lib/types';
 
 interface HistoryTask {
@@ -329,15 +329,30 @@ export default function HistoryPage() {
                       <div className="relative aspect-square bg-[#0e0e0e] overflow-hidden border-b border-border">
                         {task.outputs && task.outputs.length > 0 && task.outputs[0].fileUrl ? (
                           <>
-                            <img
-                              src={task.outputs[0].fileUrl}
-                              className={cn(
-                                "w-full h-full object-cover group-hover:scale-102 transition-transform duration-300", 
-                                task.status !== 'SUCCESS' ? 'opacity-50 grayscale' : '',
-                                convertingPsdIds.has(task.id) ? 'blur-sm scale-105' : ''
-                              )}
-                              alt={task.app_name}
-                            />
+                            {isVideoUrl(task.outputs[0].fileUrl) ? (
+                              <video
+                                src={task.outputs[0].fileUrl}
+                                className={cn(
+                                  "w-full h-full object-cover group-hover:scale-102 transition-transform duration-300", 
+                                  task.status !== 'SUCCESS' ? 'opacity-50 grayscale' : '',
+                                  convertingPsdIds.has(task.id) ? 'blur-sm scale-105' : ''
+                                )}
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                              />
+                            ) : (
+                              <img
+                                src={task.outputs[0].fileUrl}
+                                className={cn(
+                                  "w-full h-full object-cover group-hover:scale-102 transition-transform duration-300", 
+                                  task.status !== 'SUCCESS' ? 'opacity-50 grayscale' : '',
+                                  convertingPsdIds.has(task.id) ? 'blur-sm scale-105' : ''
+                                )}
+                                alt={task.app_name}
+                              />
+                            )}
                             {/* Loading overlay for PSD conversion */}
                             {convertingPsdIds.has(task.id) && (
                               <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 z-20">
@@ -532,11 +547,21 @@ export default function HistoryPage() {
 
             {/* Viewer */}
             <div className="relative aspect-square bg-[#0e0e0e] flex items-center justify-center overflow-hidden p-6">
-              <img 
-                src={previewImage.imageUrl}
-                className="max-w-full max-h-full object-contain rounded-lg border border-white/5 shadow-lg select-none"
-                alt="High Resolution 2K Preview"
-              />
+              {isVideoUrl(previewImage.imageUrl) ? (
+                <video 
+                  src={previewImage.imageUrl}
+                  controls
+                  autoPlay
+                  loop
+                  className="max-w-full max-h-full object-contain rounded-lg border border-white/5 shadow-lg select-none"
+                />
+              ) : (
+                <img 
+                  src={previewImage.imageUrl}
+                  className="max-w-full max-h-full object-contain rounded-lg border border-white/5 shadow-lg select-none"
+                  alt="High Resolution 2K Preview"
+                />
+              )}
             </div>
 
             {/* Actions */}
