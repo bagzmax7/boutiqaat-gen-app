@@ -64,69 +64,84 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
     ? generatedHistory[historyIndex].url 
     : null;
 
+  const [activeImage, setActiveImage] = useState<HTMLImageElement | null>(null);
+  const [loadError, setLoadError] = useState(false);
+
+  // Load generated image object when activeImageUrl changes
+  useEffect(() => {
+    if (!activeImageUrl) {
+      setActiveImage(null);
+      setLoadError(false);
+      return;
+    }
+    setLoadError(false);
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => setActiveImage(img);
+    img.onerror = () => {
+      setActiveImage(null);
+      setLoadError(true);
+    };
+    img.src = activeImageUrl;
+  }, [activeImageUrl]);
+
   // ── Draw canvas (manual crop or AI result) ─────────────────────────────────
   const drawCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas || !sourceImage) return;
 
-    if (useAIFill && activeImageUrl) {
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.onload = () => {
-        // Dynamic full-resolution canvas size based on generated image to preserve 2K/4K quality
-        const canvasRatio = preset.width / preset.height;
-        const imgRatio = img.width / img.height;
+    if (useAIFill && activeImage && !loadError) {
+      const img = activeImage;
+      // Dynamic full-resolution canvas size based on generated image to preserve 2K/4K quality
+      const canvasRatio = preset.width / preset.height;
+      const imgRatio = img.width / img.height;
 
-        if (imgRatio > canvasRatio) {
-          // Generated image is wider than target ratio
-          canvas.height = img.height;
-          canvas.width = Math.round(img.height * canvasRatio);
-        } else {
-          // Generated image is taller than target ratio
-          canvas.width = img.width;
-          canvas.height = Math.round(img.width / canvasRatio);
-        }
+      if (imgRatio > canvasRatio) {
+        // Generated image is wider than target ratio
+        canvas.height = img.height;
+        canvas.width = Math.round(img.height * canvasRatio);
+      } else {
+        // Generated image is taller than target ratio
+        canvas.width = img.width;
+        canvas.height = Math.round(img.width / canvasRatio);
+      }
 
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Center-cover crop calculation (avoid warping/stretching)
+      let sx = 0, sy = 0, sw = img.width, sh = img.height;
+      if (imgRatio > canvasRatio) {
+        sw = img.height * canvasRatio;
+        sx = (img.width - sw) / 2;
+      } else {
+        sh = img.width / canvasRatio;
+        sy = (img.height - sh) / 2;
+      }
+
+      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+      onCanvasReady(preset.id, canvas);
+      return;
+    } else if (useAIFill && !activeImage && !loadError) {
+      // Still loading the AI image, clear and wait
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        canvas.width = preset.width;
+        canvas.height = preset.height;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // Center-cover crop calculation (avoid warping/stretching)
-        let sx = 0, sy = 0, sw = img.width, sh = img.height;
-        if (imgRatio > canvasRatio) {
-          sw = img.height * canvasRatio;
-          sx = (img.width - sw) / 2;
-        } else {
-          sh = img.width / canvasRatio;
-          sy = (img.height - sh) / 2;
-        }
-
-        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
-        onCanvasReady(preset.id, canvas);
-      };
-      img.onerror = () => {
-        const ctx = canvas.getContext('2d');
-        if (ctx) {
-          canvas.width = preset.width;
-          canvas.height = preset.height;
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          drawManualCrop(ctx, canvas);
-        }
-        onCanvasReady(preset.id, canvas);
-      };
-      img.src = activeImageUrl;
+      }
       return;
     }
 
-    // Manual Crop Mode dimensions
+    // Manual Crop Mode dimensions (or fallback if AI image load failed)
     canvas.width = preset.width;
     canvas.height = preset.height;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawManualCrop(ctx, canvas);
-    onCanvasReady(preset.id, canvas);
-  }, [sourceImage, focalPoint, preset, useAIFill, activeImageUrl, onCanvasReady]);
+  }, [sourceImage, activeImage, loadError, focalPoint, preset, useAIFill, onCanvasReady]);
 
   function drawManualCrop(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
     if (!sourceImage) return;
