@@ -31,6 +31,7 @@ interface BatchFile {
 // Before and After Slider Component
 function BeforeAfterSlider({ originalUrl, outputUrl }: { originalUrl: string; outputUrl: string }) {
   const [sliderPosition, setSliderPosition] = useState(50);
+  const [originalFailed, setOriginalFailed] = useState(!originalUrl);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleMove = (clientX: number) => {
@@ -51,6 +52,19 @@ function BeforeAfterSlider({ originalUrl, outputUrl }: { originalUrl: string; ou
     }
   };
 
+  if (originalFailed) {
+    return (
+      <div className="relative w-full h-full overflow-hidden select-none rounded-xl bg-black">
+        <img 
+          src={outputUrl} 
+          alt="Retouched" 
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        />
+        <span className="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-lime-400 text-[8px] text-black font-extrabold uppercase tracking-wider pointer-events-none">Retouched</span>
+      </div>
+    );
+  }
+
   return (
     <div 
       ref={containerRef}
@@ -64,6 +78,7 @@ function BeforeAfterSlider({ originalUrl, outputUrl }: { originalUrl: string; ou
         src={originalUrl} 
         alt="Original" 
         className="absolute inset-0 w-full h-full object-cover pointer-events-none" 
+        onError={() => setOriginalFailed(true)}
       />
 
       {/* After (Retouched) Image (Clipped) */}
