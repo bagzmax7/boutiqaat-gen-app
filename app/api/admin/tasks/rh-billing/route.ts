@@ -138,6 +138,7 @@ export async function GET(req: NextRequest) {
       outputs,
       apiKeyType: 'enterprise',
       apiKeyMasked: '1c81****e474',
+      apiKeyFull: '1c813062e2bc4f18880178167ce5e474',
       // Billing
       duration,          // seconds
       coins,             // RH Coins
