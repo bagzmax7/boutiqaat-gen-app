@@ -1316,8 +1316,8 @@ function QuickCreateContent() {
                                   <span className="text-[11px] text-amber-400 font-semibold">⚡ Auto</span>
                                   <span className="text-[11px] text-gray-500">
                                     {inputVideoDuration
-                                      ? `Input video: ~${inputVideoDuration}s → output: ${[4,6,8,10].find(d => d >= inputVideoDuration) ?? 10}s`
-                                      : 'Output duration matches input video (max 10s)'}
+                                      ? `Input video: ~${inputVideoDuration}s → output: ${inputVideoDuration}s`
+                                      : 'Output duration follows input video exactly'}
                                   </span>
                                 </div>
                               </div>
