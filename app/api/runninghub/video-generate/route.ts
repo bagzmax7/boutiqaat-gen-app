@@ -152,27 +152,56 @@ export async function POST(request: Request) {
     } 
     else if (isGemini) {
       const geminiRatio = cleanRatio === 'Auto' ? '16:9' : cleanRatio;
+      // Supported durations for Gemini Omni Flash: 4, 6, 8, 10 seconds
+      const GEMINI_SUPPORTED_DURATIONS = [4, 6, 8, 10];
       
       if (targetPath.endsWith('/video-edit')) {
+        // For video-edit mode: output duration should follow the input video duration.
+        // Since the API only supports 4/6/8/10s, we snap to the nearest supported value
+        // that is >= the input video duration (from payload.inputVideoDuration if provided),
+        // otherwise default to max (10s) so the full video can be processed.
+        const inputVideoDuration = payload.inputVideoDuration // seconds, detected on frontend
+          ? parseFloat(String(payload.inputVideoDuration))
+          : null;
+        
+        let geminiVideoDuration: number;
+        if (inputVideoDuration && inputVideoDuration > 0) {
+          // Find the smallest supported duration >= input video duration
+          const snapped = GEMINI_SUPPORTED_DURATIONS.find(d => d >= inputVideoDuration);
+          geminiVideoDuration = snapped ?? 10; // fallback to max if video is longer than 10s
+        } else {
+          // No duration info — use max (10s) so full input video is covered
+          geminiVideoDuration = 10;
+        }
+        
         mappedPayload = {
           prompt: prompt || null,
           imageUrls: imageUrls.length > 0 ? imageUrls : undefined,
           videoUrl: videoUrls[0] || null,
+          duration: String(geminiVideoDuration),
           resolution: cleanQuality,
           aspectRatio: geminiRatio
         };
       } else if (targetPath.endsWith('/image-to-video')) {
+        // For image-to-video: use user-selected duration (snap to supported)
+        const snappedDuration = GEMINI_SUPPORTED_DURATIONS.reduce((prev, curr) =>
+          Math.abs(curr - durationNum) < Math.abs(prev - durationNum) ? curr : prev
+        );
         mappedPayload = {
           prompt: prompt || null,
           imageUrls: imageUrls.length > 0 ? imageUrls : undefined,
-          duration: String(durationNum),
+          duration: String(snappedDuration),
           resolution: cleanQuality,
           aspectRatio: geminiRatio
         };
       } else {
+        // text-to-video: use user-selected duration (snap to supported)
+        const snappedDuration = GEMINI_SUPPORTED_DURATIONS.reduce((prev, curr) =>
+          Math.abs(curr - durationNum) < Math.abs(prev - durationNum) ? curr : prev
+        );
         mappedPayload = {
           prompt,
-          duration: String(durationNum),
+          duration: String(snappedDuration),
           resolution: cleanQuality,
           aspectRatio: geminiRatio
         };

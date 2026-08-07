@@ -256,8 +256,25 @@ function QuickCreateContent() {
   const [attachedUrls, setAttachedUrls] = useState<{ url: string; type: 'image' | 'video' | 'audio' }[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [inputVideoDuration, setInputVideoDuration] = useState<number | null>(null); // seconds, detected from input video
   const fileInputRef = useRef<HTMLInputElement>(null);
   const promptTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  /** Detect duration of a video File using HTML5 media element */
+  const detectVideoDuration = (file: File): Promise<number> => {
+    return new Promise((resolve) => {
+      const url = URL.createObjectURL(file);
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.onloadedmetadata = () => {
+        const dur = Math.ceil(video.duration);
+        URL.revokeObjectURL(url);
+        resolve(dur);
+      };
+      video.onerror = () => { URL.revokeObjectURL(url); resolve(0); };
+      video.src = url;
+    });
+  };
 
   // Sync uploaded files with object URLs and perform resource cleanup on changes
   useEffect(() => {
@@ -267,12 +284,26 @@ function QuickCreateContent() {
     }));
     setPreviewUrls(urls);
 
+    // Detect duration of the first video file for smart Gemini video-edit duration
+    const firstVideoFile = uploadedFiles.find(f => f.type.startsWith('video/'));
+    if (firstVideoFile) {
+      detectVideoDuration(firstVideoFile).then(dur => {
+        setInputVideoDuration(dur > 0 ? dur : null);
+      });
+    } else {
+      setInputVideoDuration(null);
+    }
+
     return () => {
       urls.forEach(item => URL.revokeObjectURL(item.url));
     };
   }, [uploadedFiles]);
 
   const currentVideoConfig = VIDEO_MODEL_CONFIGS[selectedVideoModel] || VIDEO_MODEL_CONFIGS['seedance-2.0-mini'];
+
+  // Detect if we're in video-edit mode (Gemini + video input attached)
+  const hasVideoAttached = attachedUrls.some(a => a.type === 'video') || uploadedFiles.some(f => f.type.startsWith('video/'));
+  const isGeminiVideoEdit = selectedVideoModel === 'gemini-omni-flash' && hasVideoAttached && activeMode === 'video';
 
   // Compute available ratios based on active mode & model
   const currentAvailableRatios = activeMode === 'video'
@@ -625,6 +656,8 @@ function QuickCreateContent() {
               ratio: ratio !== 'Auto' ? ratio : undefined,
               quality,
               duration,
+              // Pass detected input video duration so backend can snap to correct supported value
+              inputVideoDuration: inputVideoDuration ?? undefined,
               realPerson: realPerson === 'On',
               audio: audio === 'On',
             }),
@@ -1273,7 +1306,22 @@ function QuickCreateContent() {
                         {/* Video Settings Toggles */}
                         {activeMode === 'video' && (
                           <>
-                            {/* Duration */}
+                            {/* Duration — hidden for Gemini video-edit (follows input video) */}
+                            {isGeminiVideoEdit ? (
+                              <div className="space-y-2 pt-2 border-t border-white/10">
+                                <label className="text-xs font-semibold text-gray-400 tracking-wide flex items-center gap-2 uppercase">
+                                  <Clock className="w-3.5 h-3.5" /> Video Duration
+                                </label>
+                                <div className="flex items-center gap-2 bg-[#0d0e10] border border-white/5 rounded-xl px-3 py-2.5">
+                                  <span className="text-[11px] text-amber-400 font-semibold">⚡ Auto</span>
+                                  <span className="text-[11px] text-gray-500">
+                                    {inputVideoDuration
+                                      ? `Input video: ~${inputVideoDuration}s → output: ${[4,6,8,10].find(d => d >= inputVideoDuration) ?? 10}s`
+                                      : 'Output duration matches input video (max 10s)'}
+                                  </span>
+                                </div>
+                              </div>
+                            ) : (
                             <div className="space-y-2 pt-2 border-t border-white/10">
                               <label className="text-xs font-semibold text-gray-400 tracking-wide flex items-center justify-between uppercase">
                                 <span className="flex items-center gap-2">
@@ -1322,6 +1370,7 @@ function QuickCreateContent() {
                                 </div>
                               )}
                             </div>
+                            )}
 
                             {/* Real Person & Generate Audio Toggles */}
                             {(currentVideoConfig.supportsRealPerson || currentVideoConfig.supportsAudio) && (
