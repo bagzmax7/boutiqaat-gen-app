@@ -729,7 +729,7 @@ function QuickCreateContent() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-lime-950/15 via-[#070707] to-[#070707] pointer-events-none z-0" />
 
         {/* Main Background Canvas Workspace */}
-        <main className="flex-1 overflow-y-auto relative flex flex-col items-center justify-between p-4 sm:p-6 pb-28 z-10">
+        <main className="flex-1 overflow-y-auto relative flex flex-col p-4 sm:p-6 pb-28 z-10">
 
           {/* Top Banner Heading */}
           <div className="relative z-10 text-center space-y-1 pt-2 flex flex-col items-center">
@@ -742,9 +742,9 @@ function QuickCreateContent() {
           </div>
 
           {/* Canvas Showcase Gallery */}
-          <div className="relative z-10 w-full max-w-full px-2 sm:px-4 my-6">
+          <div className="relative z-10 w-full mt-6 mb-4">
             {canvasItems.length > 0 && (
-              <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6 2xl:columns-8 gap-4 space-y-4">
+              <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6 2xl:columns-7 gap-3" style={{columnFill: 'balance'}}>
                 {canvasItems.map((item) => {
                   const taskObj = tasks.find(t => t.id === item.taskId || t.taskId === item.taskId);
                   const isSuccess = taskObj?.status === 'SUCCESS' || item.status === 'SUCCESS' || (item.outputs && item.outputs.length > 0);
@@ -757,7 +757,7 @@ function QuickCreateContent() {
                   return (
                     <div
                       key={item.id}
-                      className="break-inside-avoid relative rounded-3xl overflow-hidden border border-white/10 bg-[#141517] shadow-2xl group transition-all duration-300 hover:border-lime-500/50 hover:shadow-[0_0_25px_rgba(163,230,53,0.15)]"
+                      className="break-inside-avoid mb-3 relative rounded-3xl overflow-hidden border border-white/10 bg-[#141517] shadow-2xl group transition-all duration-300 hover:border-lime-500/50 hover:shadow-[0_0_25px_rgba(163,230,53,0.15)]"
                     >
                       {/* Aspect Ratio Skeleton Loader / Finished Content */}
                       <div className={cn('w-full relative overflow-hidden bg-black/60', aspectClass)}>
