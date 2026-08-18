@@ -16,7 +16,7 @@ export default function AdminUsersPage() {
   const [newName, setNewName] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [newRole, setNewRole] = useState<'editor' | 'admin'>('editor');
+  const [newRole, setNewRole] = useState<'editor' | 'admin' | 'manager'>('editor');
   const [creating, setCreating] = useState(false);
 
   function loadUsers() {
@@ -75,7 +75,7 @@ export default function AdminUsersPage() {
                 onClick={() => setShowAdd(true)}
                 className="flex items-center gap-2 bg-accent-gold/10 border border-accent-gold/30 text-accent-gold text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-accent-gold/15 transition-all"
               >
-                <UserPlus className="w-4 h-4" /> Add Editor
+                <UserPlus className="w-4 h-4" /> Add Team Member
               </button>
             </div>
           </div>
@@ -103,9 +103,10 @@ export default function AdminUsersPage() {
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-text-secondary uppercase tracking-wider mb-1.5">Role</label>
-                    <select value={newRole} onChange={e => setNewRole(e.target.value as 'editor' | 'admin')} className="w-full bg-bg-secondary border border-border rounded-xl px-4 py-2.5 text-sm text-text-primary input-gold transition-all">
-                      <option value="editor">Editor</option>
-                      <option value="admin">Admin</option>
+                    <select value={newRole} onChange={e => setNewRole(e.target.value as 'editor' | 'admin' | 'manager')} className="w-full bg-bg-secondary border border-border rounded-xl px-4 py-2.5 text-sm text-text-primary input-gold transition-all">
+                      <option value="editor">Editor (Studio Access)</option>
+                      <option value="manager">Manager (Team Analytics + History)</option>
+                      <option value="admin">Admin (Full Control)</option>
                     </select>
                   </div>
                 </div>
@@ -130,10 +131,12 @@ export default function AdminUsersPage() {
                       <p className="text-sm font-semibold text-text-primary">{user.name}</p>
                       <p className="text-xs text-text-muted">{user.email}</p>
                     </div>
-                    <span className={cn('text-xs font-semibold px-2.5 py-1 rounded-full border flex-shrink-0',
+                    <span className={cn('text-xs font-semibold px-2.5 py-1 rounded-full border flex-shrink-0 uppercase',
                       user.role === 'admin'
                         ? 'text-accent-gold bg-accent-gold/10 border-accent-gold/25'
-                        : 'text-accent-purple bg-accent-purple/10 border-accent-purple/25'
+                        : user.role === 'manager'
+                          ? 'text-accent-blue bg-accent-blue/10 border-accent-blue/25'
+                          : 'text-accent-purple bg-accent-purple/10 border-accent-purple/25'
                     )}>
                       {user.role}
                     </span>

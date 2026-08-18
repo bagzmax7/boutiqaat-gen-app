@@ -14,7 +14,7 @@ import toast from 'react-hot-toast';
 interface UserProfile {
   name: string;
   email: string;
-  role: 'editor' | 'admin';
+  role: 'editor' | 'admin' | 'manager';
   avatar_url?: string | null;
 }
 
@@ -50,17 +50,20 @@ export default function Sidebar() {
     setLoggingOut(true);
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
-      router.push('/login');
-      router.refresh();
+      // Clear legacy and active client stores
+      try {
+        localStorage.clear();
+        sessionStorage.clear();
+      } catch {}
+      window.location.href = '/login';
     } catch {
       toast.error('Logout failed');
-    } finally {
       setLoggingOut(false);
     }
   }
 
-  const isAdmin = user?.role === 'admin';
-  const navItems = isAdmin && pathname.startsWith('/admin') ? ADMIN_NAV : EDITOR_NAV;
+  const isManagement = user?.role === 'admin' || user?.role === 'manager';
+  const navItems = isManagement && pathname.startsWith('/admin') ? ADMIN_NAV : EDITOR_NAV;
 
   const initials = user?.name
     ? user.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
@@ -96,11 +99,11 @@ export default function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 p-2 space-y-0.5 overflow-y-auto pt-3">
         {/* Admin badge */}
-        {isAdmin && !collapsed && (
+        {isManagement && !collapsed && (
           <div className="px-3 py-1.5 mb-2">
             <div className="flex items-center gap-1.5 text-[10px] text-accent-gold/70 font-semibold uppercase tracking-widest">
               <Zap className="w-3 h-3" />
-              {pathname.startsWith('/admin') ? 'Admin Panel' : 'Editor View'}
+              {pathname.startsWith('/admin') ? (user?.role === 'manager' ? 'Management Panel' : 'Admin Panel') : 'Editor View'}
             </div>
           </div>
         )}
@@ -128,8 +131,8 @@ export default function Sidebar() {
           );
         })}
 
-        {/* Admin switch */}
-        {isAdmin && !collapsed && (
+        {/* Admin / Manager switch */}
+        {isManagement && !collapsed && (
           <div className="pt-3 mt-3 border-t border-border">
             <Link
               href={pathname.startsWith('/admin') ? '/' : '/admin'}
@@ -138,7 +141,7 @@ export default function Sidebar() {
               {pathname.startsWith('/admin') ? (
                 <><Layers className="w-4 h-4" /> Switch to Studio</>
               ) : (
-                <><Shield className="w-4 h-4" /> Switch to Admin</>
+                <><Shield className="w-4 h-4" /> Switch to {user?.role === 'manager' ? 'Management' : 'Admin'}</>
               )}
             </Link>
           </div>
@@ -156,7 +159,7 @@ export default function Sidebar() {
               <p className="text-xs font-semibold text-text-primary truncate">{user.name}</p>
               <p className="text-[10px] text-text-muted truncate">{user.email}</p>
             </div>
-            {isAdmin && <Shield className="w-3 h-3 text-accent-gold flex-shrink-0" />}
+            {isManagement && <Shield className="w-3 h-3 text-accent-gold flex-shrink-0" />}
           </div>
         )}
         <button

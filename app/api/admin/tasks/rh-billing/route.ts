@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getSessionFromRequest } from '@/lib/auth';
+import { getSessionFromRequest, hasAdminOrManagerAccess } from '@/lib/auth';
 import { supabaseAdmin } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
 /**
  * GET /api/admin/tasks/rh-billing
- * Returns all enterprise tasks with billing data from our Supabase database.
+ * Returns all tasks with billing data from our Supabase database.
+ * Supports date range, status, keyType, and userId filtering.
  *
  * Billing field mapping from RunningHub /task/openapi/outputs:
  *   consumeCoins       → RH Coins consumed (the primary billing unit)
@@ -16,7 +17,7 @@ export const dynamic = 'force-dynamic';
  */
 export async function GET(req: NextRequest) {
   const session = await getSessionFromRequest(req);
-  if (!session || session.role !== 'admin') {
+  if (!hasAdminOrManagerAccess(session)) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
@@ -24,6 +25,8 @@ export async function GET(req: NextRequest) {
   const dateFrom = url.searchParams.get('from') || '';
   const dateTo = url.searchParams.get('to') || '';
   const status = url.searchParams.get('status') || '';
+  const keyType = url.searchParams.get('keyType') || '';
+  const userId = url.searchParams.get('userId') || '';
 
   let query = supabaseAdmin
     .from('tasks')
@@ -36,10 +39,18 @@ export async function GET(req: NextRequest) {
       user_id,
       outputs,
       node_info_list,
+      api_key_type,
       users(name, email)
     `)
-    .eq('api_key_type', 'enterprise')
     .not('runninghub_task_id', 'is', null);
+
+  if (userId) {
+    query = query.eq('user_id', userId);
+  }
+
+  if (keyType) {
+    query = query.eq('api_key_type', keyType);
+  }
 
   if (status) query = query.eq('status', status.toUpperCase());
 
@@ -58,7 +69,7 @@ export async function GET(req: NextRequest) {
     } catch {}
   }
 
-  query = query.order('created_at', { ascending: false }).limit(1000);
+  query = query.order('created_at', { ascending: false }).limit(2000);
 
   const { data: tasks, error } = await query;
 
@@ -93,13 +104,13 @@ export async function GET(req: NextRequest) {
     // ── Parse billing fields ──────────────────────────────────
     // consumeCoins  = RH coins used  (shown as "RH Coin" in RunningHub)
     // consumeMoney  = USD amount     (shown as "Final Amount($)" in RunningHub)
+    // thirdPartyConsumeMoney = external API cost in USD (used when consumeMoney is null)
     // taskCostTime  = seconds        (shown as "Duration" in RunningHub)
-    // thirdPartyConsumeMoney = external API cost in USD
     const coins = usage?.consumeCoins != null ? parseFloat(usage.consumeCoins) : 0;
-    const amount = usage?.consumeMoney != null ? parseFloat(usage.consumeMoney) : 0;
-    const duration = usage?.taskCostTime != null ? parseInt(usage.taskCostTime) : 0;
     const thirdParty = usage?.thirdPartyConsumeMoney != null ? parseFloat(usage.thirdPartyConsumeMoney) : 0;
-    const hasBilling = usage !== null && (coins > 0 || amount > 0 || duration > 0);
+    const amount = usage?.consumeMoney != null ? parseFloat(usage.consumeMoney) : thirdParty;
+    const duration = usage?.taskCostTime != null ? parseInt(usage.taskCostTime) : 0;
+    const hasBilling = usage !== null && (coins > 0 || amount > 0 || duration > 0 || thirdParty > 0);
 
     // ── Status counters ───────────────────────────────────────
     const s = (t.status || '').toUpperCase();
@@ -126,19 +137,25 @@ export async function GET(req: NextRequest) {
     // ── Outputs ───────────────────────────────────────────────
     const outputs = Array.isArray(t.outputs) ? t.outputs : [];
 
+    const apiKeyType = t.api_key_type || 'enterprise';
+    const apiKeyMasked = apiKeyType === 'consumer' ? 'c24e****6772' : '1c81****e474';
+    const apiKeyFull = apiKeyType === 'consumer' 
+      ? (process.env.RUNNINGHUB_API_KEY_CONSUMER || 'c24e4bca14ef43dc8d58bdd255786772') 
+      : (process.env.RUNNINGHUB_API_KEY_ENTERPRISE || '1c813062e2bc4f18880178167ce5e474');
+
     return {
       taskId: t.runninghub_task_id || t.id,
       dbId: t.id,
       taskName,
       taskStatus: t.status,
       taskStartTime: t.created_at,
-      userAccount: (t.users as any)?.name || (t.users as any)?.email || '—',
+      userAccount: (t.users as any)?.name || (t.users as any)?.email || 'Boutiqaat Team',
       userEmail: (t.users as any)?.email || '',
       userId: t.user_id || '',
       outputs,
-      apiKeyType: 'enterprise',
-      apiKeyMasked: '1c81****e474',
-      apiKeyFull: '1c813062e2bc4f18880178167ce5e474',
+      apiKeyType,
+      apiKeyMasked,
+      apiKeyFull,
       // Billing
       duration,          // seconds
       coins,             // RH Coins

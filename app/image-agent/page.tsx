@@ -99,26 +99,33 @@ const SUGGESTED_PROMPTS = [
   "Vibrant summer dress on a model at golden hour beach",
 ];
 
-const STORAGE_KEY = 'bqa_image_agent_sessions';
+const BASE_STORAGE_KEY = 'bqa_image_agent_sessions';
 
 // ─── Utility ───────────────────────────────────────────────────────────────
 function generateId() {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
+function getStorageKey(userId?: string | null): string {
+  if (!userId) return BASE_STORAGE_KEY;
+  return `${BASE_STORAGE_KEY}_${userId}`;
+}
+
 // ── Local storage helpers (used as fallback when DB table is missing) ──────
-function loadSessionsLocal(): ConversationSession[] {
+function loadSessionsLocal(userId?: string | null): ConversationSession[] {
   if (typeof window === 'undefined') return [];
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const key = getStorageKey(userId);
+    const raw = localStorage.getItem(key);
     return raw ? JSON.parse(raw) : [];
   } catch { return []; }
 }
 
-function saveSessionsLocal(sessions: ConversationSession[]) {
+function saveSessionsLocal(sessions: ConversationSession[], userId?: string | null) {
   if (typeof window === 'undefined') return;
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions.slice(0, 50)));
+    const key = getStorageKey(userId);
+    localStorage.setItem(key, JSON.stringify(sessions.slice(0, 50)));
   } catch {}
 }
 
@@ -443,22 +450,35 @@ export default function ImageAgentPage() {
   }
 
 
+  // Current user ID for scoping sessions
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
   // ── Load sessions: try API first, fall back to localStorage ──────────
   useEffect(() => {
     async function loadSessionsHybrid() {
-      // 1. Load from localStorage immediately for instant render
-      const local = loadSessionsLocal();
-      if (local.length > 0) setSessions(local);
+      try {
+        const meRes = await fetch('/api/auth/me');
+        const meData = await meRes.json();
+        const uId = meData?.user?.id || null;
+        setCurrentUserId(uId);
 
-      // 2. Fetch from DB (authoritative, scoped to logged-in user)
-      const remote = await fetchSessionsFromApi();
-      if (remote.length > 0) {
-        setSessions(remote);
-        // Keep localStorage in sync with what the server returned
-        saveSessionsLocal(remote);
-      } else if (local.length > 0) {
-        // DB returned nothing (maybe table missing) — local is the fallback
-        setSessions(local);
+        // 1. Load from localStorage immediately for instant render (scoped per user)
+        const local = loadSessionsLocal(uId);
+        if (local.length > 0) setSessions(local);
+
+        // 2. Fetch from DB (authoritative, scoped to logged-in user)
+        const remote = await fetchSessionsFromApi();
+        if (remote.length > 0) {
+          setSessions(remote);
+          // Keep localStorage in sync with what the server returned
+          saveSessionsLocal(remote, uId);
+        } else if (local.length > 0) {
+          setSessions(local);
+        } else {
+          setSessions([]);
+        }
+      } catch (err) {
+        console.error('Failed to load image agent sessions:', err);
       }
     }
     loadSessionsHybrid();
@@ -535,7 +555,7 @@ export default function ImageAgentPage() {
     e.stopPropagation();
     setSessions(prev => {
       const next = prev.filter(s => s.id !== sessionId);
-      saveSessionsLocal(next);
+      saveSessionsLocal(next, currentUserId);
       return next;
     });
     deleteSessionFromApi(sessionId);
@@ -561,7 +581,7 @@ export default function ImageAgentPage() {
         next = [newSession, ...prev];
       }
 
-      saveSessionsLocal(next);
+      saveSessionsLocal(next, currentUserId);
       return next;
     });
 

@@ -12,9 +12,18 @@ export interface SessionPayload {
   userId: string;
   email: string;
   name: string;
-  role: 'editor' | 'admin';
+  role: 'editor' | 'admin' | 'manager';
   iat?: number;
   exp?: number;
+}
+
+export function isManagementRole(role?: string): boolean {
+  return role === 'admin' || role === 'manager';
+}
+
+export function hasAdminOrManagerAccess(session: SessionPayload | null): boolean {
+  if (!session) return false;
+  return isManagementRole(session.role);
 }
 
 export async function signToken(payload: Omit<SessionPayload, 'iat' | 'exp'>): Promise<string> {
@@ -68,7 +77,7 @@ export async function loginWithEmail(
       userId: user.id,
       email: user.email,
       name: user.name,
-      role: user.role as 'editor' | 'admin',
+      role: (user.role || 'editor') as 'editor' | 'admin' | 'manager',
     };
   } catch {
     return null;

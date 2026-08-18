@@ -19,7 +19,7 @@ export default function AdminPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/tasks?limit=50').then(r => r.json()),
+      fetch('/api/tasks?limit=50&scope=all').then(r => r.json()),
       fetch('/api/users').then(r => r.json()),
     ]).then(([taskData, userData]) => {
       setTasks(taskData.tasks || []);

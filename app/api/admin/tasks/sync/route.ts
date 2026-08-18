@@ -25,11 +25,10 @@ export async function POST(req: NextRequest) {
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - days);
 
-    // Fetch ALL enterprise SUCCESS tasks that are missing billing data
+    // Fetch ALL SUCCESS tasks that are missing billing data (both enterprise and consumer)
     const { data: tasks, error } = await supabaseAdmin
       .from('tasks')
       .select('id, runninghub_task_id, api_key_type, node_info_list, app_name, status')
-      .eq('api_key_type', 'enterprise')
       .eq('status', 'SUCCESS')
       .gte('created_at', cutoff.toISOString())
       .not('runninghub_task_id', 'is', null)
@@ -41,6 +40,9 @@ export async function POST(req: NextRequest) {
 
     // Filter tasks that are missing billing data
     const tasksToSync = (tasks || []).filter((t: any) => {
+      // Must have numeric RunningHub task ID
+      if (!/^\d{15,}$/.test(t.runninghub_task_id || '')) return false;
+
       const nodeInfo = t.node_info_list || [];
       const hasUsage = nodeInfo.some((n: any) => n.nodeId === 'USAGE');
       if (hasUsage) {
@@ -50,7 +52,7 @@ export async function POST(req: NextRequest) {
           try {
             const usage = JSON.parse(usageNode.fieldValue);
             // Re-sync if all billing values are null/0
-            if (!usage.consumeCoins && !usage.consumeMoney && !usage.taskCostTime) return true;
+            if (!usage.consumeCoins && !usage.consumeMoney && !usage.thirdPartyConsumeMoney && !usage.taskCostTime) return true;
             return false;
           } catch { return true; }
         }
@@ -59,7 +61,7 @@ export async function POST(req: NextRequest) {
       return true; // No USAGE node at all — needs sync
     });
 
-    console.log(`[Sync Bills] Found ${tasksToSync.length} tasks needing billing sync out of ${tasks?.length || 0} total enterprise SUCCESS tasks.`);
+    console.log(`[Sync Bills] Found ${tasksToSync.length} tasks needing billing sync out of ${tasks?.length || 0} total SUCCESS tasks.`);
 
     let syncedCount = 0;
     let failedCount = 0;
@@ -68,8 +70,9 @@ export async function POST(req: NextRequest) {
       if (!t.runninghub_task_id) continue;
       
       try {
+        const keyType = (t.api_key_type as 'enterprise' | 'consumer') || 'enterprise';
         // Use the outputs endpoint which returns billing info
-        const outputsResult = await queryTaskOutputs(t.runninghub_task_id, 'enterprise');
+        const outputsResult = await queryTaskOutputs(t.runninghub_task_id, keyType);
 
         if (outputsResult?.code === 0 && Array.isArray(outputsResult.data) && outputsResult.data.length > 0) {
           const firstOutput = outputsResult.data[0];

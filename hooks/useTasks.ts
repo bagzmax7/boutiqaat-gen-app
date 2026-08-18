@@ -4,52 +4,82 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { Task, TaskStatus, TaskOutput } from '@/lib/types';
 import toast from 'react-hot-toast';
 
-const STORAGE_KEY = 'bqa_tasks';
+const BASE_STORAGE_KEY = 'bqa_tasks';
 const POLL_INTERVAL = 4000; // 4 seconds
 
 // --- Global Store ---
 let globalTasks: Task[] = [];
-let isLoaded = false;
+let currentStoreUserId: string | null = null;
 const listeners = new Set<() => void>();
 
-function getTasks(): Task[] {
-  if (!isLoaded && typeof window !== 'undefined') {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) globalTasks = JSON.parse(stored);
-    } catch {}
-    isLoaded = true;
-  }
-  return globalTasks;
+function getStorageKey(userId?: string | null): string {
+  if (!userId) return BASE_STORAGE_KEY;
+  return `${BASE_STORAGE_KEY}_${userId}`;
 }
 
-function setGlobalTasks(action: Task[] | ((prev: Task[]) => Task[])) {
-  globalTasks = typeof action === 'function' ? action(globalTasks) : action;
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(globalTasks));
+function loadTasksForUser(userId: string | null): Task[] {
+  if (typeof window === 'undefined') return [];
+  try {
+    const key = getStorageKey(userId);
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
   }
+}
+
+function saveTasksForUser(tasks: Task[], userId: string | null) {
+  if (typeof window !== 'undefined') {
+    try {
+      const key = getStorageKey(userId);
+      localStorage.setItem(key, JSON.stringify(tasks));
+    } catch {}
+  }
+}
+
+function setGlobalTasks(action: Task[] | ((prev: Task[]) => Task[]), userId: string | null = currentStoreUserId) {
+  globalTasks = typeof action === 'function' ? action(globalTasks) : action;
+  saveTasksForUser(globalTasks, userId);
   listeners.forEach(l => l());
 }
 // --------------------
 
-let isSynced = false;
 let activePollingInterval: NodeJS.Timeout | null = null;
 
 export function useTasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
-  // Subscribe to global store
+  // 1. Fetch current session user identity to ensure user-scoped data
   useEffect(() => {
-    setTasks(getTasks());
-    const listener = () => setTasks(getTasks());
+    fetch('/api/auth/me')
+      .then(r => r.json())
+      .then(data => {
+        const uId = data?.user?.id || null;
+        setCurrentUserId(uId);
+
+        if (currentStoreUserId !== uId) {
+          currentStoreUserId = uId;
+          const initialTasks = loadTasksForUser(uId);
+          globalTasks = initialTasks;
+          setTasks(initialTasks);
+          listeners.forEach(l => l());
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  // 2. Subscribe to global store
+  useEffect(() => {
+    setTasks(globalTasks);
+    const listener = () => setTasks(globalTasks);
     listeners.add(listener);
     return () => { listeners.delete(listener); };
   }, []);
 
-  // Sync tasks from database on mount (once)
+  // 3. Sync tasks from database for this specific user on mount & user change
   useEffect(() => {
-    if (isSynced) return;
-    isSynced = true;
+    if (!currentUserId) return;
 
     async function syncWithDatabase() {
       try {
@@ -98,14 +128,14 @@ export function useTasks() {
           });
           
           return Array.from(mergedMap.values()).sort((a, b) => b.createdAt - a.createdAt);
-        });
+        }, currentUserId);
       } catch (err) {
         console.error('Failed to sync tasks with database:', err);
       }
     }
 
     syncWithDatabase();
-  }, []);
+  }, [currentUserId]);
 
   // ── Add a new task ──────────────────────────────────────
   const addTask = useCallback((
@@ -164,7 +194,7 @@ export function useTasks() {
     if (activePollingInterval) return; // already polling
 
     activePollingInterval = setInterval(async () => {
-      const currentTasks = getTasks();
+      const currentTasks = globalTasks;
       const running = currentTasks.filter(t => t.status === 'RUNNING' || t.status === 'QUEUED');
 
       if (running.length === 0) {

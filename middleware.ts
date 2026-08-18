@@ -21,8 +21,8 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  // Admin routes → editors get blocked
-  if (pathname.startsWith('/admin') && session.role !== 'admin') {
+  // Admin routes → non-management roles (e.g. editors) get blocked
+  if (pathname.startsWith('/admin') && session.role !== 'admin' && session.role !== 'manager') {
     return NextResponse.redirect(new URL('/', req.url));
   }
 

@@ -7,6 +7,7 @@ export async function GET(req: NextRequest) {
   try {
     const session = await getSessionFromRequest(req);
     const userId = session?.userId;
+    const isManagement = session?.role === 'admin' || session?.role === 'manager';
 
     let query = supabaseAdmin
       .from('quick_create_sessions')
@@ -14,20 +15,24 @@ export async function GET(req: NextRequest) {
       .order('created_at', { ascending: false })
       .limit(100);
 
-    if (userId && session?.role !== 'admin') {
+    if (userId && !isManagement) {
       query = query.eq('user_id', userId);
     }
 
     const { data, error } = await query;
 
     if (error) {
-      // Fallback silently to tasks table if quick_create_sessions is not yet initialized
-      const fallbackQuery = supabaseAdmin
+      // Fallback to tasks table if quick_create_sessions is not yet initialized
+      let fallbackQuery = supabaseAdmin
         .from('tasks')
         .select('*')
         .or('app_id.like.quick-create%,app_id.like.boutiqaat-flow%')
         .order('created_at', { ascending: false })
         .limit(50);
+
+      if (userId && !isManagement) {
+        fallbackQuery = fallbackQuery.eq('user_id', userId);
+      }
 
       const { data: fallbackTasks } = await fallbackQuery;
 

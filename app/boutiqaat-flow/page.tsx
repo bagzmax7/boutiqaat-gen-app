@@ -334,16 +334,33 @@ function QuickCreateContent() {
     }
   }, [selectedImageModel, selectedVideoModel, activeMode, currentAvailableRatios, currentAvailableResolutions, ratio, quality]);
 
-  // Load persistent canvas items from dedicated database API on mount
+  // Current logged in user ID
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+
   useEffect(() => {
+    fetch('/api/auth/me')
+      .then(r => r.json())
+      .then(d => {
+        if (d?.user?.id) setCurrentUserId(d.user.id);
+      })
+      .catch(() => {});
+  }, []);
+
+  // Load persistent canvas items from user-scoped storage & API
+  useEffect(() => {
+    if (!currentUserId) return;
+    const storageKey = `quick_create_canvas_items_${currentUserId}`;
+
     try {
-      const saved = localStorage.getItem('quick_create_canvas_items');
+      const saved = localStorage.getItem(storageKey);
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
           parsed.sort((a: any, b: any) => b.timestamp - a.timestamp);
           setCanvasItems(parsed);
         }
+      } else {
+        setCanvasItems([]);
       }
     } catch (e) {
       console.error('Failed to load local canvas items:', e);
@@ -379,7 +396,7 @@ function QuickCreateContent() {
     }
 
     loadDbTasks();
-  }, []);
+  }, [currentUserId]);
 
   // Sync active task updates with dedicated database endpoint
   useEffect(() => {
@@ -418,16 +435,16 @@ function QuickCreateContent() {
     }
   }, [tasks]);
 
-  // Save canvas items to localStorage fallback
+  // Save canvas items to user-scoped localStorage fallback
   useEffect(() => {
-    if (canvasItems.length > 0) {
-      try {
-        localStorage.setItem('quick_create_canvas_items', JSON.stringify(canvasItems.slice(0, 30)));
-      } catch (e) {
-        console.error('Failed to save canvas items:', e);
-      }
+    if (!currentUserId) return;
+    const storageKey = `quick_create_canvas_items_${currentUserId}`;
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(canvasItems.slice(0, 30)));
+    } catch (e) {
+      console.error('Failed to save canvas items:', e);
     }
-  }, [canvasItems]);
+  }, [canvasItems, currentUserId]);
 
   // Auto-resize the prompt textarea height to fit long prompts dynamically
   useEffect(() => {

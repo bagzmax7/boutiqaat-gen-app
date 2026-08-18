@@ -7,9 +7,11 @@ export async function GET(req: NextRequest) {
   const session = await getSessionFromRequest(req);
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const isAdmin = session.role === 'admin';
+  const isManagement = session.role === 'admin' || session.role === 'manager';
   const url = new URL(req.url);
   const limit = parseInt(url.searchParams.get('limit') || '50');
+  const filterUserId = url.searchParams.get('userId');
+  const scope = url.searchParams.get('scope');
 
   let query = supabaseAdmin
     .from('tasks')
@@ -17,7 +19,13 @@ export async function GET(req: NextRequest) {
     .order('created_at', { ascending: false })
     .limit(limit);
 
-  if (!isAdmin) {
+  if (isManagement && scope === 'all') {
+    // Admin / Manager requesting platform-wide overview
+    if (filterUserId) {
+      query = query.eq('user_id', filterUserId);
+    }
+  } else {
+    // Default personal view (for editors, and for admin personal history / studio)
     query = query.eq('user_id', session.userId);
   }
 
