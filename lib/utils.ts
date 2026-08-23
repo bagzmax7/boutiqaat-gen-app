@@ -57,6 +57,33 @@ export function isImageUrl(url: string): boolean {
   return /\.(jpg|jpeg|png|gif|webp|avif)(\?|$)/i.test(url);
 }
 
+/**
+ * Universal media URL extractor that handles string URLs, object formats ({ fileUrl }, { url }, { outputUrl }), and arrays
+ */
+export function extractMediaUrl(outputs: any): string | null {
+  if (!outputs) return null;
+  if (typeof outputs === 'string') {
+    if (outputs.startsWith('http') || outputs.startsWith('/') || outputs.startsWith('data:')) return outputs;
+    try {
+      const parsed = JSON.parse(outputs);
+      return extractMediaUrl(parsed);
+    } catch {
+      return null;
+    }
+  }
+  if (Array.isArray(outputs) && outputs.length > 0) {
+    for (const item of outputs) {
+      const url = extractMediaUrl(item);
+      if (url) return url;
+    }
+    return null;
+  }
+  if (typeof outputs === 'object' && outputs !== null) {
+    return outputs.fileUrl || outputs.url || outputs.outputUrl || outputs.download_url || outputs.src || outputs.previewUrl || null;
+  }
+  return null;
+}
+
 export function computeStats(tasks: Task[]): DashboardStats {
   const today = new Date();
   today.setHours(0, 0, 0, 0);

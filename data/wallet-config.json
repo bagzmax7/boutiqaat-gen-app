@@ -1,0 +1,15 @@
+{
+  "initialDepositUsd": 500,
+  "lowBalanceThresholdUsd": 100,
+  "criticalThresholdUsd": 30,
+  "topUps": [
+    {
+      "id": "dep_init_001",
+      "amountUsd": 500,
+      "date": "2026-08-01",
+      "note": "Initial RunningHub Enterprise Studio Wallet Deposit",
+      "source": "RunningHub Base Plan",
+      "createdAt": "2026-08-01T00:00:00Z"
+    }
+  ]
+}

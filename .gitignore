@@ -46,11 +46,18 @@ venv/
 # raw design files
 *.psd
 
-# test/scratch files
-test-alpha.ts
-
-# agent data dir
+# agent data dir & scratch
 /appDataDir/
+scratch/
+_checkpoints/
+.data/
+test-alpha.ts
+test-*.ts
+
+# temporary documents and PDFs
+*.pdf
+docs/
 
 # MCP cache / Playwright files
 .playwright-mcp/
+

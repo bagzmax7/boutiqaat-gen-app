@@ -185,6 +185,38 @@ export async function POST(request: Request) {
 
     const results = await Promise.all(taskPromises);
 
+    // Record each task into Supabase tasks table for admin monitoring
+    try {
+      const { getSessionFromRequest } = await import('@/lib/auth');
+      const { supabaseAdmin } = await import('@/lib/supabase');
+      const session = await getSessionFromRequest(request as any);
+      if (session && results.length > 0) {
+        for (const res of results) {
+          if (res.taskId) {
+            await supabaseAdmin.from('tasks').insert({
+              id: `task_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+              runninghub_task_id: res.taskId,
+              user_id: session.userId,
+              app_id: 'image-agent',
+              app_name: `Image Agent: ${modelCfg.name}`,
+              status: 'RUNNING',
+              api_key_type: 'enterprise',
+              node_info_list: [
+                { nodeId: 'INPUT', fieldName: 'prompt', fieldValue: prompt },
+                { nodeId: 'CONFIG', fieldName: 'model', fieldValue: model },
+                { nodeId: 'CONFIG', fieldName: 'aspectRatio', fieldValue: resolvedAspectRatio || '1:1' },
+                { nodeId: 'CONFIG', fieldName: 'resolution', fieldValue: resolvedResolution || '1k' },
+              ],
+              outputs: [],
+              created_at: new Date().toISOString(),
+            });
+          }
+        }
+      }
+    } catch (recordErr) {
+      console.warn('[Image Agent] Failed to record task:', recordErr);
+    }
+
     return NextResponse.json({
       taskId: results[0].taskId,
       taskIds: results.map(r => r.taskId),

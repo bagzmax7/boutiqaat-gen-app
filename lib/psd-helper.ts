@@ -109,3 +109,71 @@ export async function generatePsdClient(
   const psdBuffer = writePsd(psdData as any);
   return new Blob([psdBuffer], { type: "application/octet-stream" });
 }
+
+/**
+ * Generates a full multi-layer PSD file for Boutiqaat Layers Studio
+ */
+export async function generateMultiLayerPsdClient(
+  layers: Array<{
+    name: string;
+    url?: string;
+    currentUrl?: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    opacity: number;
+    visible: boolean;
+  }>,
+  canvasWidth = 1024,
+  canvasHeight = 1024
+): Promise<Blob> {
+  const psdLayers = [];
+
+  for (const layer of layers) {
+    const layerUrl = layer.currentUrl || layer.url;
+    if (!layer.visible || !layerUrl) continue;
+
+    try {
+      const img = await loadImage(layerUrl);
+      const w = Math.round(layer.width || canvasWidth);
+      const h = Math.round(layer.height || canvasHeight);
+      const left = Math.round(layer.x || 0);
+      const top = Math.round(layer.y || 0);
+
+      const canvas = document.createElement("canvas");
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) continue;
+
+      ctx.drawImage(img, 0, 0, w, h);
+      const imgData = ctx.getImageData(0, 0, w, h);
+
+      psdLayers.push({
+        name: layer.name || "Layer",
+        top: top,
+        left: left,
+        bottom: top + h,
+        right: left + w,
+        opacity: Math.max(0, Math.min(1, layer.opacity ?? 1)),
+        imageData: {
+          width: w,
+          height: h,
+          data: new Uint8Array(imgData.data),
+        },
+      });
+    } catch (err) {
+      console.warn(`[PSD Export] Failed to process layer ${layer.name}:`, err);
+    }
+  }
+
+  const psdData = {
+    width: canvasWidth,
+    height: canvasHeight,
+    children: psdLayers,
+  };
+
+  const psdBuffer = writePsd(psdData as any);
+  return new Blob([psdBuffer], { type: "application/octet-stream" });
+}

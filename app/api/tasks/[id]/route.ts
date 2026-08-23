@@ -31,16 +31,41 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   return NextResponse.json(task);
 }
 
-// PATCH /api/tasks/[id] — update task status + outputs (called by polling)
+// PATCH /api/tasks/[id] — update task status, outputs, or feedback rating
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   const session = await getSessionFromRequest(req);
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
-    const { status, outputs, error } = await req.json();
-    const updates: Record<string, unknown> = { status, updated_at: new Date().toISOString() };
+    const { status, outputs, error, feedback, isOverride } = await req.json();
+    const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
+    if (status) updates.status = status;
     if (outputs) updates.outputs = outputs;
     if (error) updates.error_message = error;
+
+    // Handle feedback rating or override in node_info_list
+    if (feedback || isOverride !== undefined) {
+      const { data: existing } = await supabaseAdmin
+        .from('tasks')
+        .select('node_info_list')
+        .eq('id', params.id)
+        .single();
+
+      let nodeList = existing?.node_info_list || [];
+      if (!Array.isArray(nodeList)) nodeList = [];
+
+      if (feedback) {
+        nodeList = nodeList.filter((n: any) => n.nodeId !== 'FEEDBACK');
+        nodeList.push({ nodeId: 'FEEDBACK', fieldName: 'rating', fieldValue: feedback });
+      }
+
+      if (isOverride) {
+        nodeList = nodeList.filter((n: any) => n.nodeId !== 'OVERRIDE');
+        nodeList.push({ nodeId: 'OVERRIDE', fieldName: 'override', fieldValue: 'true' });
+      }
+
+      updates.node_info_list = nodeList;
+    }
 
     await supabaseAdmin.from('tasks').update(updates).eq('id', params.id);
     return NextResponse.json({ success: true });

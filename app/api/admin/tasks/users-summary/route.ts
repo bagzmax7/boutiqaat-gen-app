@@ -46,14 +46,16 @@ export async function GET(req: NextRequest) {
       .not('runninghub_task_id', 'is', null);
 
     if (dateFrom) {
-      const d = new Date(dateFrom);
-      d.setHours(0, 0, 0, 0);
-      query = query.gte('created_at', d.toISOString());
+      try {
+        const fromIso = dateFrom.includes('T') ? new Date(dateFrom).toISOString() : new Date(`${dateFrom}T00:00:00.000Z`).toISOString();
+        query = query.gte('created_at', fromIso);
+      } catch {}
     }
     if (dateTo) {
-      const d = new Date(dateTo);
-      d.setHours(23, 59, 59, 999);
-      query = query.lte('created_at', d.toISOString());
+      try {
+        const toIso = dateTo.includes('T') ? new Date(dateTo).toISOString() : new Date(`${dateTo}T23:59:59.999Z`).toISOString();
+        query = query.lte('created_at', toIso);
+      } catch {}
     }
 
     const { data: tasks, error: tasksError } = await query;

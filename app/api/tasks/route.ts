@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSessionFromRequest } from '@/lib/auth';
 import { supabaseAdmin } from '@/lib/supabase';
+import { archiveOutputsList } from '@/lib/storage-archiver';
 
 // GET /api/tasks — return current user's task history from Supabase
 export async function GET(req: NextRequest) {
@@ -70,13 +71,19 @@ export async function PUT(req: NextRequest) {
 
     if (!id) return NextResponse.json({ error: 'Missing task ID' }, { status: 400 });
 
-    const updates: any = { status };
-    if (outputs !== undefined) updates.outputs = outputs;
+    const updates: any = { status, updated_at: new Date().toISOString() };
+    if (outputs !== undefined) {
+      if (Array.isArray(outputs) && outputs.length > 0) {
+        const archivedOutputs = await archiveOutputsList(outputs, session.userId, id);
+        updates.outputs = archivedOutputs;
+      } else {
+        updates.outputs = outputs;
+      }
+    }
     if (taskError !== undefined) updates.error_message = taskError;
     if (node_info_list !== undefined) updates.node_info_list = node_info_list;
 
     // We can only update tasks belonging to the current user (enforced by RLS or user_id check)
-    // Here we explicitly check user_id if not admin
     let query = supabaseAdmin.from('tasks').update(updates).eq('id', id);
     
     if (session.role !== 'admin') {

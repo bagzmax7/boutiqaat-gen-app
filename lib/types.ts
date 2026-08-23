@@ -135,7 +135,8 @@ export interface AuthPayload {
   userId: string;
   email: string;
   name: string;
-  role: 'editor' | 'admin';
+  role: 'editor' | 'admin' | 'manager';
+  departmentId?: string | null;
   iat: number;
   exp: number;
 }
@@ -144,8 +145,121 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: 'editor' | 'admin';
+  role: 'editor' | 'admin' | 'manager';
   avatar_url?: string | null;
+  department_id?: string | null;
+  department_name?: string | null;
+  manager_id?: string | null;
+  monthly_credit_limit_usd?: number;
+  credit_used_usd?: number;
+  allowed_models?: string[];
+  status?: 'active' | 'suspended';
   created_at?: string;
 }
+
+export interface Department {
+  id: string;
+  name: string;
+  description?: string;
+  monthly_budget_usd: number;
+  critical_threshold_percent: number;
+  auto_pause_on_critical: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface CreativeGalleryItem {
+  id: string;
+  department_id: string;
+  task_id?: string | null;
+  title: string;
+  media_url: string;
+  media_type: 'image' | 'video' | 'psd';
+  prompt: string;
+  model_used: string;
+  settings_snapshot: Record<string, any>;
+  created_by_user_id?: string | null;
+  creator_name?: string;
+  creator_email?: string;
+  starred_by_manager_id?: string | null;
+  is_company_preset: boolean;
+  created_at: string;
+}
+
+export interface NotificationItem {
+  id: string;
+  user_id: string;
+  department_id?: string | null;
+  type: 'BUDGET_ALERT' | 'QUOTA_WARNING' | 'GALLERY_STAR' | 'TASK_DONE';
+  title: string;
+  message: string;
+  read: boolean;
+  link_url?: string | null;
+  created_at: string;
+}
+
+// ============================================
+// Boutiqaat Layers Studio Types
+// ============================================
+
+export interface CanvasLayerItem {
+  id: string;
+  name: string;
+  originalUrl: string;
+  currentUrl: string;
+  version: number;
+  zIndex: number;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  scaleX: number;
+  scaleY: number;
+  rotation: number;
+  opacity: number;
+  visible: boolean;
+  locked: boolean;
+  blendMode: 'normal' | 'multiply' | 'screen' | 'overlay' | 'soft-light';
+  isBackground: boolean;
+  modelUsed?: string;
+  history?: Array<{
+    url: string;
+    version: number;
+    timestamp: number;
+    model?: string;
+    prompt?: string;
+  }>;
+}
+
+export interface LayerDecompositionParams {
+  imageUrl: string;
+  prompt?: string | null;
+  resolution?: 'auto' | '1k' | '1.5k' | '2k';
+  outputFormat?: 'jpeg' | 'png';
+}
+
+export interface LayersProject {
+  id: string;
+  user_id: string;
+  department_id?: string | null;
+  name: string;
+  category: 'banner-ads' | 'product-photo' | 'catalog' | 'social-media' | 'general';
+  thumbnail_url?: string | null;
+  canvas_width: number;
+  canvas_height: number;
+  layers: CanvasLayerItem[];
+  revision_count: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ReCreatePayload {
+  layerId: string;
+  model: 'nano-banana-2' | 'flux-pro' | 'gpt-2';
+  prompt: string;
+  intentCategory?: 'material' | 'replace-product' | 'lighting' | 'props' | 'label';
+  referenceImageUrl?: string | null;
+  preserveLighting?: boolean;
+}
+
 

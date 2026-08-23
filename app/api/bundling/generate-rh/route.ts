@@ -74,6 +74,28 @@ export async function POST(req: NextRequest) {
 
     console.log(`[generate-rh] Task submitted: ${runRes.taskId}. Polling for completion...`);
 
+    const dbTaskId = `task_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const { supabaseAdmin } = await import('@/lib/supabase');
+    try {
+      await supabaseAdmin.from('tasks').insert({
+        id: dbTaskId,
+        runninghub_task_id: runRes.taskId,
+        user_id: auth.userId,
+        app_id: 'bundling',
+        app_name: `Bundling: ${resolvedMode}`,
+        status: 'RUNNING',
+        api_key_type: 'enterprise',
+        node_info_list: [
+          { nodeId: 'INPUT', fieldName: 'prompt', fieldValue: prompt },
+          { nodeId: 'CONFIG', fieldName: 'genMode', fieldValue: resolvedMode },
+        ],
+        outputs: [],
+        created_at: new Date().toISOString(),
+      });
+    } catch (insertErr) {
+      console.warn('[generate-rh] Initial task insert warning:', insertErr);
+    }
+
     // Poll for completion
     let maxRetries = 60; // 60 * 2s = 120 seconds
     while (maxRetries > 0) {
@@ -86,8 +108,31 @@ export async function POST(req: NextRequest) {
         const imageUrl = statusRes.results?.[0]?.url;
         if (!imageUrl) throw new Error('Task succeeded but no image URL was found in results.');
         console.log(`[generate-rh] ✓ Generated successfully: ${imageUrl}`);
+
+        // Update task with SUCCESS and billing usage
+        try {
+          await supabaseAdmin.from('tasks').update({
+            status: 'SUCCESS',
+            outputs: [{ url: imageUrl, name: `Bundling ${resolvedMode}` }],
+            node_info_list: [
+              { nodeId: 'USAGE', fieldName: 'usage', fieldValue: JSON.stringify(statusRes.usage || {}) },
+              { nodeId: 'INPUT', fieldName: 'prompt', fieldValue: prompt },
+              { nodeId: 'CONFIG', fieldName: 'genMode', fieldValue: resolvedMode },
+            ],
+            updated_at: new Date().toISOString(),
+          }).eq('id', dbTaskId);
+        } catch {}
+
         return NextResponse.json({ imageUrl });
       } else if (statusRes.status === 'FAILED' || statusRes.status === 'CANCELED') {
+        try {
+          await supabaseAdmin.from('tasks').update({
+            status: 'FAILED',
+            error_message: statusRes.errorMessage || 'Generation failed',
+            updated_at: new Date().toISOString(),
+          }).eq('id', dbTaskId);
+        } catch {}
+
         throw new Error(`Generation failed: ${statusRes.errorMessage || JSON.stringify(statusRes.failedReason)}`);
       }
       

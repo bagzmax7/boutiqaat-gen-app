@@ -1,6 +1,7 @@
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
+import bcrypt from 'bcryptjs';
 import { supabaseAdmin } from './supabase';
 
 const SECRET = new TextEncoder().encode(
@@ -13,6 +14,7 @@ export interface SessionPayload {
   email: string;
   name: string;
   role: 'editor' | 'admin' | 'manager';
+  departmentId?: string | null;
   iat?: number;
   exp?: number;
 }
@@ -27,7 +29,8 @@ export function hasAdminOrManagerAccess(session: SessionPayload | null): boolean
 }
 
 export async function signToken(payload: Omit<SessionPayload, 'iat' | 'exp'>): Promise<string> {
-  return new SignJWT(payload as Record<string, unknown>)
+  const cleanPayload = JSON.parse(JSON.stringify(payload));
+  return new SignJWT(cleanPayload)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('8h')
@@ -61,14 +64,34 @@ export async function loginWithEmail(
   password: string
 ): Promise<SessionPayload | null> {
   try {
-    const bcrypt = await import('bcryptjs');
-    const { data: user, error } = await supabaseAdmin
+    // 1. Try selecting all fields
+    let user: any = null;
+    const { data, error } = await supabaseAdmin
       .from('users')
-      .select('id, email, name, role, password_hash')
+      .select('*')
       .eq('email', email.toLowerCase().trim())
       .single();
 
-    if (error || !user) return null;
+    if (!error && data) {
+      user = data;
+    } else {
+      // 2. Fallback to basic columns if extended columns don't exist yet
+      const fallback = await supabaseAdmin
+        .from('users')
+        .select('id, email, name, role, password_hash')
+        .eq('email', email.toLowerCase().trim())
+        .single();
+      if (!fallback.error && fallback.data) {
+        user = fallback.data;
+      }
+    }
+
+    if (!user || !user.password_hash) return null;
+
+    // Check account status if field exists
+    if (user.status === 'suspended') {
+      return null;
+    }
 
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return null;
@@ -78,8 +101,10 @@ export async function loginWithEmail(
       email: user.email,
       name: user.name,
       role: (user.role || 'editor') as 'editor' | 'admin' | 'manager',
+      departmentId: user.department_id || null,
     };
-  } catch {
+  } catch (err) {
+    console.error('[loginWithEmail error]', err);
     return null;
   }
 }

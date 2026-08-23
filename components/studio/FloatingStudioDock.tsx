@@ -19,11 +19,11 @@ const MODES = [
 ];
 
 const RUNNINGHUB_MODELS = [
-  { id: 'seedream-5', name: 'Seedream 5.0 Pro', badge: 'RunningHub' },
-  { id: 'flux-1', name: 'FLUX.1 Ultra', badge: 'RunningHub' },
-  { id: 'sdxl-turbo', name: 'SDXL Turbo', badge: 'RunningHub' },
-  { id: 'kling-o3', name: 'Kling O3 (4K Video)', badge: 'RunningHub' },
-  { id: 'veo-3.1', name: 'Google Veo 3.1', badge: 'RunningHub' },
+  { id: 'seedream-5', name: 'Seedream 5.0 Pro', badge: 'Studio Engine' },
+  { id: 'flux-1', name: 'FLUX.1 Ultra', badge: 'Studio Engine' },
+  { id: 'sdxl-turbo', name: 'SDXL Turbo', badge: 'Studio Engine' },
+  { id: 'kling-o3', name: 'Kling O3 (4K Video)', badge: 'Studio Engine' },
+  { id: 'veo-3.1', name: 'Google Veo 3.1', badge: 'Studio Engine' },
 ];
 
 const ASPECT_RATIOS = [

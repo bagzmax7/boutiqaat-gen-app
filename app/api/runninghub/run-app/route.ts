@@ -53,6 +53,26 @@ export async function POST(req: NextRequest) {
           apiKeyType,
         });
 
+    if (result && result.taskId) {
+      try {
+        const { supabaseAdmin } = await import('@/lib/supabase');
+        await supabaseAdmin.from('tasks').insert({
+          id: `task_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+          runninghub_task_id: result.taskId,
+          user_id: session.userId,
+          app_id: appId,
+          app_name: `App ${appId}`,
+          status: 'RUNNING',
+          api_key_type: apiKeyType,
+          node_info_list: nodeInfoList || [],
+          outputs: [],
+          created_at: new Date().toISOString(),
+        });
+      } catch (err) {
+        console.warn('[run-app] Task insert warning:', err);
+      }
+    }
+
     return NextResponse.json({ ...result, apiKeyType });
   } catch (error) {
     console.error('[run-app] Error:', error);

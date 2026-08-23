@@ -56,16 +56,14 @@ export async function GET(req: NextRequest) {
 
   if (dateFrom) {
     try {
-      const d = new Date(dateFrom);
-      d.setHours(0, 0, 0, 0);
-      query = query.gte('created_at', d.toISOString());
+      const fromIso = dateFrom.includes('T') ? new Date(dateFrom).toISOString() : new Date(`${dateFrom}T00:00:00.000Z`).toISOString();
+      query = query.gte('created_at', fromIso);
     } catch {}
   }
   if (dateTo) {
     try {
-      const d = new Date(dateTo);
-      d.setHours(23, 59, 59, 999);
-      query = query.lte('created_at', d.toISOString());
+      const toIso = dateTo.includes('T') ? new Date(dateTo).toISOString() : new Date(`${dateTo}T23:59:59.999Z`).toISOString();
+      query = query.lte('created_at', toIso);
     } catch {}
   }
 

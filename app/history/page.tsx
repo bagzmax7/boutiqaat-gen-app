@@ -75,8 +75,9 @@ export default function HistoryPage() {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('ALL');
   
-  // Tab switcher: 'all' | 'bundling' | 'social-resize' | 'flow' | 'console'
-  const [activeTab, setActiveTab] = useState<'all' | 'bundling' | 'social-resize' | 'flow' | 'console'>('all');
+  // Tab switcher: 'all' | 'layers' | 'bundling' | 'social-resize' | 'flow' | 'console'
+  const [activeTab, setActiveTab] = useState<'all' | 'layers' | 'bundling' | 'social-resize' | 'flow' | 'console'>('all');
+  const [layerProjects, setLayerProjects] = useState<any[]>([]);
   const [previewMedia, setPreviewMedia] = useState<{
     name: string;
     url: string;
@@ -88,9 +89,10 @@ export default function HistoryPage() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [tasksRes, sessionsRes] = await Promise.all([
+      const [tasksRes, sessionsRes, layersRes] = await Promise.all([
         fetch('/api/tasks?limit=150'),
-        fetch('/api/bundling/sessions?limit=100')
+        fetch('/api/bundling/sessions?limit=100'),
+        fetch('/api/layers/projects')
       ]);
       
       if (tasksRes.ok) {
@@ -101,6 +103,11 @@ export default function HistoryPage() {
       if (sessionsRes.ok) {
         const sessionsData = await sessionsRes.json();
         setSessions(sessionsData.sessions || []);
+      }
+
+      if (layersRes.ok) {
+        const layersData = await layersRes.json();
+        setLayerProjects(layersData.projects || []);
       }
     } catch (err) {
       console.error('Failed to load history data:', err);
@@ -259,7 +266,8 @@ export default function HistoryPage() {
             {/* Category Tabs */}
             <div className="flex border-b border-border/50 gap-2 sm:gap-6 overflow-x-auto no-scrollbar">
               {[
-                { id: 'all', label: 'All Items', count: totalCount },
+                { id: 'all', label: 'All Items', count: totalCount + layerProjects.length },
+                { id: 'layers', label: 'Boutiqaat Layers', count: layerProjects.length },
                 { id: 'bundling', label: 'Bundling Studio', count: bundlingSessions.length },
                 { id: 'flow', label: 'Boutiqaat Flow', count: flowTasks.length },
                 { id: 'social-resize', label: 'Social Resize', count: socialResizeTasks.length },
@@ -321,6 +329,66 @@ export default function HistoryPage() {
               </div>
             ) : (
               <div className="space-y-8">
+                {/* Boutiqaat Layers Projects Section */}
+                {(activeTab === 'all' || activeTab === 'layers') && layerProjects.length > 0 && (
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                        <Layers className="w-4 h-4 text-[#a3e635]" /> Boutiqaat Layers Projects ({layerProjects.length})
+                      </h3>
+                      <a href="/layers" className="text-xs text-[#a3e635] hover:underline font-bold">
+                        Open Layers Studio →
+                      </a>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                      {layerProjects.map((proj) => (
+                        <div key={proj.id} className="glass-card rounded-2xl border border-border hover:border-lime-500/40 transition-all overflow-hidden flex flex-col group relative bg-bg-card">
+                          <div className="relative aspect-square bg-[#0e0e0e] overflow-hidden border-b border-border">
+                            {proj.thumbnail_url ? (
+                              <img
+                                src={proj.thumbnail_url}
+                                className="w-full h-full object-contain group-hover:scale-102 transition-transform duration-300"
+                                alt={proj.name}
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-text-muted text-xs">
+                                No Thumbnail
+                              </div>
+                            )}
+                            <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-black/80 border border-border text-[9px] font-mono text-[#a3e635] font-black">
+                              v{proj.revision_count || 1}.0
+                            </div>
+                            <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-black/80 border border-border text-[9px] font-mono text-white flex items-center gap-1">
+                              <Layers className="w-3 h-3 text-[#a3e635]" />
+                              {proj.layers?.length || 0} Layers
+                            </div>
+                          </div>
+
+                          <div className="p-4 flex flex-col flex-1 min-w-0 bg-white/2">
+                            <h4 className="text-sm font-bold text-text-primary truncate" title={proj.name}>
+                              {proj.name}
+                            </h4>
+                            <p className="text-[10px] text-text-muted mt-0.5">
+                              {new Date(proj.updated_at || proj.created_at).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                            <div className="mt-3.5 border-t border-white/5 pt-2.5 flex items-center justify-between">
+                              <span className="text-[10px] text-text-muted uppercase font-mono">
+                                {proj.canvas_width || 1200} × {proj.canvas_height || 1200}px
+                              </span>
+                              <a
+                                href="/layers"
+                                className="text-xs font-bold text-[#a3e635] hover:text-[#bef264] flex items-center gap-1"
+                              >
+                                Edit Canvas →
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* 1. Bundling Studio Sessions Section */}
                 {(activeTab === 'all' || activeTab === 'bundling') && filteredSessions.length > 0 && (
                   <div>

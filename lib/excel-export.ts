@@ -116,3 +116,24 @@ export function exportTasksDetailedExcel(tasks: any[], dateRange: { from: string
   const filename = `Boutiqaat_Tasks_Billing_Report_${dateRange.from}_to_${dateRange.to}.csv`;
   downloadExcelFile(csv, filename);
 }
+
+export function exportToExcelCSV<T extends Record<string, any>>(
+  data: T[],
+  columns: { header: string; key: keyof T; width?: number }[],
+  fileName: string
+) {
+  const headers = columns.map(c => c.header);
+  const rows = data.map(item =>
+    columns
+      .map(col => {
+        const val = item[col.key];
+        return `"${String(val ?? '').replace(/"/g, '""')}"`;
+      })
+      .join(',')
+  );
+
+  const csv = [headers.join(','), ...rows].join('\r\n');
+  const finalFilename = fileName.endsWith('.csv') ? fileName : `${fileName}.csv`;
+  downloadExcelFile(csv, finalFilename);
+}
+

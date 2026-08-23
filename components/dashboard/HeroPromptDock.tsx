@@ -17,13 +17,13 @@ const MODES = [
 ];
 
 const RUNNINGHUB_MODELS = [
-  { id: 'seedream-5', name: 'Seedream 5.0 Pro', badge: 'RunningHub', type: 'image' },
-  { id: 'kling-o3', name: 'Kling O3 Pro (4K)', badge: 'RunningHub', type: 'video' },
-  { id: 'veo-3.1', name: 'Google Veo 3.1', badge: 'RunningHub', type: 'video' },
-  { id: 'sora-2', name: 'Sora 2 Pro', badge: 'RunningHub', type: 'video' },
-  { id: 'hailuo-2.3', name: 'Hailuo 2.3 Pro', badge: 'RunningHub', type: 'video' },
-  { id: 'wan-2.6', name: 'Wan 2.6 Flash', badge: 'RunningHub', type: 'video' },
-  { id: 'flux-1', name: 'FLUX.1 Ultra', badge: 'RunningHub', type: 'image' },
+  { id: 'seedream-5', name: 'Seedream 5.0 Pro', badge: 'Studio Engine', type: 'image' },
+  { id: 'kling-o3', name: 'Kling O3 Pro (4K)', badge: 'Studio Engine', type: 'video' },
+  { id: 'veo-3.1', name: 'Google Veo 3.1', badge: 'Studio Engine', type: 'video' },
+  { id: 'sora-2', name: 'Sora 2 Pro', badge: 'Studio Engine', type: 'video' },
+  { id: 'hailuo-2.3', name: 'Hailuo 2.3 Pro', badge: 'Studio Engine', type: 'video' },
+  { id: 'wan-2.6', name: 'Wan 2.6 Flash', badge: 'Studio Engine', type: 'video' },
+  { id: 'flux-1', name: 'FLUX.1 Ultra', badge: 'Studio Engine', type: 'image' },
 ];
 
 const PROMPT_SUGGESTIONS = [

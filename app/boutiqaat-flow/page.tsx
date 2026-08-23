@@ -8,7 +8,8 @@ import {
   Sparkles, Send, Plus, Image as ImageIcon, Film, X, ChevronDown,
   Loader2, CheckCircle2, AlertCircle, Zap, RefreshCw, Download,
   Upload, FileVideo, FileAudio, Clock, Settings2, User2, ArrowRight,
-  RotateCcw, Maximize2, Layers, Info, Eye
+  RotateCcw, Maximize2, Layers, Info, Eye, FolderKanban, FolderPlus,
+  Edit3, Trash2, Folder, Check, Search
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
@@ -204,9 +205,21 @@ function getAspectRatioClass(ratio: string): string {
   return 'aspect-square';
 }
 
+interface FlowProject {
+  id: string;
+  userId: string;
+  name: string;
+  description?: string;
+  createdAt: string;
+  updatedAt: string;
+  itemCount: number;
+  thumbnailUrl?: string;
+}
+
 interface CanvasCardItem {
   id: string;
   taskId: string;
+  projectId?: string;
   mode: 'image' | 'video';
   prompt: string;
   model: string;
@@ -221,6 +234,19 @@ interface CanvasCardItem {
 function QuickCreateContent() {
   const searchParams = useSearchParams();
   const { addTask, tasks } = useTasks();
+
+  // Project Management State
+  const [projects, setProjects] = useState<FlowProject[]>([]);
+  const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
+  const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
+  const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] = useState(false);
+  const [isRenameProjectModalOpen, setIsRenameProjectModalOpen] = useState(false);
+  const [newProjectName, setNewProjectName] = useState('');
+  const [newProjectDesc, setNewProjectDesc] = useState('');
+  const [renameProjectName, setRenameProjectName] = useState('');
+  const [projectToRename, setProjectToRename] = useState<FlowProject | null>(null);
+  const [isProjectLoading, setIsProjectLoading] = useState(false);
+  const [projectSearchQuery, setProjectSearchQuery] = useState('');
 
   const [activeMode, setActiveMode] = useState<'image' | 'video'>(
     (searchParams.get('mode') as 'image' | 'video') || 'image'
@@ -346,57 +372,167 @@ function QuickCreateContent() {
       .catch(() => {});
   }, []);
 
-  // Load persistent canvas items from user-scoped storage & API
-  useEffect(() => {
+  // ── Fetch user's projects ──────────────────────────────────────────
+  const fetchUserProjects = useCallback(async (autoSelectId?: string) => {
     if (!currentUserId) return;
-    const storageKey = `quick_create_canvas_items_${currentUserId}`;
-
     try {
-      const saved = localStorage.getItem(storageKey);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          parsed.sort((a: any, b: any) => b.timestamp - a.timestamp);
-          setCanvasItems(parsed);
+      const res = await fetch('/api/boutiqaat-flow/projects');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.projects && Array.isArray(data.projects)) {
+        setProjects(data.projects);
+        if (data.projects.length > 0) {
+          if (autoSelectId) {
+            setActiveProjectId(autoSelectId);
+          } else {
+            setActiveProjectId(prev => {
+              if (prev && data.projects.some((p: FlowProject) => p.id === prev)) return prev;
+              return data.projects[0].id;
+            });
+          }
         }
+      }
+    } catch (err) {
+      console.error('Failed to fetch projects:', err);
+    }
+  }, [currentUserId]);
+
+  useEffect(() => {
+    if (currentUserId) {
+      fetchUserProjects();
+    }
+  }, [currentUserId, fetchUserProjects]);
+
+  // ── Load canvas items scoped exclusively to active project & user ───
+  const loadProjectTasks = useCallback(async (projId: string | null) => {
+    if (!projId) return;
+    setIsProjectLoading(true);
+    try {
+      const res = await fetch(`/api/boutiqaat-flow/sessions?projectId=${projId}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.sessions && Array.isArray(data.sessions)) {
+        const dbCanvasItems: CanvasCardItem[] = data.sessions.map((s: any) => ({
+          id: s.id,
+          taskId: s.task_id || s.id,
+          projectId: s.project_id || projId,
+          mode: s.mode || 'image',
+          prompt: s.prompt || 'Generation',
+          model: s.model || 'Standard',
+          ratio: s.ratio || '16:9',
+          quality: s.quality || '1k',
+          timestamp: new Date(s.updated_at || s.created_at || Date.now()).getTime(),
+          attachments: s.attachments || [],
+          status: s.status || (s.outputs && s.outputs.length > 0 ? 'SUCCESS' : 'QUEUED'),
+          outputs: s.outputs || [],
+        }));
+
+        // Sort chronologically (newest first)
+        dbCanvasItems.sort((a, b) => b.timestamp - a.timestamp);
+        setCanvasItems(dbCanvasItems);
       } else {
         setCanvasItems([]);
       }
     } catch (e) {
-      console.error('Failed to load local canvas items:', e);
+      console.error('Failed to load project sessions:', e);
+    } finally {
+      setIsProjectLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (activeProjectId) {
+      loadProjectTasks(activeProjectId);
+    }
+  }, [activeProjectId, loadProjectTasks]);
+
+  // ── Create Project Handler ──────────────────────────────────────────
+  const handleCreateProject = async () => {
+    if (!newProjectName.trim()) {
+      toast.error('Please enter a project name');
+      return;
     }
 
-    async function loadDbTasks() {
-      try {
-        const res = await fetch('/api/boutiqaat-flow/sessions');
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data.sessions && Array.isArray(data.sessions)) {
-          const dbCanvasItems: CanvasCardItem[] = data.sessions.map((s: any) => ({
-            id: s.id,
-            taskId: s.task_id || s.id,
-            mode: s.mode || 'image',
-            prompt: s.prompt || 'Generation',
-            model: s.model || 'Standard',
-            ratio: s.ratio || '16:9',
-            quality: s.quality || '1k',
-            timestamp: new Date(s.updated_at || s.created_at || Date.now()).getTime(),
-            attachments: s.attachments || [],
-            status: s.status || (s.outputs && s.outputs.length > 0 ? 'SUCCESS' : 'QUEUED'),
-            outputs: s.outputs || [],
-          }));
+    try {
+      const res = await fetch('/api/boutiqaat-flow/projects', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newProjectName.trim(),
+          description: newProjectDesc.trim() || undefined,
+        }),
+      });
 
-          // Sort chronologically by date modified (newest first)
-          dbCanvasItems.sort((a, b) => b.timestamp - a.timestamp);
-          setCanvasItems(dbCanvasItems);
-        }
-      } catch (e) {
-        console.error('Failed to load Boutiqaat Flow sessions:', e);
-      }
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to create project');
+
+      toast.success(`Project "${data.project.name}" created!`);
+      setNewProjectName('');
+      setNewProjectDesc('');
+      setIsCreateProjectModalOpen(false);
+      setIsProjectDropdownOpen(false);
+
+      // Refresh list and select newly created project
+      await fetchUserProjects(data.project.id);
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to create project');
+    }
+  };
+
+  // ── Rename Project Handler ──────────────────────────────────────────
+  const handleRenameProject = async () => {
+    if (!projectToRename || !renameProjectName.trim()) {
+      toast.error('Please enter a valid name');
+      return;
     }
 
-    loadDbTasks();
-  }, [currentUserId]);
+    try {
+      const res = await fetch('/api/boutiqaat-flow/projects', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: projectToRename.id,
+          name: renameProjectName.trim(),
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to rename project');
+
+      toast.success(`Project renamed to "${data.project.name}"`);
+      setIsRenameProjectModalOpen(false);
+      setProjectToRename(null);
+      setRenameProjectName('');
+
+      await fetchUserProjects();
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to rename project');
+    }
+  };
+
+  // ── Delete Project Handler ──────────────────────────────────────────
+  const handleDeleteProject = async (projId: string, projName: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+    }
+
+    if (!confirm(`Are you sure you want to delete project "${projName}"?`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/boutiqaat-flow/projects?id=${projId}`, {
+        method: 'DELETE',
+      });
+
+      if (!res.ok) throw new Error('Failed to delete project');
+
+      toast.success(`Project "${projName}" deleted`);
+      await fetchUserProjects();
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to delete project');
+    }
+  };
 
   // Sync active task updates with dedicated database endpoint
   useEffect(() => {
@@ -412,6 +548,7 @@ function QuickCreateContent() {
                 body: JSON.stringify({
                   id: item.id,
                   task_id: item.taskId,
+                  project_id: activeProjectId,
                   status: match.status,
                   outputs: match.outputs || [],
                   error: match.error || null,
@@ -422,29 +559,17 @@ function QuickCreateContent() {
                 ...item,
                 status: match.status,
                 outputs: match.outputs || [],
-                timestamp: Date.now(), // Update timestamp to reflect modified time
+                timestamp: Date.now(),
               };
             }
           }
           return item;
         });
 
-        // Re-sort elements by date modified so completed tasks move to the top
         return [...nextItems].sort((a, b) => b.timestamp - a.timestamp);
       });
     }
-  }, [tasks]);
-
-  // Save canvas items to user-scoped localStorage fallback
-  useEffect(() => {
-    if (!currentUserId) return;
-    const storageKey = `quick_create_canvas_items_${currentUserId}`;
-    try {
-      localStorage.setItem(storageKey, JSON.stringify(canvasItems.slice(0, 30)));
-    } catch (e) {
-      console.error('Failed to save canvas items:', e);
-    }
-  }, [canvasItems, currentUserId]);
+  }, [tasks, activeProjectId]);
 
   // Auto-resize the prompt textarea height to fit long prompts dynamically
   useEffect(() => {
@@ -695,6 +820,7 @@ function QuickCreateContent() {
           body: JSON.stringify({
             id: localId,
             task_id: taskId,
+            project_id: activeProjectId,
             mode: activeMode,
             prompt: currentPrompt,
             model: activeModel,
@@ -709,6 +835,7 @@ function QuickCreateContent() {
         const newCanvasItem: CanvasCardItem = {
           id: localId,
           taskId,
+          projectId: activeProjectId || undefined,
           mode: activeMode,
           prompt: currentPrompt,
           model: activeModel,
@@ -720,6 +847,11 @@ function QuickCreateContent() {
         };
 
         setCanvasItems(prev => [newCanvasItem, ...prev]);
+
+        // Optimistically update project item count in local state
+        if (activeProjectId) {
+          setProjects(prev => prev.map(p => p.id === activeProjectId ? { ...p, itemCount: (p.itemCount || 0) + 1 } : p));
+        }
       }
 
       setPrompt('');
@@ -758,8 +890,137 @@ function QuickCreateContent() {
             </p>
           </div>
 
+          {/* Project Switcher & Workspace Control Bar */}
+          <div className="relative z-30 w-full max-w-5xl mx-auto mt-4 mb-4 flex flex-col sm:flex-row items-center justify-between gap-3 p-2.5 bg-[#121316]/90 border border-white/[0.08] rounded-2xl shadow-xl backdrop-blur-xl">
+            {/* Active Project Dropdown */}
+            <div className="relative w-full sm:w-auto flex items-center gap-2">
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setIsProjectDropdownOpen(!isProjectDropdownOpen)}
+                  className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-lime-500/40 text-left transition-all text-xs group"
+                >
+                  <div className="w-7 h-7 rounded-lg bg-lime-400/10 border border-lime-400/30 flex items-center justify-center text-lime-400">
+                    <FolderKanban className="w-4 h-4" />
+                  </div>
+                  <div className="space-y-0.5">
+                    <span className="text-[9.5px] text-zinc-400 font-mono block uppercase">Active Campaign Project</span>
+                    <span className="font-bold text-white block max-w-[220px] truncate text-xs">
+                      {projects.find(p => p.id === activeProjectId)?.name || 'Main Studio Flow'}
+                    </span>
+                  </div>
+                  <ChevronDown className={cn("w-4 h-4 text-zinc-400 ml-1 transition-transform", isProjectDropdownOpen && "rotate-180")} />
+                </button>
+
+                {/* Dropdown Menu */}
+                {isProjectDropdownOpen && (
+                  <div className="absolute top-full left-0 mt-2 w-72 sm:w-84 bg-[#15161a] border border-white/[0.12] rounded-2xl shadow-2xl p-2 z-50 space-y-2 backdrop-blur-2xl">
+                    <div className="flex items-center justify-between px-2 pt-1 pb-1 border-b border-white/[0.06]">
+                      <span className="text-[11px] font-mono font-bold text-zinc-400 uppercase">My Flow Projects</span>
+                      <span className="text-[10px] text-zinc-500 font-mono">{projects.length} Projects</span>
+                    </div>
+
+                    <div className="max-h-60 overflow-y-auto custom-scrollbar space-y-1">
+                      {projects.map((p) => (
+                        <div
+                          key={p.id}
+                          onClick={() => {
+                            setActiveProjectId(p.id);
+                            setIsProjectDropdownOpen(false);
+                          }}
+                          className={cn(
+                            "flex items-center justify-between p-2.5 rounded-xl cursor-pointer transition-all text-xs",
+                            activeProjectId === p.id ? "bg-lime-400/15 border border-lime-400/30 text-lime-300" : "hover:bg-white/[0.04] text-zinc-300"
+                          )}
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <Folder className={cn("w-4 h-4 shrink-0", activeProjectId === p.id ? "text-lime-400" : "text-zinc-500")} />
+                            <div className="min-w-0">
+                              <span className="font-bold block truncate">{p.name}</span>
+                              <span className="text-[10px] text-zinc-500 font-mono block">
+                                {p.itemCount || 0} assets • {new Date(p.updatedAt).toLocaleDateString()}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-1 shrink-0 ml-2" onClick={e => e.stopPropagation()}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setProjectToRename(p);
+                                setRenameProjectName(p.name);
+                                setIsRenameProjectModalOpen(true);
+                                setIsProjectDropdownOpen(false);
+                              }}
+                              className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+                              title="Rename Project"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                            </button>
+                            {projects.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={(e) => handleDeleteProject(p.id, p.name, e)}
+                                className="p-1.5 rounded-lg text-zinc-400 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                                title="Delete Project"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsCreateProjectModalOpen(true);
+                        setIsProjectDropdownOpen(false);
+                      }}
+                      className="w-full py-2 px-3 rounded-xl bg-lime-400 text-black font-extrabold text-xs flex items-center justify-center gap-2 hover:bg-lime-300 transition-all shadow-md"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Create New Project</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Quick Actions: + New Project & Asset count */}
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+              <span className="text-xs font-mono text-zinc-400 px-3 py-1.5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                <strong className="text-white">{canvasItems.length}</strong> project assets
+              </span>
+
+              <button
+                type="button"
+                onClick={() => setIsCreateProjectModalOpen(true)}
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-lime-400 text-black font-extrabold text-xs hover:bg-lime-300 transition-all shadow-lg shadow-lime-400/15"
+              >
+                <FolderPlus className="w-4 h-4" />
+                <span>+ New Project</span>
+              </button>
+            </div>
+          </div>
+
           {/* Canvas Showcase Gallery */}
-          <div className="relative z-10 w-full mt-6 mb-4">
+          <div className="relative z-10 w-full mt-2 mb-4">
+            {canvasItems.length === 0 && (
+              <div className="py-20 flex flex-col items-center justify-center text-center space-y-3 p-6 rounded-3xl bg-white/[0.01] border border-dashed border-white/10 max-w-md mx-auto my-6">
+                <div className="w-14 h-14 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-center text-zinc-500">
+                  <FolderKanban className="w-7 h-7 text-lime-400/50" />
+                </div>
+                <div className="space-y-1">
+                  <h4 className="text-sm font-bold text-white">Project workspace is ready</h4>
+                  <p className="text-xs text-zinc-400">
+                    No generations yet in <span className="text-lime-300 font-bold">{projects.find(p => p.id === activeProjectId)?.name || 'this project'}</span>. Enter a prompt below to create your first visual asset.
+                  </p>
+                </div>
+              </div>
+            )}
+
             {canvasItems.length > 0 && (
               <div className="columns-2 sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6 2xl:columns-7 gap-3" style={{columnFill: 'balance'}}>
                 {canvasItems.map((item) => {
@@ -1547,6 +1808,154 @@ function QuickCreateContent() {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* ─── CREATE PROJECT MODAL ─── */}
+      {isCreateProjectModalOpen && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
+          onClick={() => setIsCreateProjectModalOpen(false)}
+        >
+          <div 
+            className="w-full max-w-md bg-[#141518] border border-white/15 rounded-3xl p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-200"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-lime-400/10 border border-lime-400/30 flex items-center justify-center text-lime-400">
+                  <FolderPlus className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">Create Flow Project</h3>
+                  <span className="text-[11px] text-zinc-400 font-mono">Organize visual assets into isolated campaigns</span>
+                </div>
+              </div>
+              <button 
+                onClick={() => setIsCreateProjectModalOpen(false)}
+                className="p-1 rounded-lg text-zinc-500 hover:text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-zinc-300 block">
+                  Project Name <span className="text-lime-400">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={newProjectName}
+                  onChange={e => setNewProjectName(e.target.value)}
+                  placeholder="e.g. Summer Perfume Campaign 2026"
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#0c0d0f] border border-white/10 text-white placeholder-zinc-600 text-xs focus:outline-none focus:border-lime-400 transition-colors"
+                  autoFocus
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') handleCreateProject();
+                  }}
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-zinc-300 block">
+                  Description <span className="text-zinc-500 font-normal">(Optional)</span>
+                </label>
+                <textarea
+                  value={newProjectDesc}
+                  onChange={e => setNewProjectDesc(e.target.value)}
+                  placeholder="e.g. Commercial visuals and video promos for luxury fragrance line"
+                  rows={3}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#0c0d0f] border border-white/10 text-white placeholder-zinc-600 text-xs focus:outline-none focus:border-lime-400 transition-colors resize-none"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-white/[0.06]">
+              <button
+                type="button"
+                onClick={() => setIsCreateProjectModalOpen(false)}
+                className="px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-white hover:bg-white/[0.04] transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleCreateProject}
+                className="px-5 py-2 rounded-xl bg-lime-400 text-black font-extrabold text-xs hover:bg-lime-300 transition-all shadow-lg shadow-lime-400/20 flex items-center gap-1.5"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span>Create Project</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── RENAME PROJECT MODAL ─── */}
+      {isRenameProjectModalOpen && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
+          onClick={() => setIsRenameProjectModalOpen(false)}
+        >
+          <div 
+            className="w-full max-w-md bg-[#141518] border border-white/15 rounded-3xl p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-200"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-lime-400/10 border border-lime-400/30 flex items-center justify-center text-lime-400">
+                  <Edit3 className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">Rename Flow Project</h3>
+                  <span className="text-[11px] text-zinc-400 font-mono">Update project title</span>
+                </div>
+              </div>
+              <button 
+                onClick={() => setIsRenameProjectModalOpen(false)}
+                className="p-1 rounded-lg text-zinc-500 hover:text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-zinc-300 block">
+                  Project Name <span className="text-lime-400">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={renameProjectName}
+                  onChange={e => setRenameProjectName(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#0c0d0f] border border-white/10 text-white placeholder-zinc-600 text-xs focus:outline-none focus:border-lime-400 transition-colors"
+                  autoFocus
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') handleRenameProject();
+                  }}
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-white/[0.06]">
+              <button
+                type="button"
+                onClick={() => setIsRenameProjectModalOpen(false)}
+                className="px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-white hover:bg-white/[0.04] transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleRenameProject}
+                className="px-5 py-2 rounded-xl bg-lime-400 text-black font-extrabold text-xs hover:bg-lime-300 transition-all shadow-lg shadow-lime-400/20 flex items-center gap-1.5"
+              >
+                <Check className="w-3.5 h-3.5" />
+                <span>Save Changes</span>
+              </button>
+            </div>
           </div>
         </div>
       )}
