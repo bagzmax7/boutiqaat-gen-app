@@ -38,13 +38,18 @@ export async function POST(request: NextRequest) {
 
     console.log(`[Remove Background] Calling RunningHub AI App API...`);
     
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || '';
+    const defaultWebhook = baseUrl && process.env.WEBHOOK_SECRET
+      ? `${baseUrl}/api/webhook/runninghub?secret=${process.env.WEBHOOK_SECRET}`
+      : undefined;
+
     // Call the standard RunningHub App execution endpoint
     const result = await runApp({
       appId: '2076728877666717698',
       nodeInfoList: initialNodeInfoList,
       apiKeyType: 'enterprise',
       retainSeconds: 60, // Keep instance warm for batch processing
-      webhookUrl: webhookUrl || `${process.env.NEXT_PUBLIC_APP_URL}/api/webhook/runninghub?secret=${process.env.WEBHOOK_SECRET}`
+      webhookUrl: webhookUrl || defaultWebhook
     });
 
     if (!result.taskId) {

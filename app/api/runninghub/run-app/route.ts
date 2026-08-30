@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     }
 
     const isBackgroundRemoval =
-      appId === process.env.PINNED_APP_ID ||
+      appId === (process.env.PINNED_APP_ID || '2054414719020216321') ||
       appId === '2053333317835083777' ||
       appId === '2063548168545071105';
     const apiKeyType = bodyApiKeyType || (isBackgroundRemoval ? 'consumer' : 'enterprise');

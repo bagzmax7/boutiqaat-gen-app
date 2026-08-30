@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 """
-Boutiqaat Creative AI Studio - Database Initializer & SQL Runner
+Boutiqaat Creative AI Studio - PostgreSQL Database Initializer & Migration Runner
 File: db.py
 Author: Boutiqaat AI Strategy & Innovation Team
 
 Description:
-  Automates the initialization of the complete Release 1 database on any server or local environment.
-  - Generates all 17 dataset tables in JSON format for the local database driver.
-  - Reads and copies the master 'schema.sql' for PostgreSQL / AWS RDS / Aurora deployments.
-  - Optionally runs 'schema.sql' directly against a PostgreSQL database via psycopg2 or psql.
+  Automates the initialization and migration of the Release 1 PostgreSQL database.
+  - Executes the master 'schema.sql' against PostgreSQL / AWS RDS / Aurora Serverless v2.
+  - Automatically provisions all 17 tables, indexes, constraints, and Row-Level Security (RLS) policies.
+  - Seeds official Boutiqaat departments (CONTENT, DIGITAL_MARKETING, MARKETING) and real-time app controls.
+  - Builds the local file database mirror for fallback and edge caching.
 
 Usage:
-  python db.py                      # Build / update local JSON database & schema.sql
-  python db.py --path ./database    # Specify custom database directory
-  python db.py --pg-uri "postgresql://user:pass@host:5432/dbname" # Execute SQL directly to Postgres
+  python db.py                                                    # Auto-detects PostgreSQL from .env.local or builds local mirror
+  python db.py --pg-uri "postgresql://user:pass@host:5432/dbname" # Execute schema against PostgreSQL
+  python db.py --path ./database                                  # Custom target folder for database mirror
+  python db.py --help                                             # Show all options
 """
 
 import os
@@ -21,15 +23,98 @@ import sys
 import json
 import shutil
 import argparse
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
 def get_iso_now():
     return datetime.now(timezone.utc).isoformat()
 
+def load_env_db_url():
+    """Reads DATABASE_URL from .env.local or .env if not passed via CLI."""
+    for env_file in [".env.local", ".env"]:
+        if os.path.exists(env_file):
+            try:
+                with open(env_file, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line.startswith("DATABASE_URL=") and not line.startswith("#"):
+                            val = line.split("=", 1)[1].strip().strip('"').strip("'")
+                            if val:
+                                return val
+            except Exception:
+                pass
+    return os.environ.get("DATABASE_URL")
+
+def execute_postgresql_schema(pg_uri, sql_file_path):
+    """Executes the master schema.sql directly against PostgreSQL."""
+    print("\n" + "=" * 70)
+    print("CONNECTING TO POSTGRESQL DATABASE")
+    print("=" * 70)
+    
+    # Redact password for safe logging
+    try:
+        if "@" in pg_uri:
+            auth_part, host_part = pg_uri.split("@", 1)
+            protocol, creds = auth_part.split("://", 1)
+            user = creds.split(":", 1)[0] if ":" in creds else creds
+            safe_uri = f"{protocol}://{user}:****@{host_part}"
+        else:
+            safe_uri = pg_uri
+    except Exception:
+        safe_uri = "PostgreSQL Server"
+        
+    print(f"Target DB: {safe_uri}")
+    print(f"SQL File : {os.path.abspath(sql_file_path)}\n")
+
+    if not os.path.exists(sql_file_path):
+        print(f"[ERROR] SQL schema file not found at: {sql_file_path}")
+        return False
+
+    with open(sql_file_path, "r", encoding="utf-8") as f:
+        sql_content = f.read()
+
+    # Method 1: Try psycopg2
+    try:
+        import psycopg2
+        print("[INIT] Executing schema using Python 'psycopg2' driver...")
+        conn = psycopg2.connect(pg_uri)
+        conn.autocommit = True
+        cur = conn.cursor()
+        cur.execute(sql_content)
+        cur.close()
+        conn.close()
+        print("[OK] PostgreSQL schema, tables, indexes, and RLS policies applied successfully!")
+        return True
+    except ImportError:
+        pass
+    except Exception as err:
+        print(f"[ERROR] psycopg2 execution failed: {err}")
+        return False
+
+    # Method 2: Try psql command-line client
+    try:
+        print("[INIT] 'psycopg2' not found. Attempting execution via 'psql' CLI...")
+        result = subprocess.run(
+            ["psql", pg_uri, "-f", str(sql_file_path)],
+            capture_output=True,
+            text=True
+        )
+        if result.returncode == 0:
+            print("[OK] Executed via 'psql' CLI successfully!")
+            return True
+        else:
+            print(f"[ERROR] 'psql' returned error code {result.returncode}:\n{result.stderr}")
+    except FileNotFoundError:
+        print("[!] Notice: Neither 'psycopg2' nor 'psql' is installed locally.")
+        print("    To run the schema on your PostgreSQL server manually, execute:")
+        print(f"    psql \"{pg_uri}\" -f \"{sql_file_path}\"")
+
+    return False
+
 def build_database(target_root_dir, pg_uri=None):
     print("=" * 70)
-    print("BOUTIQAAT CREATIVE AI STUDIO - DATABASE INITIALIZER (RELEASE 1)")
+    print("BOUTIQAAT CREATIVE AI STUDIO - POSTGRESQL DATABASE INITIALIZER")
     print("=" * 70)
     print(f"Target Directory: {os.path.abspath(target_root_dir)}\n")
 
@@ -54,6 +139,7 @@ def build_database(target_root_dir, pg_uri=None):
 
     # 3. Define All 17 Database Tables
     database_tables = {
+        # --- 1. Identity & Role Layer (Microsoft Graph SSO Ready) ---
         "departments.json": [
             {
                 "id": "dept_content_01",
@@ -89,11 +175,15 @@ def build_database(target_root_dir, pg_uri=None):
                 "updated_at": now
             }
         ],
-        "admins.json": [],
-        "managers.json": [],
-        "creators.json": [],
-        "users.json": [],
-        "tasks.json": [],
+        "admins.json": [],      # Super Admins (Scope: All)
+        "managers.json": [],    # Department Managers (Scope: Team)
+        "creators.json": [],    # Editors & Creators (Scope: Own)
+        "users.json": [],       # Azure Entra ID / Microsoft Graph Accounts
+
+        # --- 2. Generation Pipeline ---
+        "tasks.json": [],       # Release 1 Tasks (Flow, Resize, Retouch, BG Remove)
+
+        # --- 3. App Project Stores ---
         "flow_projects.json": [],
         "retouch_projects.json": [],
         "retouch_sessions.json": [],
@@ -101,10 +191,14 @@ def build_database(target_root_dir, pg_uri=None):
         "layers_projects.json": [],
         "bundling_sessions.json": [],
         "image_agent_sessions.json": [],
+
+        # --- 4. Governance & Accounting ---
         "department_budgets.json": [],
         "audit_logs.json": [],
         "team_creative_gallery.json": [],
         "notifications.json": [],
+
+        # --- 5. Real-Time App Controls ---
         "app_controls.json": [
             {
                 "id": "ctrl_flow",
@@ -170,9 +264,12 @@ def build_database(target_root_dir, pg_uri=None):
                 "updated_at": now
             }
         ],
+
+        # --- 6. PostgreSQL Row-Level Security Matrix ---
         "permissions_matrix.json": {
             "version": "1.0.0",
             "release": "Release 1 (Image Suite)",
+            "database_target": "PostgreSQL 14+ / AWS RDS / Aurora Serverless v2",
             "roles": {
                 "creator": {
                     "scope": "Own Only",
@@ -194,7 +291,7 @@ def build_database(target_root_dir, pg_uri=None):
                         "Add, edit, or remove user accounts",
                         "View or modify department budgets and ceilings",
                         "View the audit trail",
-                        "Manage external API keys (RunningHub, Supabase)"
+                        "Manage external API keys (RunningHub, PostgreSQL / AWS RDS)"
                     ]
                 },
                 "manager": {
@@ -218,7 +315,7 @@ def build_database(target_root_dir, pg_uri=None):
                         "Add or remove user accounts",
                         "Assign user roles or assign managers to teams",
                         "Adjust user or department budget ceilings",
-                        "Manage platform API keys (RunningHub, Supabase)"
+                        "Manage platform API keys (RunningHub, PostgreSQL / AWS RDS)"
                     ]
                 },
                 "admin": {
@@ -234,7 +331,7 @@ def build_database(target_root_dir, pg_uri=None):
                         "Assign managers to teams",
                         "Set department and user monthly budget ceilings",
                         "View complete platform-wide audit trails",
-                        "Manage external API keys (RunningHub, Supabase)",
+                        "Manage external API keys (RunningHub, PostgreSQL / AWS RDS)",
                         "Configure Brand Kit & Catalog Connector (Roadmap items)"
                     ],
                     "cannot_perform": [
@@ -266,51 +363,38 @@ def build_database(target_root_dir, pg_uri=None):
         count_label = f"{len(content)} records" if isinstance(content, list) else "config"
         print(f"   [OK] {filename:<30} ({count_label})")
 
-    # 4. Read & Copy master schema.sql
+    # 4. Master schema.sql sync
     master_schema_file = Path("schema.sql")
     dest_schema_file = schemas_path / "000_release_1_architecture.sql"
 
     if master_schema_file.exists():
         shutil.copyfile(master_schema_file, dest_schema_file)
-        print(f"\n[OK] Copied master 'schema.sql' -> {dest_schema_file}")
-    else:
-        print(f"\n[!] Notice: 'schema.sql' not found in current directory, using existing DDL.")
+        print(f"\n[OK] Master PostgreSQL DDL synced -> {dest_schema_file}")
 
-    # 5. Optional PostgreSQL Execution
-    if pg_uri:
-        print(f"\nConnecting to PostgreSQL: {pg_uri.split('@')[-1]} ...")
-        try:
-            import psycopg2
-            conn = psycopg2.connect(pg_uri)
-            cur = conn.cursor()
-            with open(dest_schema_file, "r", encoding="utf-8") as f:
-                sql_content = f.read()
-            cur.execute(sql_content)
-            conn.commit()
-            cur.close()
-            conn.close()
-            print("[OK] Executed 'schema.sql' against PostgreSQL database successfully!")
-        except ImportError:
-            print("[!] psycopg2 is not installed. To execute directly against PostgreSQL, run:")
-            print(f"    psql \"{pg_uri}\" -f \"{dest_schema_file}\"")
-        except Exception as err:
-            print(f"[ERROR] Failed to execute SQL against PostgreSQL: {err}")
+    # 5. Direct PostgreSQL Execution (if URI provided or in .env.local)
+    pg_target = pg_uri or load_env_db_url()
+    if pg_target:
+        execute_postgresql_schema(pg_target, master_schema_file if master_schema_file.exists() else dest_schema_file)
+    else:
+        print("\n[INFO] No PostgreSQL URI provided. Local tables & schema.sql created.")
+        print("       To execute against PostgreSQL, run:")
+        print("       python db.py --pg-uri \"postgresql://user:pass@localhost:5432/boutiqaat_studio\"")
 
     print("\n" + "=" * 70)
-    print("SUCCESS: All 17 database tables & schemas created successfully!")
+    print("SUCCESS: PostgreSQL schema and tables prepared successfully!")
     print("=" * 70 + "\n")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Initialize Boutiqaat Creative AI Studio Database")
+    parser = argparse.ArgumentParser(description="Initialize Boutiqaat Creative AI Studio PostgreSQL Database")
     parser.add_argument(
         "--path",
         default="./database",
-        help="Target folder for local database creation (Default: ./database)"
+        help="Target folder for local database mirror (Default: ./database)"
     )
     parser.add_argument(
         "--pg-uri",
-        default=os.environ.get("DATABASE_URL"),
-        help="Optional PostgreSQL connection URI (e.g. postgresql://user:pass@host:5432/dbname)"
+        default=None,
+        help="PostgreSQL connection URI (e.g. postgresql://user:pass@host:5432/dbname)"
     )
     args = parser.parse_args()
     build_database(args.path, args.pg_uri)

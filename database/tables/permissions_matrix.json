@@ -1,6 +1,7 @@
 {
   "version": "1.0.0",
   "release": "Release 1 (Image Suite)",
+  "database_target": "PostgreSQL 14+ / AWS RDS / Aurora Serverless v2",
   "roles": {
     "creator": {
       "scope": "Own Only",
@@ -22,7 +23,7 @@
         "Add, edit, or remove user accounts",
         "View or modify department budgets and ceilings",
         "View the audit trail",
-        "Manage external API keys (RunningHub, Supabase)"
+        "Manage external API keys (RunningHub, PostgreSQL / AWS RDS)"
       ]
     },
     "manager": {
@@ -46,7 +47,7 @@
         "Add or remove user accounts",
         "Assign user roles or assign managers to teams",
         "Adjust user or department budget ceilings",
-        "Manage platform API keys (RunningHub, Supabase)"
+        "Manage platform API keys (RunningHub, PostgreSQL / AWS RDS)"
       ]
     },
     "admin": {
@@ -62,7 +63,7 @@
         "Assign managers to teams",
         "Set department and user monthly budget ceilings",
         "View complete platform-wide audit trails",
-        "Manage external API keys (RunningHub, Supabase)",
+        "Manage external API keys (RunningHub, PostgreSQL / AWS RDS)",
         "Configure Brand Kit & Catalog Connector (Roadmap items)"
       ],
       "cannot_perform": [
