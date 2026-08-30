@@ -100,12 +100,12 @@ export async function GET(req: NextRequest) {
     // Team member IDs for manager scoping
     const myTeamMembers = (session.role === 'admin')
       ? allRegisteredUsers
-      : allRegisteredUsers.filter(u => u.role === 'editor' || u.id === session.userId);
+      : allRegisteredUsers.filter((u: any) => u.role === 'editor' || u.id === session.userId);
     
-    const teamUserIds = myTeamMembers.map(u => u.id);
+    const teamUserIds = myTeamMembers.map((u: any) => u.id);
 
     const userMap: Record<string, { id: string; name: string; email: string; role: string }> = {};
-    myTeamMembers.forEach(u => {
+    myTeamMembers.forEach((u: any) => {
       userMap[u.id] = {
         id: u.id,
         name: u.name || (u.email ? u.email.split('@')[0] : 'Team Member'),
@@ -183,7 +183,7 @@ export async function GET(req: NextRequest) {
     }
 
     const { data: timeframeTasks } = await timeframesQuery;
-    (timeframeTasks || []).forEach(t => {
+    (timeframeTasks || []).forEach((t: any) => {
       const created = t.created_at || '';
       assetsMonthCount++;
       if (created >= sevenDaysAgo) assetsWeekCount++;
@@ -235,7 +235,7 @@ export async function GET(req: NextRequest) {
       spendUsd: number;
     }> = {};
 
-    myTeamMembers.forEach(u => {
+    myTeamMembers.forEach((u: any) => {
       memberStatsMap[u.id] = {
         userId: u.id,
         name: u.name || u.email.split('@')[0],
@@ -258,7 +258,7 @@ export async function GET(req: NextRequest) {
     }> = {};
 
     // Process tasks in current range
-    allTasks.forEach(t => {
+    allTasks.forEach((t: any) => {
       const status = (t.status || '').toUpperCase();
       const createdAt = t.created_at || '';
       const updatedAt = t.updated_at || '';
@@ -420,7 +420,7 @@ export async function GET(req: NextRequest) {
     const totalWorkers = Math.max(1, activeMemberList.length);
     const teamAvgTasks = allTasks.length / totalWorkers;
 
-    const workforceRankings = activeMemberList.map(w => {
+    const workforceRankings = activeMemberList.map((w: any) => {
       const vsAvgPercent = teamAvgTasks > 0
         ? Math.round(((w.taskCount - teamAvgTasks) / teamAvgTasks) * 100)
         : 0;
@@ -432,7 +432,7 @@ export async function GET(req: NextRequest) {
         successRate,
         balanceStatus: vsAvgPercent > 35 ? 'Heavy Load' : vsAvgPercent < -35 ? 'Underutilized' : 'Balanced',
       };
-    }).sort((a, b) => b.taskCount - a.taskCount);
+    }).sort((a: any, b: any) => b.taskCount - a.taskCount);
 
     const budgetUsedPercent = deptBudgetUsd > 0 ? Math.round((totalSpendUsd / deptBudgetUsd) * 100) : 0;
     const remainingBudgetUsd = Math.max(0, deptBudgetUsd - totalSpendUsd);
@@ -443,13 +443,13 @@ export async function GET(req: NextRequest) {
       ? 'warning'
       : 'safe';
 
-    const superAdminModelsList = Object.values(modelStatsMap).map(m => ({
+    const superAdminModelsList = Object.values(modelStatsMap).map((m: any) => ({
       ...m,
       spendKwd: m.spendUsd / KWD_EXCHANGE_RATE,
       marketValueKwd: m.marketValueUsd / KWD_EXCHANGE_RATE,
       savingsUsd: Math.max(0, m.marketValueUsd - m.spendUsd),
       savingsPercent: m.marketValueUsd > 0 ? Math.round(((m.marketValueUsd - m.spendUsd) / m.marketValueUsd) * 100) : 0,
-    })).sort((a, b) => b.spendUsd - a.spendUsd);
+    })).sort((a: any, b: any) => b.spendUsd - a.spendUsd);
 
     const successRate = allTasks.length > 0
       ? Math.round((successCount / allTasks.length) * 1000) / 10

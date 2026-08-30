@@ -98,7 +98,7 @@ export async function GET(req: NextRequest) {
     const activeUserIds24h = new Set<string>();
     const oneDayAgo = new Date(Date.now() - 24 * 3600000).toISOString();
 
-    (tasks || []).forEach(t => {
+    (tasks || []).forEach((t: any) => {
       const nodeInfoList = t.node_info_list || [];
       const usageNode = nodeInfoList.find((n: any) => n.nodeId === 'USAGE' && n.fieldName === 'usage');
 

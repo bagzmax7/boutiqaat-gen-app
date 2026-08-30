@@ -1,0 +1,35 @@
+[
+  {
+    "id": "dept_content_01",
+    "code": "CONTENT",
+    "name": "Content Production Team",
+    "description": "Photo editing, model cutout & creative image retouching",
+    "default_user_budget_usd": 100,
+    "monthly_budget_ceiling_usd": 500,
+    "is_active": true,
+    "created_at": "2026-08-30T11:40:13.892Z",
+    "updated_at": "2026-08-30T11:40:13.893Z"
+  },
+  {
+    "id": "dept_dm_02",
+    "code": "DIGITAL_MARKETING",
+    "name": "Digital Marketing Team",
+    "description": "Social banners, paid ad resize, 9:16 story variations",
+    "default_user_budget_usd": 100,
+    "monthly_budget_ceiling_usd": 500,
+    "is_active": true,
+    "created_at": "2026-08-30T11:40:13.893Z",
+    "updated_at": "2026-08-30T11:40:13.893Z"
+  },
+  {
+    "id": "dept_marketing_03",
+    "code": "MARKETING",
+    "name": "Marketing & Brand Strategy",
+    "description": "Campaign hero imagery, brand standardisation & promotions",
+    "default_user_budget_usd": 100,
+    "monthly_budget_ceiling_usd": 500,
+    "is_active": true,
+    "created_at": "2026-08-30T11:40:13.893Z",
+    "updated_at": "2026-08-30T11:40:13.893Z"
+  }
+]

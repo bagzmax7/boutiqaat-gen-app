@@ -102,7 +102,7 @@ export async function GET(req: NextRequest) {
     }> = {};
 
     // Initialize map with all registered users
-    (users || []).forEach(u => {
+    (users || []).forEach((u: any) => {
       userMap[u.id] = {
         userId: u.id,
         name: u.name || 'Unnamed User',
@@ -126,7 +126,7 @@ export async function GET(req: NextRequest) {
     // Fallback container for tasks with unknown / unlinked user_id
     const UNKNOWN_USER_ID = 'unknown-user';
 
-    (tasks || []).forEach(t => {
+    (tasks || []).forEach((t: any) => {
       const uId = t.user_id && userMap[t.user_id] ? t.user_id : UNKNOWN_USER_ID;
       
       if (!userMap[uId]) {

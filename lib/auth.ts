@@ -2,7 +2,6 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { supabaseAdmin } from './supabase';
 
 const SECRET = new TextEncoder().encode(
   process.env.AUTH_SECRET || 'boutiqaat_gen_app_fallback_secret'
@@ -65,6 +64,7 @@ export async function loginWithEmail(
 ): Promise<SessionPayload | null> {
   try {
     const cleanEmail = email.toLowerCase().trim();
+    const { supabaseAdmin } = await import('./supabase');
 
     // Query user record safely
     let user: any = null;

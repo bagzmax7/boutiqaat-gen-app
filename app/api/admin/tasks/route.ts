@@ -74,7 +74,7 @@ export async function GET(req: NextRequest) {
 
   if (allMatchingForStats) {
     totalRecords = allMatchingForStats.length;
-    allMatchingForStats.forEach(t => {
+    allMatchingForStats.forEach((t: any) => {
       if (t.api_key_type === 'enterprise') {
         totalEnterprise++;
       } else {
@@ -106,7 +106,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  const records = (tasks || []).map(t => {
+  const records = (tasks || []).map((t: any) => {
     const usage = parseUsage(t.node_info_list);
     return {
       taskId: t.runninghub_task_id || t.id,

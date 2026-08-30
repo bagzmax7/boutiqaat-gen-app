@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ctrl_flow",
+    "app_id": "boutiqaat_flow",
+    "app_name": "Boutiqaat Flow Studio",
+    "route_path": "/boutiqaat-flow",
+    "status": "ACTIVE",
+    "custom_message": "Online and operating normally.",
+    "updated_at": "2026-08-30T11:40:13.893Z"
+  },
+  {
+    "id": "ctrl_resize",
+    "app_id": "social_resize",
+    "app_name": "Social Resize Studio",
+    "route_path": "/studio/social-resize",
+    "status": "ACTIVE",
+    "custom_message": "Online and operating normally.",
+    "updated_at": "2026-08-30T11:40:13.893Z"
+  },
+  {
+    "id": "ctrl_retouch",
+    "app_id": "auto_retouch",
+    "app_name": "Auto-Retouch Studio",
+    "route_path": "/studio/auto-retouch",
+    "status": "ACTIVE",
+    "custom_message": "Online and operating normally.",
+    "updated_at": "2026-08-30T11:40:13.893Z"
+  },
+  {
+    "id": "ctrl_bg_remove",
+    "app_id": "batch_remove_bg",
+    "app_name": "Batch Background Removal",
+    "route_path": "/studio",
+    "status": "ACTIVE",
+    "custom_message": "Online and operating normally.",
+    "updated_at": "2026-08-30T11:40:13.893Z"
+  },
+  {
+    "id": "ctrl_layers",
+    "app_id": "boutiqaat_layers",
+    "app_name": "Boutiqaat Layers Studio",
+    "route_path": "/layers",
+    "status": "COMING_SOON",
+    "custom_message": "This feature is currently in preparation and will be available in the next release.",
+    "updated_at": "2026-08-30T11:40:13.893Z"
+  },
+  {
+    "id": "ctrl_bundling",
+    "app_id": "boutiqaat_bundling",
+    "app_name": "Boutiqaat Bundling Studio",
+    "route_path": "/bundling",
+    "status": "COMING_SOON",
+    "custom_message": "This feature is currently in preparation and will be available in the next release.",
+    "updated_at": "2026-08-30T11:40:13.893Z"
+  },
+  {
+    "id": "ctrl_video",
+    "app_id": "video_studio",
+    "app_name": "Video Studio",
+    "route_path": "/video",
+    "status": "COMING_SOON",
+    "custom_message": "This feature is currently in preparation and will be available in the next release.",
+    "updated_at": "2026-08-30T11:40:13.893Z"
+  }
+]

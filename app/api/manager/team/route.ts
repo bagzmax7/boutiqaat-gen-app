@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
 
     // Filter to editors or current user's team
     const allSettings = getAllMemberSettings();
-    const editors = (users || []).filter(u => {
+    const editors = (users || []).filter((u: any) => {
       if (session.role === 'admin') return true;
       const setting = allSettings[u.id];
       return u.role === 'editor' || u.id === session.userId || setting?.managerId === session.userId;
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
 
     const userSpendMap: Record<string, { totalTasks: number; spendUsd: number; successCount: number }> = {};
 
-    (monthTasks || []).forEach(t => {
+    (monthTasks || []).forEach((t: any) => {
       if (!t.user_id) return;
       if (!userSpendMap[t.user_id]) {
         userSpendMap[t.user_id] = { totalTasks: 0, spendUsd: 0, successCount: 0 };
@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
       }
     });
 
-    const enrichedEditors = editors.map(e => {
+    const enrichedEditors = editors.map((e: any) => {
       const setting = getMemberSettings(e.id);
       const stats = userSpendMap[e.id] || { totalTasks: 0, spendUsd: 0, successCount: 0 };
       const limit = setting.monthlyCreditLimitUsd || 100.0;

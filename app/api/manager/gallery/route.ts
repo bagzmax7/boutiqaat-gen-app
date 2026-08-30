@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ items: [] });
     }
 
-    const formatted = (items || []).map(i => ({
+    const formatted = (items || []).map((i: any) => ({
       id: i.id,
       department_id: i.department_id,
       task_id: i.task_id,

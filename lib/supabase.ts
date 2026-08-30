@@ -1,15 +1,21 @@
 import { createClient } from '@supabase/supabase-js';
+import { localDbClient } from './local-db';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+const useLocalDb = process.env.USE_LOCAL_DB !== 'false';
 
-// Server-side admin client (bypasses RLS) — never exposed to browser
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false,
-  },
-});
+// Server-side database client: Uses 100% Local DB Driver by default, or Supabase Cloud if explicitly configured
+export const supabaseAdmin: any =
+  useLocalDb || !supabaseUrl || !supabaseServiceKey
+    ? localDbClient
+    : createClient(supabaseUrl, supabaseServiceKey, {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
+      });
+
 
 export type Database = {
   public: {
