@@ -36,6 +36,7 @@ export async function GET(req: NextRequest) {
       .from('tasks')
       .select(`
         id,
+        runninghub_task_id,
         user_id,
         app_name,
         status,
@@ -58,11 +59,27 @@ export async function GET(req: NextRequest) {
       } catch {}
     }
 
-    const { data: tasks, error: tasksError } = await query;
+    const { data: rawTasks, error: tasksError } = await query;
 
     if (tasksError) {
       return NextResponse.json({ error: tasksError.message }, { status: 500 });
     }
+
+    // Deduplicate tasks by runninghub_task_id / id
+    const taskMap = new Map<string, any>();
+    for (const t of (rawTasks || [])) {
+      const key = (t.runninghub_task_id && String(t.runninghub_task_id).trim()) || t.id;
+      if (!key) continue;
+      if (!taskMap.has(key)) {
+        taskMap.set(key, t);
+      } else {
+        const existing = taskMap.get(key);
+        if (t.status === 'SUCCESS' && existing.status !== 'SUCCESS') {
+          taskMap.set(key, t);
+        }
+      }
+    }
+    const tasks = Array.from(taskMap.values());
 
     // 3. Aggregate metrics by user_id
     const userMap: Record<string, {

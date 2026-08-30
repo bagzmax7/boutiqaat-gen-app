@@ -17,12 +17,68 @@ function getStorageKey(userId?: string | null): string {
   return `${BASE_STORAGE_KEY}_${userId}`;
 }
 
+function deduplicateTasks(taskList: Task[]): Task[] {
+  if (!Array.isArray(taskList)) return [];
+  const map = new Map<string, Task>();
+  
+  for (const t of taskList) {
+    if (!t) continue;
+    // Determine key: prioritize valid taskId, otherwise t.id
+    const key = (t.taskId && String(t.taskId).trim()) || t.id;
+    if (!key) continue;
+
+    const existing = map.get(key);
+    if (!existing) {
+      map.set(key, t);
+    } else {
+      // Pick the better/latest one
+      const existingSuccess = existing.status === 'SUCCESS';
+      const currentSuccess = t.status === 'SUCCESS';
+      const existingHasOut = Boolean(existing.outputs && existing.outputs.length > 0);
+      const currentHasOut = Boolean(t.outputs && t.outputs.length > 0);
+      
+      const shouldReplace = 
+        (!existingHasOut && currentHasOut) || 
+        (currentSuccess && !existingSuccess) || 
+        (t.updatedAt > existing.updatedAt);
+
+      if (shouldReplace) {
+        map.set(key, {
+          ...existing,
+          ...t,
+          appName: (t.appName && !t.appName.startsWith('App 20')) ? t.appName : existing.appName,
+          outputs: currentHasOut ? t.outputs : existing.outputs,
+        });
+      }
+    }
+  }
+
+  // Also deduplicate items that have identical non-empty output URLs
+  const urlMap = new Map<string, Task>();
+  const results: Task[] = [];
+
+  for (const t of Array.from(map.values())) {
+    const firstUrl = t.outputs?.[0]?.fileUrl;
+    if (firstUrl && t.status === 'SUCCESS') {
+      if (!urlMap.has(firstUrl)) {
+        urlMap.set(firstUrl, t);
+        results.push(t);
+      }
+    } else {
+      results.push(t);
+    }
+  }
+
+  return results.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+}
+
 function loadTasksForUser(userId: string | null): Task[] {
   if (typeof window === 'undefined') return [];
   try {
     const key = getStorageKey(userId);
     const stored = localStorage.getItem(key);
-    return stored ? JSON.parse(stored) : [];
+    const parsed = stored ? JSON.parse(stored) : [];
+    return deduplicateTasks(parsed);
   } catch {
     return [];
   }
@@ -38,7 +94,8 @@ function saveTasksForUser(tasks: Task[], userId: string | null) {
 }
 
 function setGlobalTasks(action: Task[] | ((prev: Task[]) => Task[]), userId: string | null = currentStoreUserId) {
-  globalTasks = typeof action === 'function' ? action(globalTasks) : action;
+  const next = typeof action === 'function' ? action(globalTasks) : action;
+  globalTasks = deduplicateTasks(next);
   saveTasksForUser(globalTasks, userId);
   listeners.forEach(l => l());
 }
@@ -101,34 +158,7 @@ export function useTasks() {
           apiKeyType: t.api_key_type
         }));
 
-        setGlobalTasks(prev => {
-          const mergedMap = new Map<string, Task>();
-          
-          dbTasks.forEach((t) => {
-            mergedMap.set(t.id, t);
-          });
-          
-          prev.forEach((t) => {
-            let dbVer = mergedMap.get(t.id);
-            if (!dbVer && t.taskId) {
-              dbVer = Array.from(mergedMap.values()).find(dt => dt.taskId === t.taskId);
-            }
-
-            if (dbVer) {
-              if (t.updatedAt > dbVer.updatedAt) {
-                mergedMap.set(dbVer.id, {
-                  ...dbVer,
-                  ...t,
-                  id: dbVer.id
-                });
-              }
-            } else {
-              mergedMap.set(t.id, t);
-            }
-          });
-          
-          return Array.from(mergedMap.values()).sort((a, b) => b.createdAt - a.createdAt);
-        }, currentUserId);
+        setGlobalTasks(prev => deduplicateTasks([...prev, ...dbTasks]), currentUserId);
       } catch (err) {
         console.error('Failed to sync tasks with database:', err);
       }
@@ -145,19 +175,37 @@ export function useTasks() {
     nodeInfoList: Task['nodeInfoList'],
     apiKeyType?: 'enterprise' | 'consumer'
   ) => {
-    const newTask: Task = {
-      id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
-      taskId,
-      appId,
-      appName,
-      status: 'QUEUED',
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-      nodeInfoList,
-      apiKeyType,
-    };
-    setGlobalTasks(prev => [newTask, ...prev]);
-    return newTask.id;
+    let assignedId = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    setGlobalTasks(prev => {
+      if (taskId) {
+        const existing = prev.find(t => t.taskId === taskId);
+        if (existing) {
+          assignedId = existing.id;
+          return prev.map(t => t.id === existing.id ? {
+            ...t,
+            appId: appId || t.appId,
+            appName: appName || t.appName,
+            nodeInfoList: nodeInfoList || t.nodeInfoList,
+            apiKeyType: apiKeyType || t.apiKeyType,
+            updatedAt: Date.now()
+          } : t);
+        }
+      }
+
+      const newTask: Task = {
+        id: assignedId,
+        taskId,
+        appId,
+        appName,
+        status: 'QUEUED',
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        nodeInfoList,
+        apiKeyType,
+      };
+      return [newTask, ...prev];
+    });
+    return assignedId;
   }, []);
 
   // ── Update a task ───────────────────────────────────────

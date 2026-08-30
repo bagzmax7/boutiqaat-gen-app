@@ -86,8 +86,18 @@ export async function archiveOutputsList(
       }
 
       if (item && typeof item === 'object') {
+        if (item.archivedToStorage) return item;
         const originalUrl = item.fileUrl || item.url || item.outputUrl || item.download_url || item.src;
         if (originalUrl) {
+          if (typeof originalUrl === 'string' && (originalUrl.includes('.supabase.co/storage/v1/object/public/') || originalUrl.startsWith('/'))) {
+            return {
+              ...item,
+              fileUrl: originalUrl,
+              url: originalUrl,
+              outputUrl: originalUrl,
+              archivedToStorage: true,
+            };
+          }
           const permanentUrl = await archiveMediaToSupabaseStorage(originalUrl, userId, taskId, idx);
           return {
             ...item,

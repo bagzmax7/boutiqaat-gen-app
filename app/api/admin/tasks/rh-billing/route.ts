@@ -69,10 +69,58 @@ export async function GET(req: NextRequest) {
 
   query = query.order('created_at', { ascending: false }).limit(2000);
 
-  const { data: tasks, error } = await query;
+  const { data: rawTasks, error } = await query;
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  // Deduplicate tasks by runninghub_task_id / id
+  const map = new Map<string, any>();
+  for (const t of (rawTasks || [])) {
+    const key = (t.runninghub_task_id && String(t.runninghub_task_id).trim()) || t.id;
+    if (!key) continue;
+    const existing = map.get(key);
+    if (!existing) {
+      map.set(key, t);
+    } else {
+      const existingSuccess = existing.status === 'SUCCESS';
+      const currentSuccess = t.status === 'SUCCESS';
+      const existingHasOut = Array.isArray(existing.outputs) && existing.outputs.length > 0;
+      const currentHasOut = Array.isArray(t.outputs) && t.outputs.length > 0;
+      
+      const shouldReplace = 
+        (!existingHasOut && currentHasOut) || 
+        (currentSuccess && !existingSuccess) || 
+        (new Date(t.created_at).getTime() > new Date(existing.created_at).getTime());
+
+      if (shouldReplace) {
+        map.set(key, {
+          ...existing,
+          ...t,
+          app_name: (t.app_name && !t.app_name.startsWith('App 20')) ? t.app_name : existing.app_name,
+          outputs: currentHasOut ? t.outputs : existing.outputs,
+        });
+      }
+    }
+  }
+
+  // Deduplicate tasks sharing identical output media URLs
+  const urlMap = new Map<string, any>();
+  const tasks: any[] = [];
+  for (const t of Array.from(map.values())) {
+    const firstOut = t.outputs && t.outputs.length > 0 
+      ? (typeof t.outputs[0] === 'string' ? t.outputs[0] : t.outputs[0]?.fileUrl || t.outputs[0]?.url)
+      : null;
+
+    if (firstOut && t.status === 'SUCCESS') {
+      if (!urlMap.has(firstOut)) {
+        urlMap.set(firstOut, t);
+        tasks.push(t);
+      }
+    } else {
+      tasks.push(t);
+    }
   }
 
   // ─── Stats Aggregates ───────────────────────────────────────

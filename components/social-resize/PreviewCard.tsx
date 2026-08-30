@@ -3,13 +3,27 @@
 import { useEffect, useRef, useState, useCallback, forwardRef, useImperativeHandle } from 'react';
 import { createPortal } from 'react-dom';
 import { SocialPreset } from '@/lib/social-resize/presets';
-import { Download, Loader2, Wand2, Crop, ChevronLeft, ChevronRight, Trash2, Eye, X } from 'lucide-react';
+import { Download, Loader2, Wand2, ChevronLeft, ChevronRight, Trash2, Eye, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { downloadSingleImage, downloadUrlDirectly, sanitizeFilename } from '@/lib/social-resize/export';
+import { sanitizeFilename } from '@/lib/social-resize/export';
 import toast from 'react-hot-toast';
 
 export interface PreviewCardRef {
   triggerAIFill: () => void;
+}
+
+export interface GeneratedImage {
+  url: string;
+  modelId: string;
+  modelName: string;
+  resolution: string;
+  timestamp: number;
+}
+
+export interface CardState {
+  history: GeneratedImage[];
+  currentIndex: number;
+  useAIFill: boolean;
 }
 
 interface PreviewCardProps {
@@ -18,18 +32,13 @@ interface PreviewCardProps {
   focalPoint: { x: number, y: number }; // 0 to 1
   aiModel: string;
   resolution: '1k' | '2k' | '4k';
+  customPrompt?: string;
+  initialCardState?: CardState;
+  onCardStateChange?: (id: string, state: CardState) => void;
   isSelected: boolean;
   onToggleSelect: () => void;
   onCanvasReady: (id: string, canvas: HTMLCanvasElement) => void;
   onGeneratedStateChange?: (id: string, isGenerated: boolean) => void;
-}
-
-interface GeneratedImage {
-  url: string;
-  modelId: string;
-  modelName: string;
-  resolution: string;
-  timestamp: number;
 }
 
 const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({ 
@@ -38,6 +47,9 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
   focalPoint, 
   aiModel, 
   resolution,
+  customPrompt,
+  initialCardState,
+  onCardStateChange,
   isSelected,
   onToggleSelect,
   onCanvasReady,
@@ -67,12 +79,32 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
     document.body.removeChild(link);
   };
 
-  // AI Fill states
-  const [useAIFill, setUseAIFill] = useState(false);
-  const [generatedHistory, setGeneratedHistory] = useState<GeneratedImage[]>([]);
-  const [historyIndex, setHistoryIndex] = useState<number>(-1);
+  // AI Fill states initialized from project state if available
+  const [useAIFill, setUseAIFill] = useState(initialCardState?.useAIFill || false);
+  const [generatedHistory, setGeneratedHistory] = useState<GeneratedImage[]>(initialCardState?.history || []);
+  const [historyIndex, setHistoryIndex] = useState<number>(initialCardState?.currentIndex ?? -1);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
+  // Sync state if project is loaded / switched
+  useEffect(() => {
+    if (initialCardState) {
+      setUseAIFill(initialCardState.useAIFill || false);
+      setGeneratedHistory(initialCardState.history || []);
+      setHistoryIndex(initialCardState.currentIndex ?? (initialCardState.history?.length ? initialCardState.history.length - 1 : -1));
+    }
+  }, [initialCardState]);
+
+  // Report state changes to parent for project auto-save
+  useEffect(() => {
+    if (onCardStateChange) {
+      onCardStateChange(preset.id, {
+        history: generatedHistory,
+        currentIndex: historyIndex,
+        useAIFill
+      });
+    }
+  }, [preset.id, generatedHistory, historyIndex, useAIFill, onCardStateChange]);
 
   useImperativeHandle(ref, () => ({
     triggerAIFill: () => {
@@ -108,42 +140,23 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
     img.src = activeImageUrl;
   }, [activeImageUrl]);
 
-  // ── Draw canvas (manual crop or AI result) ─────────────────────────────────
+  // ── Draw canvas (Render native image without auto-crop) ─────────────────────
   const drawCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas || !sourceImage) return;
 
     if (useAIFill && activeImage && !loadError) {
       const img = activeImage;
-      // Dynamic full-resolution canvas size based on generated image to preserve 2K/4K quality
-      const canvasRatio = preset.width / preset.height;
-      const imgRatio = img.width / img.height;
-
-      if (imgRatio > canvasRatio) {
-        // Generated image is wider than target ratio
-        canvas.height = img.height;
-        canvas.width = Math.round(img.height * canvasRatio);
-      } else {
-        // Generated image is taller than target ratio
-        canvas.width = img.width;
-        canvas.height = Math.round(img.width / canvasRatio);
-      }
+      
+      // Render full generated image directly without any auto-cropping
+      canvas.width = img.width;
+      canvas.height = img.height;
 
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-      // Center-cover crop calculation (avoid warping/stretching)
-      let sx = 0, sy = 0, sw = img.width, sh = img.height;
-      if (imgRatio > canvasRatio) {
-        sw = img.height * canvasRatio;
-        sx = (img.width - sw) / 2;
-      } else {
-        sh = img.width / canvasRatio;
-        sy = (img.height - sh) / 2;
-      }
-
-      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
       onCanvasReady(preset.id, canvas);
       setPreviewDataUrl(canvas.toDataURL('image/png'));
       return;
@@ -158,7 +171,7 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
       return;
     }
 
-    // Manual Crop Mode dimensions (or fallback if AI image load failed)
+    // Manual Crop Mode dimensions (for initial preview before AI Fill)
     canvas.width = preset.width;
     canvas.height = preset.height;
     const ctx = canvas.getContext('2d');
@@ -209,11 +222,12 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
   // Resolve user-friendly model name
   function getFriendlyModelName(modelId: string) {
     const maps: Record<string, string> = {
-      'nano-banana-pro': 'Nano Banana Pro',
       'nano-banana-2': 'Nano Banana 2',
+      'nano-banana-pro': 'Nano Banana Pro',
+      'gpt-2.0': 'GPT Image 2.0 Edit',
+      'flux-2-edit': 'Flux 2 Klein',
+      'seedream-v5-pro': 'SeeDream V5 Pro',
       'nano-banana-2-lite': 'Nano Banana 2 Lite',
-      'gpt-2.0': 'GPT Image 2.0',
-      'flux-2-edit': 'Flux 2 Edit'
     };
     return maps[modelId] || modelId;
   }
@@ -233,7 +247,7 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
 
     // Case 2: Generating a new image (either first time or explicitly regenerating)
     setIsGenerating(true);
-    const fillLabel = aiModel === 'flux-2-edit' ? 'Custom' : resolution.toUpperCase();
+    const fillLabel = aiModel === 'flux-2-edit' ? 'Custom Klein' : aiModel === 'seedream-v5-pro' ? 'SeeDream Pro' : resolution.toUpperCase();
     const toastId = toast.loading(`Generating ${fillLabel} Fill with ${getFriendlyModelName(aiModel)}...`);
 
     try {
@@ -244,7 +258,8 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
           imageUrl: sourceImage.src,
           model: aiModel,
           aspectRatio: `${preset.width}:${preset.height}`,
-          resolution: resolution
+          resolution: resolution,
+          customPrompt: customPrompt?.trim() || undefined
         })
       });
 
@@ -385,7 +400,7 @@ const PreviewCard = forwardRef<PreviewCardRef, PreviewCardProps>(({
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none bg-black/40 backdrop-blur-[2px]">
             <Loader2 className="w-7 h-7 text-accent-purple animate-spin mb-2" />
             <span className="text-[10px] text-accent-purple font-black bg-black/80 px-2 py-1 rounded shadow-lg border border-accent-purple/20">
-              {aiModel === 'flux-2-edit' ? 'GENERATING CUSTOM DIMS...' : `GENERATING ${resolution.toUpperCase()}...`}
+              {aiModel === 'flux-2-edit' ? 'GENERATING CUSTOM KLEIN...' : `GENERATING ${resolution.toUpperCase()}...`}
             </span>
           </div>
         )}

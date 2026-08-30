@@ -7,9 +7,18 @@ import { LayersProjectHub } from '@/components/layers/LayersProjectHub';
 import { LayersCanvasWorkspace } from '@/components/layers/LayersCanvasWorkspace';
 import { LayersStackPanel } from '@/components/layers/LayersStackPanel';
 import { LayersReCreateModal } from '@/components/layers/LayersReCreateModal';
+import AppLockoutGuard from '@/components/layout/AppLockoutGuard';
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function BoutiqaatLayersPage() {
+  return (
+    <AppLockoutGuard appKey="boutiqaat-layers" appName="Boutiqaat Layers Studio">
+      <BoutiqaatLayersContent />
+    </AppLockoutGuard>
+  );
+}
+
+function BoutiqaatLayersContent() {
   const [projects, setProjects] = useState<LayersProject[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeProject, setActiveProject] = useState<LayersProject | null>(null);

@@ -5,9 +5,9 @@ import Sidebar from '@/components/layout/Sidebar';
 import TopBar from '@/components/layout/TopBar';
 import {
   Shield, Search, TrendingDown, Layers, Sparkles,
-  ArrowUpRight, Info, Check, RefreshCw, Zap,
+  ArrowUpRight, Info, Zap,
   Film, Music, Image as ImageIcon, DollarSign, Wallet,
-  Calculator, ChevronDown, ChevronUp, Plus, Minus
+  Calculator, ChevronDown, ChevronUp
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PRICING_MODELS_DATA, KWD_EXCHANGE_RATE, PricingModelItem } from '@/lib/pricing-data';

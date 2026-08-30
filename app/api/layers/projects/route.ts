@@ -58,85 +58,69 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const projectId = searchParams.get('id');
+    const viewUserId = searchParams.get('viewUserId');
+    const isManagement = session.role === 'admin' || session.role === 'manager';
 
-    // 1. Try querying Supabase layers_projects table
-    try {
-      let query = supabaseAdmin
-        .from('layers_projects')
-        .select('*')
-        .eq('user_id', session.userId);
+    const targetUserId = (isManagement && viewUserId) ? viewUserId : session.userId;
 
-      if (projectId) {
-        query = query.eq('id', projectId);
-        const { data, error } = await query.single();
-        if (!error && data && data.id && data.name) {
-          return NextResponse.json({ project: data });
-        }
-      } else {
-        query = query.order('updated_at', { ascending: false });
-        const { data, error } = await query;
-        if (!error && data && data.length > 0) {
-          const valid = data.filter((p: any) => p && p.id && p.name);
-          if (valid.length > 0) {
-            return NextResponse.json({ projects: valid });
-          }
-        }
-      }
-    } catch {}
+    const projectMap = new Map<string, LayersProject>();
 
-    // 2. Try querying Supabase tasks table fallback (app_id = 'boutiqaat-layers')
+    // 1. Try querying Supabase tasks table (app_id = 'boutiqaat-layers')
     try {
       let taskQuery = supabaseAdmin
         .from('tasks')
         .select('*')
         .eq('app_id', 'boutiqaat-layers')
-        .eq('user_id', session.userId)
+        .eq('user_id', targetUserId)
         .order('created_at', { ascending: false });
 
       if (projectId) {
         taskQuery = taskQuery.eq('id', projectId);
-        const { data: taskData, error: taskErr } = await taskQuery.single();
-        if (!taskErr && taskData) {
-          const pNode = (taskData.node_info_list || []).find((n: any) => n.fieldName === 'project_data');
+      }
+
+      const { data: taskData, error: taskErr } = await taskQuery;
+      if (!taskErr && taskData && taskData.length > 0) {
+        for (const t of taskData) {
+          const pNode = (t.node_info_list || []).find((n: any) => n.fieldName === 'project_data');
           if (pNode && pNode.fieldValue) {
-            const parsed = JSON.parse(pNode.fieldValue);
-            if (parsed && parsed.id && parsed.name) {
-              return NextResponse.json({ project: parsed });
-            }
-          }
-        }
-      } else {
-        const { data: taskData, error: taskErr } = await taskQuery;
-        if (!taskErr && taskData && taskData.length > 0) {
-          const projects: LayersProject[] = [];
-          for (const t of taskData) {
-            const pNode = (t.node_info_list || []).find((n: any) => n.fieldName === 'project_data');
-            if (pNode && pNode.fieldValue) {
-              try {
-                const parsed = JSON.parse(pNode.fieldValue);
-                if (parsed && parsed.id && parsed.name && !projects.some(p => p.id === parsed.id)) {
-                  projects.push(parsed);
-                }
-              } catch {}
-            }
-          }
-          if (projects.length > 0) {
-            return NextResponse.json({ projects });
+            try {
+              const parsed: LayersProject = JSON.parse(pNode.fieldValue);
+              if (parsed && parsed.id && parsed.name) {
+                projectMap.set(parsed.id, {
+                  ...parsed,
+                  user_id: targetUserId,
+                  thumbnail_url: parsed.thumbnail_url || (Array.isArray(t.outputs) && t.outputs[0]?.url) || null,
+                  created_at: parsed.created_at || t.created_at,
+                  updated_at: parsed.updated_at || t.updated_at || t.created_at,
+                });
+              }
+            } catch {}
           }
         }
       }
-    } catch {}
-
-    // 3. Local filesystem store fallback (Guarantees survival across restarts)
-    const localStore = readLocalProjects();
-    const userProjects = (localStore[session.userId] || []).filter(p => p && p.id && p.name);
-
-    if (projectId) {
-      const proj = userProjects.find(p => p.id === projectId);
-      return NextResponse.json({ project: proj || null });
+    } catch (err) {
+      console.warn('[GET /api/layers/projects Supabase error]', err);
     }
 
-    return NextResponse.json({ projects: userProjects });
+    // 2. Merge with Local filesystem store fallback
+    const localStore = readLocalProjects();
+    const userProjects = (localStore[targetUserId] || []).filter(p => p && p.id && p.name);
+    for (const p of userProjects) {
+      if (!projectMap.has(p.id)) {
+        projectMap.set(p.id, p);
+      }
+    }
+
+    const allProjects = Array.from(projectMap.values()).sort(
+      (a, b) => new Date(b.updated_at || b.created_at).getTime() - new Date(a.updated_at || a.created_at).getTime()
+    );
+
+    if (projectId) {
+      const proj = projectMap.get(projectId) || allProjects.find(p => p.id === projectId) || null;
+      return NextResponse.json({ project: proj });
+    }
+
+    return NextResponse.json({ projects: allProjects });
   } catch (error: any) {
     console.error('[GET /api/layers/projects error]', error);
     return NextResponse.json({ error: error.message || 'Server error' }, { status: 500 });
@@ -173,15 +157,11 @@ export async function POST(req: NextRequest) {
         updated_at: new Date().toISOString(),
       };
 
-      // 1. Try Supabase layers_projects
+      // 1. Save to Supabase tasks table
       try {
-        await supabaseAdmin.from('layers_projects').insert(newProj);
-      } catch {}
-
-      // 2. Also save to Supabase tasks table for redundancy
-      try {
-        await supabaseAdmin.from('tasks').insert({
+        await supabaseAdmin.from('tasks').upsert({
           id: newProj.id,
+          runninghub_task_id: newProj.id,
           user_id: session.userId,
           app_id: 'boutiqaat-layers',
           app_name: `Boutiqaat Layers: ${newProj.name}`,
@@ -192,10 +172,13 @@ export async function POST(req: NextRequest) {
           ],
           outputs: [{ url: newProj.thumbnail_url, name: newProj.name }],
           created_at: newProj.created_at,
+          updated_at: newProj.updated_at,
         });
-      } catch {}
+      } catch (err) {
+        console.warn('[Supabase tasks layer project save error]', err);
+      }
 
-      // 3. Local filesystem store
+      // 2. Local filesystem store
       localStore[session.userId] = [newProj, ...userProjects];
       writeLocalProjects(localStore);
 
@@ -207,32 +190,32 @@ export async function POST(req: NextRequest) {
       const targetProj = project as LayersProject;
       const updatedProj: LayersProject = {
         ...targetProj,
+        user_id: session.userId,
         updated_at: new Date().toISOString(),
       };
 
-      // 1. Update Supabase layers_projects
+      // 1. Update Supabase tasks table
       try {
-        await supabaseAdmin
-          .from('layers_projects')
-          .update(updatedProj)
-          .eq('id', updatedProj.id)
-          .eq('user_id', session.userId);
-      } catch {}
+        await supabaseAdmin.from('tasks').upsert({
+          id: updatedProj.id,
+          runninghub_task_id: updatedProj.id,
+          user_id: session.userId,
+          app_id: 'boutiqaat-layers',
+          app_name: `Boutiqaat Layers: ${updatedProj.name}`,
+          status: 'SUCCESS',
+          api_key_type: 'enterprise',
+          node_info_list: [
+            { nodeId: 'PROJECT', fieldName: 'project_data', fieldValue: JSON.stringify(updatedProj) }
+          ],
+          outputs: [{ url: updatedProj.thumbnail_url, name: updatedProj.name }],
+          created_at: updatedProj.created_at || new Date().toISOString(),
+          updated_at: updatedProj.updated_at,
+        });
+      } catch (err) {
+        console.warn('[Supabase tasks layer project update error]', err);
+      }
 
-      // 2. Update Supabase tasks table
-      try {
-        await supabaseAdmin
-          .from('tasks')
-          .update({
-            node_info_list: [
-              { nodeId: 'PROJECT', fieldName: 'project_data', fieldValue: JSON.stringify(updatedProj) }
-            ],
-            outputs: [{ url: updatedProj.thumbnail_url, name: updatedProj.name }],
-          })
-          .eq('id', updatedProj.id);
-      } catch {}
-
-      // 3. Update local store
+      // 2. Update local store
       const idx = userProjects.findIndex(p => p.id === updatedProj.id);
       if (idx !== -1) {
         userProjects[idx] = updatedProj;
@@ -247,7 +230,16 @@ export async function POST(req: NextRequest) {
 
     // Action: Duplicate Project (Fork Revision)
     if (action === 'duplicate' && projectId) {
-      const source = userProjects.find(p => p.id === projectId);
+      // Find source from local or DB
+      let source = userProjects.find(p => p.id === projectId);
+      if (!source) {
+        const { data: dbTask } = await supabaseAdmin.from('tasks').select('*').eq('id', projectId).maybeSingle();
+        const pNode = (dbTask?.node_info_list || []).find((n: any) => n.fieldName === 'project_data');
+        if (pNode?.fieldValue) {
+          try { source = JSON.parse(pNode.fieldValue); } catch {}
+        }
+      }
+
       if (!source) {
         return NextResponse.json({ error: 'Project not found' }, { status: 404 });
       }
@@ -255,6 +247,7 @@ export async function POST(req: NextRequest) {
       const forked: LayersProject = {
         ...source,
         id: `proj_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+        user_id: session.userId,
         name: `${source.name} (Rev ${source.revision_count + 1})`,
         revision_count: source.revision_count + 1,
         created_at: new Date().toISOString(),
@@ -262,12 +255,9 @@ export async function POST(req: NextRequest) {
       };
 
       try {
-        await supabaseAdmin.from('layers_projects').insert(forked);
-      } catch {}
-
-      try {
-        await supabaseAdmin.from('tasks').insert({
+        await supabaseAdmin.from('tasks').upsert({
           id: forked.id,
+          runninghub_task_id: forked.id,
           user_id: session.userId,
           app_id: 'boutiqaat-layers',
           app_name: `Boutiqaat Layers: ${forked.name}`,
@@ -278,6 +268,7 @@ export async function POST(req: NextRequest) {
           ],
           outputs: [{ url: forked.thumbnail_url, name: forked.name }],
           created_at: forked.created_at,
+          updated_at: forked.updated_at,
         });
       } catch {}
 
@@ -291,17 +282,10 @@ export async function POST(req: NextRequest) {
     if (action === 'delete' && projectId) {
       try {
         await supabaseAdmin
-          .from('layers_projects')
+          .from('tasks')
           .delete()
           .eq('id', projectId)
           .eq('user_id', session.userId);
-      } catch {}
-
-      try {
-        await supabaseAdmin
-          .from('tasks')
-          .delete()
-          .eq('id', projectId);
       } catch {}
 
       localStore[session.userId] = userProjects.filter(p => p.id !== projectId);

@@ -51,13 +51,23 @@ venv/
 scratch/
 _checkpoints/
 .data/
-test-alpha.ts
-test-*.ts
-
-# temporary documents and PDFs
+# temporary documents, test artifacts, and PDFs
 *.pdf
+*.txt
+*.psd
+*.py
 docs/
+haigc_psd.py
+Runninghub llm.txt
+test-*.ts
+test-*.js
 
-# MCP cache / Playwright files
+# MCP cache / Playwright files / Agents
 .playwright-mcp/
+.agents/
+.data/
+scratch/
+_checkpoints/
+/appDataDir/
+
 

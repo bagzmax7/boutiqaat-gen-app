@@ -8,7 +8,7 @@ import {
 // RunningHub OpenAPI v2
 // Docs: https://www.runninghub.ai/runninghub-api-doc-en/
 const BASE_URL = process.env.RUNNINGHUB_BASE_URL || 'https://www.runninghub.ai';
-const UPLOAD_URL = process.env.RUNNINGHUB_UPLOAD_URL || 'https://www.runninghub.cn';
+const UPLOAD_URL = process.env.RUNNINGHUB_UPLOAD_URL || 'https://www.runninghub.ai';
 
 const ENTERPRISE_KEY = process.env.RUNNINGHUB_API_KEY_ENTERPRISE || process.env.RUNNINGHUB_API_KEY_CONSUMER || process.env.RUNNINGHUB_API_KEY || '';
 const CONSUMER_KEY = process.env.RUNNINGHUB_API_KEY_CONSUMER || process.env.RUNNINGHUB_API_KEY || '';
@@ -203,6 +203,7 @@ const IMAGE_ENDPOINT_MAP: Record<string, { text: string; image: string }> = {
   'gpt-2.0':         { text: 'rhart-image-g-2/text-to-image',          image: 'rhart-image-g-2/image-to-image' },
   'grok-image':      { text: 'rhart-image-g/text-to-image',            image: 'rhart-image-g/image-to-image' },
   'flux-2-edit':     { text: 'rhart-image/f-2-klein-9b/edit',          image: 'rhart-image/f-2-klein-9b/edit' },
+  'seedream-v5-pro': { text: 'seedream-v5-pro/image-to-image',        image: 'seedream-v5-pro/image-to-image' },
 };
 
 // ── Text-to-Image ─────────────────────────────────────────────────────────
@@ -238,16 +239,18 @@ export async function generateImageT2I(payload: {
 
 // ── Image-to-Image / Edit ────────────────────────────────────────────────────
 export async function generateImageI2I(payload: {
-  model: string;           // One of: nano-banana-2 | nano-banana-pro | gpt-2.0 | grok-image
+  model: string;           // One of: nano-banana-2 | nano-banana-pro | gpt-2.0 | grok-image | flux-2-edit | seedream-v5-pro
   prompt: string;          // Required
-  imageUrls?: string[];    // For nano-banana-2, nano-banana-pro, gpt-2.0 — array of public URLs or base64
+  imageUrls?: string[];    // For nano-banana-2, nano-banana-pro, gpt-2.0, seedream-v5-pro — array of public URLs or base64
   imageUrl?: string;       // For grok-image / flux-2-edit — single URL
   aspectRatio?: string;    // Optional
-  resolution?: '1k' | '2k' | '4k'; // Required for nano; optional for gpt
+  resolution?: '1k' | '2k' | '4k'; // Required for nano; optional for gpt/seedream
   grokModel?: 'g-3' | 'g-4' | 'g-4.1' | 'g-4.2'; // Only for grok-image
+  width?: number;          // For seedream-v5-pro
+  height?: number;         // For seedream-v5-pro
   customWidth?: number;    // Only for flux-2-edit
   customHight?: number;    // Only for flux-2-edit (spelled customHight in API)
-  outputFormat?: string;   // Only for flux-2-edit
+  outputFormat?: string;   // png | jpeg
 }, apiKeyType?: 'enterprise' | 'consumer'): Promise<ImageTaskResponse> {
   const { 
     model, 
@@ -257,6 +260,8 @@ export async function generateImageI2I(payload: {
     aspectRatio, 
     resolution, 
     grokModel,
+    width,
+    height,
     customWidth,
     customHight,
     outputFormat
@@ -276,6 +281,7 @@ export async function generateImageI2I(payload: {
     }
   } else {
     if (imageUrls && imageUrls.length > 0) body.imageUrls = imageUrls;
+    else if (imageUrl) body.imageUrls = [imageUrl];
   }
 
   // Flux 2 Edit specific parameter payload structuring
@@ -283,6 +289,12 @@ export async function generateImageI2I(payload: {
     body.aspectRatio = 'custom';
     body.customWidth = customWidth || 1024;
     body.customHight = customHight || 1024;
+    body.outputFormat = outputFormat || 'png';
+  } else if (model === 'seedream-v5-pro') {
+    if (width) body.width = width;
+    if (height) body.height = height;
+    if (resolution && resolution !== '4k') body.resolution = resolution;
+    else if (resolution === '4k') body.resolution = '2k';
     body.outputFormat = outputFormat || 'png';
   } else {
     if (aspectRatio) body.aspectRatio = aspectRatio;
@@ -469,3 +481,43 @@ export async function chatCompletion(payload: {
 
   return res.json();
 }
+
+// ── Standardized Error Extractor & Sanitizer ──────────────────
+export function cleanRunningHubError(raw: string): string {
+  if (!raw) return 'RunningHub generation request failed';
+  let msg = raw;
+  if (msg.includes('|')) {
+    const parts = msg.split('|').map(s => s.trim());
+    const englishPart = parts.find(p => /[a-zA-Z]/.test(p) && !/[\u4e00-\u9fa5]/.test(p));
+    if (englishPart) return englishPart;
+  }
+  msg = msg.replace(/[\u4e00-\u9fa5]/g, '').trim();
+  msg = msg.replace(/^[:\s|,-]+|[:\s|,-]+$/g, '').trim();
+  return msg || 'RunningHub request was rejected by AI service.';
+}
+
+export function extractRunningHubErrorMessage(data: any): string {
+  if (!data) return 'RunningHub request failed';
+  if (data?.failedReason) {
+    if (typeof data.failedReason === 'string') return cleanRunningHubError(data.failedReason);
+    if (data.failedReason.text) return cleanRunningHubError(data.failedReason.text);
+    if (data.failedReason.message) return cleanRunningHubError(data.failedReason.message);
+    if (data.failedReason.error) return cleanRunningHubError(data.failedReason.error);
+    if (data.failedReason.reason) return cleanRunningHubError(data.failedReason.reason);
+    try {
+      const s = JSON.stringify(data.failedReason);
+      if (s !== '{}' && s !== 'null') return cleanRunningHubError(s);
+    } catch {}
+  }
+  if (data?.errorMessage && data.errorMessage.trim() !== '') {
+    return cleanRunningHubError(data.errorMessage);
+  }
+  if (data?.msg && data.msg.trim() !== '') {
+    return cleanRunningHubError(data.msg);
+  }
+  if (data?.errorCode) {
+    return `RunningHub API Error Code (${data.errorCode})`;
+  }
+  return 'RunningHub task failed or was rejected by AI security audit.';
+}
+

@@ -363,18 +363,20 @@ export default function ManagerDashboardPage() {
 
           {/* 1. FINANCIAL PULSE & ACCURATE PHOTOSHOOT ROI BENCHMARK (HERO CARDS) */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {/* Card 1: Studio Spend vs Pool */}
+            {/* Card 1: Studio Spend vs Pool (Filtered by Active Timeframe) */}
             <div className="rounded-3xl bg-[#0e0f14] border border-white/[0.08] p-5 space-y-3 relative overflow-hidden group hover:border-[#d2ff2d]/30 transition-all">
               <div className="flex items-center justify-between text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">
                 <span>AI Studio Spend</span>
-                <DollarSign className="w-4 h-4 text-[#d2ff2d]" />
+                <span className="text-[10px] px-2 py-0.5 rounded-md bg-[#d2ff2d]/10 text-[#d2ff2d] font-mono font-bold">
+                  {dateFilter === 'today' ? 'TODAY' : dateFilter === '7days' ? 'LAST 7 DAYS' : dateFilter === 'month' ? 'THIS MONTH' : 'CUSTOM RANGE'}
+                </span>
               </div>
               <div>
                 <div className="text-2xl lg:text-3xl font-black text-white font-mono">
                   {formatMoney(comp?.actualAiCostUsd || 0)}
                 </div>
                 <p className="text-xs text-zinc-400 mt-0.5">
-                  Pool Ceiling: <span className="font-bold text-zinc-200">{formatMoney(dept?.monthlyBudgetUsd || 500)}</span> ({dept?.budgetUsedPercent || 0}% used)
+                  Monthly Pool: <span className="font-bold text-zinc-200">{formatMoney(dept?.monthlyBudgetUsd || 500)}</span> ({dept?.budgetUsedPercent || 0}% used)
                 </p>
               </div>
               {/* Progress bar */}
@@ -391,7 +393,7 @@ export default function ManagerDashboardPage() {
                   />
                 </div>
                 <div className="flex justify-between text-[10px] font-mono text-zinc-500">
-                  <span>Remaining: {formatMoney(dept?.remainingBudgetUsd || 0)}</span>
+                  <span>Remaining Pool: {formatMoney(dept?.remainingBudgetUsd || 0)}</span>
                   <span className={cn('font-bold uppercase', dept?.budgetHealthTier === 'critical' ? 'text-red-400' : 'text-emerald-400')}>
                     Status: {dept?.budgetHealthTier}
                   </span>

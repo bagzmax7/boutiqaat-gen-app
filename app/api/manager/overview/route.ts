@@ -69,10 +69,26 @@ export async function GET(req: NextRequest) {
   const customBenchmarkSkuKwd = parseFloat(url.searchParams.get('benchmarkSkuKwd') || '3.34');
 
   try {
-    const deptBudgetUsd = 500.0;
-    const thresholdPercent = 90;
-    const autoPause = false;
-    const deptName = 'Boutiqaat Creative Production';
+    let deptBudgetUsd = 500.0;
+    let thresholdPercent = 90;
+    let autoPause = false;
+    let deptName = 'Boutiqaat Creative Production';
+
+    // 0. Fetch real Department Budget settings if configured
+    try {
+      const { data: deptData } = await supabaseAdmin
+        .from('departments')
+        .select('name, monthly_budget_usd, critical_threshold_percent, auto_pause_on_critical')
+        .limit(1)
+        .maybeSingle();
+
+      if (deptData) {
+        if (deptData.name) deptName = deptData.name;
+        if (deptData.monthly_budget_usd) deptBudgetUsd = Number(deptData.monthly_budget_usd);
+        if (deptData.critical_threshold_percent) thresholdPercent = Number(deptData.critical_threshold_percent);
+        if (deptData.auto_pause_on_critical !== undefined) autoPause = Boolean(deptData.auto_pause_on_critical);
+      }
+    } catch {}
 
     // 1. Fetch Real Team Users from Supabase
     const { data: usersData } = await supabaseAdmin
@@ -101,7 +117,7 @@ export async function GET(req: NextRequest) {
     // 2. Fetch Tasks Scoped by Date & Team
     let tasksQuery = supabaseAdmin
       .from('tasks')
-      .select('id, user_id, app_id, app_name, status, created_at, updated_at, error_message, node_info_list')
+      .select('id, runninghub_task_id, user_id, app_id, app_name, status, created_at, updated_at, error_message, node_info_list')
       .not('runninghub_task_id', 'is', null);
 
     // Scoping to manager's team
@@ -125,12 +141,26 @@ export async function GET(req: NextRequest) {
       tasksQuery = tasksQuery.lte('created_at', d.toISOString());
     }
 
-    const { data: tasks, error: tasksError } = await tasksQuery;
+    const { data: rawTasks, error: tasksError } = await tasksQuery;
     if (tasksError) {
       console.error('[manager/overview tasks error]', tasksError);
     }
 
-    const allTasks = tasks || [];
+    // Deduplicate tasks by runninghub_task_id / id
+    const taskMap = new Map<string, any>();
+    for (const t of (rawTasks || [])) {
+      const key = (t.runninghub_task_id && String(t.runninghub_task_id).trim()) || t.id;
+      if (!key) continue;
+      if (!taskMap.has(key)) {
+        taskMap.set(key, t);
+      } else {
+        const existing = taskMap.get(key);
+        if (t.status === 'SUCCESS' && existing.status !== 'SUCCESS') {
+          taskMap.set(key, t);
+        }
+      }
+    }
+    const allTasks = Array.from(taskMap.values());
 
     // 3. Timeframe Boundaries for "Today / This Week / This Month" Asset Breakdown
     const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();

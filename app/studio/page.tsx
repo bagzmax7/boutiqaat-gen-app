@@ -8,6 +8,7 @@ import TopBar from '@/components/layout/TopBar';
 import BatchRemoveBackgroundLauncher from '@/components/apps/BatchRemoveBackgroundLauncher';
 import AutoRetouchLauncher from '@/components/apps/AutoRetouchLauncher';
 import { useTasks } from '@/hooks/useTasks';
+import { useAppControls } from '@/hooks/useAppControls';
 import { AppDefinition } from '@/lib/types';
 import {
   Sparkles, Search, Clock, ArrowRight, X, ArrowLeft
@@ -17,6 +18,7 @@ import toast from 'react-hot-toast';
 
 interface StudioAppCard {
   id: string;
+  appKey?: string;
   name: string;
   desc: string;
   image: string;
@@ -32,6 +34,7 @@ interface StudioAppCard {
 const STUDIO_CARDS: StudioAppCard[] = [
   {
     id: 'layers',
+    appKey: 'boutiqaat-layers',
     name: 'Boutiqaat Layers: AI Layer Decomposition',
     desc: 'Decompose flat banners into isolated transparent layers (background, product, typography) with generative infill.',
     image: '/banners/boutiqaat-layers.gif',
@@ -43,6 +46,7 @@ const STUDIO_CARDS: StudioAppCard[] = [
   },
   {
     id: 'bundling',
+    appKey: 'bundling-studio',
     name: 'Bundling Studio: Multi-SKU Composition',
     desc: 'Synthesize multi-SKU product collections on luxury pedestals with automatic marketing prompt formulas.',
     image: '/banners/bundling-studio.gif',
@@ -54,6 +58,7 @@ const STUDIO_CARDS: StudioAppCard[] = [
   },
   {
     id: 'social-resize',
+    appKey: 'social-resize',
     name: 'Social Resize: AI Generative Outpaint',
     desc: 'Adapt any 1:1 image to 9:16 Instagram Reels, Stories & 16:9 banner dimensions with context-aware generative fill.',
     image: '/banners/social-resize.gif',
@@ -65,6 +70,7 @@ const STUDIO_CARDS: StudioAppCard[] = [
   },
   {
     id: 'remove-bg',
+    appKey: 'batch-remove-bg',
     name: 'Remove Background: Precision Batch Matting',
     desc: 'Batch isolate up to 20 product packshots with clean alpha transparency and lossless PNG export.',
     image: '/banners/remove-background.gif',
@@ -76,14 +82,15 @@ const STUDIO_CARDS: StudioAppCard[] = [
   },
   {
     id: 'auto-retouch',
-    name: 'Auto Retouch: Studio Polish & Skin Tone',
-    desc: 'Automated high-frequency skin correction, tone balance, and studio lighting polish for beauty and skincare.',
+    appKey: 'auto-retouch',
+    name: 'Boutiqaat AI Retouch',
+    desc: 'The internal Auto Retouch tool to polish fabrics, standardize studio backdrops, and preserve model fidelity at scale, saving production hours without compromising Boutiqaat visual standards.',
     image: '/banners/auto-retouch.gif',
-    tag: 'AI ENHANCE',
-    ctaText: 'Retouch Now',
+    tag: 'AI STUDIO RETOUCH',
+    ctaText: 'Retouch Studio',
     status: 'live',
-    isRetouch: true,
-    estimatedTime: '~1 min/img',
+    href: '/studio/auto-retouch',
+    estimatedTime: '~1 min',
   },
   {
     id: 'virtual-tryon',
@@ -100,6 +107,7 @@ const STUDIO_CARDS: StudioAppCard[] = [
 export default function ImageStudioPage() {
   const router = useRouter();
   const { addTask } = useTasks();
+  const { isAppLocked, getAppBadgeLabel, isAdmin } = useAppControls();
   const [searchQuery, setSearchQuery] = useState('');
 
   // Interactive modal states
@@ -140,8 +148,11 @@ export default function ImageStudioPage() {
   }
 
   const handleCardClick = (card: StudioAppCard) => {
-    if (card.status === 'soon') {
-      toast('This AI module is in active development.', { icon: '⏳' });
+    const isLocked = card.appKey ? isAppLocked(card.appKey) : card.status === 'soon';
+
+    if (isLocked && !isAdmin) {
+      const badge = card.appKey ? getAppBadgeLabel(card.appKey) : 'COMING SOON';
+      toast(`This AI tool is currently ${badge.toLowerCase()} for the next update.`, { icon: '🔒' });
       return;
     }
 
@@ -197,7 +208,9 @@ export default function ImageStudioPage() {
           {/* Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {filteredCards.map(card => {
-              const isSoon = card.status === 'soon';
+              const isLocked = card.appKey ? isAppLocked(card.appKey) : card.status === 'soon';
+              const isCardLockedForUser = isLocked && !isAdmin;
+              const badgeLabel = card.appKey && isLocked ? getAppBadgeLabel(card.appKey) : card.ctaText;
 
               return (
                 <div
@@ -205,7 +218,7 @@ export default function ImageStudioPage() {
                   onClick={() => handleCardClick(card)}
                   className={cn(
                     'group relative h-[280px] rounded-3xl overflow-hidden border border-white/[0.08] bg-[#0d0e12] cursor-pointer transition-all duration-300 hover:border-[#d2ff2d]/60 hover:shadow-[0_0_25px_rgba(210,255,45,0.15)] flex flex-col justify-between p-5',
-                    isSoon && 'opacity-70 hover:border-white/20 hover:shadow-none'
+                    isCardLockedForUser && 'opacity-65 hover:border-white/20 hover:shadow-none bg-[#090a0d]'
                   )}
                 >
                   {/* Animated Banner with Dark Gradient Overlay */}
@@ -213,9 +226,15 @@ export default function ImageStudioPage() {
                     src={card.image}
                     alt={card.name}
                     loading="lazy"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                    className={cn(
+                      'absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105',
+                      isCardLockedForUser && 'filter brightness-50 contrast-90'
+                    )}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#07080a] via-[#07080a]/75 to-[#07080a]/30 transition-opacity duration-300 group-hover:via-[#07080a]/65 pointer-events-none" />
+                  <div className={cn(
+                    'absolute inset-0 bg-gradient-to-t from-[#07080a] via-[#07080a]/75 to-[#07080a]/30 transition-opacity duration-300 group-hover:via-[#07080a]/65 pointer-events-none',
+                    isCardLockedForUser && 'from-[#07080a] via-[#07080a]/90 to-[#07080a]/60'
+                  )} />
 
                   {/* Top Bar: Tag and Pill CTA Button */}
                   <div className="relative z-10 flex items-center justify-between gap-2">
@@ -223,23 +242,26 @@ export default function ImageStudioPage() {
                       {card.tag}
                     </span>
 
-                    {/* Glowing CTA Pill Button */}
+                    {/* Glowing CTA Pill Button or Coming Soon Gray Pill */}
                     <div
                       className={cn(
                         'px-3.5 py-1.5 rounded-full text-xs font-black tracking-wide uppercase transition-all shadow-md flex items-center gap-1.5',
-                        isSoon
-                          ? 'bg-zinc-800/80 text-zinc-400 border border-zinc-700'
+                        isCardLockedForUser
+                          ? 'bg-zinc-800/90 text-zinc-400 border border-zinc-700/80 shadow-none'
                           : 'bg-[#d2ff2d] text-black group-hover:bg-[#e1ff55] group-hover:scale-105 shadow-[#d2ff2d]/25'
                       )}
                     >
-                      <span>{card.ctaText}</span>
-                      {!isSoon && <ArrowRight className="w-3.5 h-3.5" />}
+                      <span>{isCardLockedForUser ? badgeLabel : card.ctaText}</span>
+                      {!isCardLockedForUser && <ArrowRight className="w-3.5 h-3.5" />}
                     </div>
                   </div>
 
                   {/* Bottom Text Details */}
                   <div className="relative z-10 space-y-1.5 pt-4">
-                    <h3 className="text-base lg:text-lg font-bold text-white group-hover:text-[#d2ff2d] transition-colors leading-tight">
+                    <h3 className={cn(
+                      'text-base lg:text-lg font-bold text-white transition-colors leading-tight',
+                      !isCardLockedForUser && 'group-hover:text-[#d2ff2d]'
+                    )}>
                       {card.name}
                     </h3>
                     <p className="text-xs text-zinc-300 line-clamp-2 leading-relaxed font-normal">
@@ -284,35 +306,6 @@ export default function ImageStudioPage() {
                 category: 'image-editing',
                 icon: 'layers',
                 batchMode: true,
-                nodeInfoSchema: [],
-              }}
-              onTaskStarted={handleTaskStarted}
-            />
-          </div>
-        </div>
-      )}
-
-      {showRetouch && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-          <div className="relative w-full max-w-5xl bg-[#0e0f14] border border-white/10 rounded-3xl p-6 shadow-2xl space-y-4 my-8 max-h-[90vh] overflow-y-auto custom-scrollbar">
-            <div className="flex items-center justify-between pb-3 border-b border-white/10">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-bold text-white">Auto Retouch Image</span>
-              </div>
-              <button
-                onClick={() => setShowRetouch(false)}
-                className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <AutoRetouchLauncher
-              app={{
-                id: '2084718752813600769',
-                name: 'Auto Retouch Image',
-                description: 'Optimize and polish product images automatically.',
-                category: 'image-editing',
-                icon: 'sparkles',
                 nodeInfoSchema: [],
               }}
               onTaskStarted={handleTaskStarted}

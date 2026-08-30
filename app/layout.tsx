@@ -24,24 +24,35 @@ export default function RootLayout({
         {children}
         <Toaster
           position="top-right"
+          containerStyle={{
+            top: 20,
+            right: 24,
+          }}
           toastOptions={{
             style: {
-              background: '#13131F',
-              color: '#F1F5F9',
-              border: '1px solid #1E1E30',
-              borderRadius: '10px',
-              fontSize: '14px',
+              background: 'rgba(20, 22, 28, 0.92)',
+              color: '#F8FAFC',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              borderRadius: '12px',
+              padding: '8px 14px',
+              fontSize: '11.5px',
+              fontWeight: '600',
+              letterSpacing: '0.01em',
+              boxShadow: '0 12px 32px -4px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.05)',
             },
             success: {
-              iconTheme: { primary: '#10B981', secondary: '#13131F' },
-              duration: 4000,
+              iconTheme: { primary: '#a3e635', secondary: '#14161c' },
+              duration: 3500,
             },
             error: {
-              iconTheme: { primary: '#EF4444', secondary: '#13131F' },
-              duration: 5000,
+              iconTheme: { primary: '#F43F5E', secondary: '#14161c' },
+              duration: 4500,
             },
             loading: {
-              duration: 60000, // auto-dismiss loading toasts after 60s as a safety fallback
+              iconTheme: { primary: '#a3e635', secondary: '#14161c' },
+              duration: 60000,
             },
           }}
         />

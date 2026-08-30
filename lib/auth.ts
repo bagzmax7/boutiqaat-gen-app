@@ -64,36 +64,35 @@ export async function loginWithEmail(
   password: string
 ): Promise<SessionPayload | null> {
   try {
-    // 1. Try selecting all fields
+    const cleanEmail = email.toLowerCase().trim();
+
+    // Query user record safely
     let user: any = null;
     const { data, error } = await supabaseAdmin
       .from('users')
-      .select('*')
-      .eq('email', email.toLowerCase().trim())
-      .single();
+      .select('id, email, name, role, password_hash')
+      .ilike('email', cleanEmail)
+      .maybeSingle();
 
     if (!error && data) {
       user = data;
-    } else {
-      // 2. Fallback to basic columns if extended columns don't exist yet
-      const fallback = await supabaseAdmin
-        .from('users')
-        .select('id, email, name, role, password_hash')
-        .eq('email', email.toLowerCase().trim())
-        .single();
-      if (!fallback.error && fallback.data) {
-        user = fallback.data;
-      }
     }
 
     if (!user || !user.password_hash) return null;
 
-    // Check account status if field exists
-    if (user.status === 'suspended') {
-      return null;
+    let valid = false;
+    if (user.password_hash.startsWith('$2')) {
+      valid = await bcrypt.compare(password, user.password_hash);
+    } else {
+      // Plain text fallback
+      valid = (password === user.password_hash);
+      if (valid) {
+        // Auto-upgrade plain password to secure bcrypt hash
+        const hashed = await bcrypt.hash(password, 12);
+        supabaseAdmin.from('users').update({ password_hash: hashed }).eq('id', user.id).then(() => {}, () => {});
+      }
     }
 
-    const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) return null;
 
     return {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import Sidebar from '@/components/layout/Sidebar';
 import TopBar from '@/components/layout/TopBar';
@@ -10,6 +10,7 @@ import {
   TrendingUp, Star, Package
 } from 'lucide-react';
 import { useTasks } from '@/hooks/useTasks';
+import { useAppControls } from '@/hooks/useAppControls';
 import { cn, isVideoUrl } from '@/lib/utils';
 
 interface UserProfile {
@@ -36,31 +37,58 @@ function getGreeting() {
 
 export default function EditorDashboard() {
   const { tasks } = useTasks();
+  const { isAppLocked, getAppBadgeLabel, isAdmin } = useAppControls();
   const [user, setUser] = useState<UserProfile | null>(null);
-  const [historyTasks, setHistoryTasks] = useState<SupabaseTask[]>([]);
 
   useEffect(() => {
     fetch('/api/auth/me')
       .then((r) => r.json())
       .then((d) => setUser(d.user))
       .catch(() => {});
-    fetch('/api/tasks?limit=12')
-      .then((r) => r.json())
-      .then((d) => { if (d.tasks) setHistoryTasks(d.tasks); })
-      .catch(() => {});
   }, []);
+
+  const uniqueTasks = useMemo(() => {
+    const map = new Map<string, (typeof tasks)[0]>();
+    for (const t of tasks) {
+      const key = (t.taskId && String(t.taskId).trim()) || t.id;
+      if (!key) continue;
+      if (!map.has(key)) {
+        map.set(key, t);
+      }
+    }
+    return Array.from(map.values());
+  }, [tasks]);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const todayTasks = tasks.filter((t) => t.createdAt >= today.getTime());
-  const activeTasks = tasks.filter((t) => t.status === 'RUNNING' || t.status === 'QUEUED');
-  const completed = tasks.filter((t) => t.status === 'SUCCESS');
+  const todayTasks = uniqueTasks.filter((t) => t.createdAt >= today.getTime());
+  const activeTasks = uniqueTasks.filter((t) => t.status === 'RUNNING' || t.status === 'QUEUED');
+  const completed = uniqueTasks.filter((t) => t.status === 'SUCCESS');
   const savedMinutes = completed.length * 3;
 
-  const recentOutputs = tasks
-    .filter((t) => t.status === 'SUCCESS' && t.outputs && t.outputs.length > 0)
-    .slice(0, 6)
-    .flatMap((t) => t.outputs?.slice(0, 1).map((o) => ({ url: o.fileUrl, label: t.appName, isVideo: isVideoUrl(o.fileUrl) })) || []);
+  const recentOutputs = useMemo(() => {
+    const seenUrls = new Set<string>();
+    const outputsList: { url: string; label: string; isVideo: boolean }[] = [];
+
+    for (const t of uniqueTasks) {
+      if (t.status !== 'SUCCESS' || !t.outputs || t.outputs.length === 0) continue;
+      for (const o of t.outputs) {
+        if (!o?.fileUrl) continue;
+        if (!seenUrls.has(o.fileUrl)) {
+          seenUrls.add(o.fileUrl);
+          outputsList.push({
+            url: o.fileUrl,
+            label: t.appName,
+            isVideo: isVideoUrl(o.fileUrl),
+          });
+        }
+        if (outputsList.length >= 6) break;
+      }
+      if (outputsList.length >= 6) break;
+    }
+
+    return outputsList;
+  }, [uniqueTasks]);
 
   return (
     <div className="flex h-screen bg-bg-primary overflow-hidden">
@@ -125,41 +153,86 @@ export default function EditorDashboard() {
                 <Star className="w-3.5 h-3.5 text-accent-gold" /> Quick Launch
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <Link href="/studio" className="group relative overflow-hidden glass-card rounded-2xl p-6 border border-accent-green/20 hover:border-accent-green/50 transition-all hover:-translate-y-0.5 hover:shadow-card">
+                {/* 1. Boutiqaat Flow / Image Studio */}
+                <Link href="/boutiqaat-flow" className="group relative overflow-hidden glass-card rounded-2xl p-6 border border-accent-green/20 hover:border-accent-green/50 transition-all hover:-translate-y-0.5 hover:shadow-card">
                   <div className="absolute inset-0 bg-gradient-to-br from-accent-green/5 to-transparent pointer-events-none" />
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center mb-4 shadow-lg">
                     <ImageIcon className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-text-primary mb-1 group-hover:text-accent-green transition-colors">Image AI Studio</h3>
-                  <p className="text-xs text-text-muted mb-4">Batch BG Removal · Virtual Try-On · Change Background</p>
+                  <h3 className="text-base font-bold text-text-primary mb-1 group-hover:text-accent-green transition-colors">Boutiqaat Flow Studio</h3>
+                  <p className="text-xs text-text-muted mb-4">Nano Banana · GPT 2.0 · Flux · Real-Time Project Workspaces</p>
                   <div className="flex items-center gap-1 text-xs text-accent-green font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-                    Open Studio <ArrowRight className="w-3.5 h-3.5" />
+                    Open Flow Studio <ArrowRight className="w-3.5 h-3.5" />
                   </div>
                 </Link>
 
-                <Link href="/video" className="group relative overflow-hidden glass-card rounded-2xl p-6 border border-accent-purple/20 hover:border-accent-purple/50 transition-all hover:-translate-y-0.5 hover:shadow-card">
-                  <div className="absolute inset-0 bg-gradient-to-br from-accent-purple/5 to-transparent pointer-events-none" />
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center mb-4 shadow-lg">
-                    <Film className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-base font-bold text-text-primary mb-1 group-hover:text-accent-purple transition-colors">Video AI Studio</h3>
-                  <p className="text-xs text-text-muted mb-4">BG Removal · Seedance · Veo3.1 · Kling · Happy Horse</p>
-                  <div className="flex items-center gap-1 text-xs text-accent-purple font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-                    Open Studio <ArrowRight className="w-3.5 h-3.5" />
-                  </div>
-                </Link>
+                {/* 2. Video Studio */}
+                {(() => {
+                  const isLocked = isAppLocked('boutiqaat-video-gen');
+                  const isLockedForUser = isLocked && !isAdmin;
+                  const badge = isLocked ? getAppBadgeLabel('boutiqaat-video-gen') : null;
 
-                <Link href="/bundling" className="group relative overflow-hidden glass-card rounded-2xl p-6 border border-accent-gold/20 hover:border-accent-gold/50 transition-all hover:-translate-y-0.5 hover:shadow-card">
-                  <div className="absolute inset-0 bg-gradient-to-br from-accent-gold/5 to-transparent pointer-events-none" />
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-4 shadow-lg">
-                    <Package className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="text-base font-bold text-text-primary mb-1 group-hover:text-accent-gold transition-colors">Bundling Studio</h3>
-                  <p className="text-xs text-text-muted mb-4">AI Bundle Generator · Dimension Analysis · Prompt Builder</p>
-                  <div className="flex items-center gap-1 text-xs text-accent-gold font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-                    Open Studio <ArrowRight className="w-3.5 h-3.5" />
-                  </div>
-                </Link>
+                  return (
+                    <Link
+                      href="/video"
+                      className={cn(
+                        'group relative overflow-hidden glass-card rounded-2xl p-6 border transition-all hover:-translate-y-0.5 hover:shadow-card',
+                        isLockedForUser
+                          ? 'border-border/40 opacity-70 bg-bg-secondary/40'
+                          : 'border-accent-purple/20 hover:border-accent-purple/50'
+                      )}
+                    >
+                      {badge && isLockedForUser && (
+                        <span className="absolute top-4 right-4 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-400 font-mono uppercase">
+                          {badge}
+                        </span>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none" />
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center mb-4 shadow-lg">
+                        <Film className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className="text-base font-bold text-text-primary mb-1 group-hover:text-accent-purple transition-colors">Video AI Studio</h3>
+                      <p className="text-xs text-text-muted mb-4">Seedance 2.0 · Veo 3.1 · Gemini Omni · Video Matting</p>
+                      <div className="flex items-center gap-1 text-xs text-accent-purple font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                        {isLockedForUser ? 'Locked' : 'Open Studio'} <ArrowRight className="w-3.5 h-3.5" />
+                      </div>
+                    </Link>
+                  );
+                })()}
+
+                {/* 3. Bundling Studio */}
+                {(() => {
+                  const isLocked = isAppLocked('bundling-studio');
+                  const isLockedForUser = isLocked && !isAdmin;
+                  const badge = isLocked ? getAppBadgeLabel('bundling-studio') : null;
+
+                  return (
+                    <Link
+                      href="/bundling"
+                      className={cn(
+                        'group relative overflow-hidden glass-card rounded-2xl p-6 border transition-all hover:-translate-y-0.5 hover:shadow-card',
+                        isLockedForUser
+                          ? 'border-border/40 opacity-70 bg-bg-secondary/40'
+                          : 'border-accent-gold/20 hover:border-accent-gold/50'
+                      )}
+                    >
+                      {badge && isLockedForUser && (
+                        <span className="absolute top-4 right-4 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-400 font-mono uppercase">
+                          {badge}
+                        </span>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-br from-accent-gold/5 to-transparent pointer-events-none" />
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center mb-4 shadow-lg">
+                        <Package className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className="text-base font-bold text-text-primary mb-1 group-hover:text-accent-gold transition-colors">Bundling Studio</h3>
+                      <p className="text-xs text-text-muted mb-4">AI Bundle Generator · Dimension Analysis · Prompt Builder</p>
+                      <div className="flex items-center gap-1 text-xs text-accent-gold font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                        {isLockedForUser ? 'Locked' : 'Open Studio'} <ArrowRight className="w-3.5 h-3.5" />
+                      </div>
+                    </Link>
+                  );
+                })()}
               </div>
             </div>
 

@@ -16,15 +16,22 @@ export async function GET(req: NextRequest) {
 
     const { searchParams } = new URL(req.url);
     const projectId = searchParams.get('projectId');
+    const viewUserId = searchParams.get('viewUserId');
+    const isManagement = session.role === 'admin' || session.role === 'manager';
 
-    // Query tasks table scoped strictly to the authenticated user
+    // Target user ID: admin/manager can view a specific user if requested, otherwise strictly session.userId
+    const targetUserId = (isManagement && viewUserId) ? viewUserId : session.userId;
+    const defaultProjectId = `flow_proj_default_${targetUserId}`;
+
+    // Query tasks table scoped to the target user
     let query = supabaseAdmin
       .from('tasks')
       .select('*')
-      .eq('user_id', session.userId)
+      .eq('user_id', targetUserId)
       .or('app_id.like.quick-create%,app_id.like.boutiqaat-flow%')
+      .neq('app_id', 'boutiqaat-flow-project')
       .order('created_at', { ascending: false })
-      .limit(100);
+      .limit(300);
 
     const { data: userTasks, error } = await query;
 
@@ -33,7 +40,14 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ sessions: [] });
     }
 
-    let mapped = (userTasks || []).map(t => {
+    // Smart Map for Deduplication: Merge multiple rows with same runninghub_task_id
+    const taskMap = new Map<string, any>();
+
+    for (const t of (userTasks || [])) {
+      if (t.app_id === 'boutiqaat-flow-project') continue;
+      const taskId = t.runninghub_task_id || t.id;
+      if (!taskId) continue;
+
       const infoMap: Record<string, string> = {};
       (t.node_info_list || []).forEach((n: any) => {
         if (n.fieldName && n.fieldValue) infoMap[n.fieldName] = n.fieldValue;
@@ -44,32 +58,54 @@ export async function GET(req: NextRequest) {
         if (infoMap.attachments) attachments = JSON.parse(infoMap.attachments);
       } catch {}
 
-      return {
+      const sessionItem = {
         id: t.id,
-        task_id: t.runninghub_task_id || t.id,
-        project_id: infoMap.project_id || null,
+        task_id: taskId,
+        project_id: infoMap.project_id || defaultProjectId,
         mode: infoMap.mode || (t.app_id?.endsWith('video') ? 'video' : 'image'),
-        prompt: infoMap.prompt || t.app_name || 'Generation',
+        prompt: infoMap.prompt || infoMap.text || t.app_name || 'Generation',
         model: infoMap.model || 'Standard',
         ratio: infoMap.ratio || '16:9',
         quality: infoMap.quality || '1k',
         status: t.status || 'SUCCESS',
         attachments,
-        outputs: t.outputs || [],
+        outputs: Array.isArray(t.outputs) ? t.outputs : [],
         created_at: t.created_at,
         updated_at: t.updated_at || t.created_at,
       };
-    });
 
-    // Filter by projectId if requested
+      if (!taskMap.has(taskId)) {
+        taskMap.set(taskId, sessionItem);
+      } else {
+        const existing = taskMap.get(taskId);
+        const existingHasOutputs = existing.outputs && existing.outputs.length > 0;
+        const currentHasOutputs = sessionItem.outputs && sessionItem.outputs.length > 0;
+
+        // Prefer the row that has real output files and SUCCESS status
+        if (!existingHasOutputs && currentHasOutputs) {
+          taskMap.set(taskId, { ...existing, ...sessionItem, outputs: sessionItem.outputs });
+        } else if (sessionItem.status === 'SUCCESS' && existing.status !== 'SUCCESS') {
+          taskMap.set(taskId, { ...existing, ...sessionItem, status: 'SUCCESS' });
+        }
+      }
+    }
+
+    let mapped = Array.from(taskMap.values());
+
+    // Filter by projectId if specified
     if (projectId) {
+      const isSelectingDefault = (projectId === defaultProjectId || projectId.includes('default') || projectId.includes('main'));
       mapped = mapped.filter(item => {
-        // If project matches or if it's default and item has no project_id
         if (item.project_id === projectId) return true;
-        if (!item.project_id && projectId.includes('default')) return true;
+        if (isSelectingDefault && (!item.project_id || item.project_id === defaultProjectId || item.project_id === 'NONE')) {
+          return true;
+        }
         return false;
       });
     }
+
+    // Sort chronologically (newest first)
+    mapped.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
     return NextResponse.json({ sessions: mapped });
   } catch (err: any) {
@@ -78,7 +114,7 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// POST /api/boutiqaat-flow/sessions — create new Boutiqaat Flow generation record
+// POST /api/boutiqaat-flow/sessions — create or update Boutiqaat Flow generation record
 export async function POST(req: NextRequest) {
   try {
     const session = await getSessionFromRequest(req);
@@ -111,7 +147,7 @@ export async function POST(req: NextRequest) {
       activeProjectId = userProjects[0]?.id || `flow_proj_default_${session.userId}`;
     }
 
-    const taskIdToSave = id || `${Date.now()}-qc`;
+    const taskIdToSave = id || task_id;
 
     const nodeInfoList = [
       { nodeId: 'prompt', fieldName: 'prompt', fieldValue: prompt },
@@ -123,20 +159,34 @@ export async function POST(req: NextRequest) {
       { nodeId: 'attachments', fieldName: 'attachments', fieldValue: JSON.stringify(attachments) },
     ];
 
-    // Insert to Supabase tasks table
-    const { error: insertErr } = await supabaseAdmin.from('tasks').insert({
-      id: taskIdToSave,
-      runninghub_task_id: task_id,
-      user_id: session.userId,
-      app_id: `boutiqaat-flow-${mode}`,
-      app_name: prompt,
-      status,
-      outputs: [],
-      node_info_list: nodeInfoList,
-    });
+    // Check if task already exists in DB to prevent duplicate rows
+    const { data: existingTask } = await supabaseAdmin
+      .from('tasks')
+      .select('id, outputs')
+      .or(`id.eq.${task_id},runninghub_task_id.eq.${task_id}`)
+      .maybeSingle();
 
-    if (insertErr) {
-      console.warn('[boutiqaat-flow/sessions POST DB insert warning]', insertErr);
+    if (existingTask) {
+      await supabaseAdmin
+        .from('tasks')
+        .update({
+          app_id: `boutiqaat-flow-${mode}`,
+          app_name: prompt,
+          node_info_list: nodeInfoList,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', existingTask.id);
+    } else {
+      await supabaseAdmin.from('tasks').insert({
+        id: taskIdToSave,
+        runninghub_task_id: task_id,
+        user_id: session.userId,
+        app_id: `boutiqaat-flow-${mode}`,
+        app_name: prompt,
+        status,
+        outputs: [],
+        node_info_list: nodeInfoList,
+      });
     }
 
     return NextResponse.json({
@@ -178,7 +228,7 @@ export async function PUT(req: NextRequest) {
       finalOutputs = await archiveOutputsList(outputs, session?.userId || 'shared', targetId);
     }
 
-    // Update tasks table
+    // Update tasks table matching by id OR runninghub_task_id
     const { error: updateErr } = await supabaseAdmin
       .from('tasks')
       .update({
@@ -194,7 +244,8 @@ export async function PUT(req: NextRequest) {
 
     // Update project thumbnail if output is available
     if (project_id && session?.userId && finalOutputs.length > 0) {
-      const firstUrl = finalOutputs[0].fileUrl || finalOutputs[0].url;
+      const firstOut = finalOutputs[0];
+      const firstUrl = typeof firstOut === 'string' ? firstOut : (firstOut.fileUrl || firstOut.url);
       if (firstUrl) {
         updateFlowProject(project_id, session.userId, { thumbnailUrl: firstUrl }).catch(() => {});
       }
@@ -206,3 +257,4 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }
+

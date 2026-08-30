@@ -1,40 +1,156 @@
 import { NextResponse, NextRequest } from 'next/server';
-import { generateImageI2I, queryTask, uploadResource } from '@/lib/runninghub';
+import { generateImageI2I, queryTask } from '@/lib/runninghub';
 import { mapToAllowedRatio } from '@/lib/social-resize/presets';
 import { getSessionFromRequest } from '@/lib/auth';
 import { supabaseAdmin } from '@/lib/supabase';
-import sharp from 'sharp';
-
 
 const POLL_INTERVAL_MS = 2000;
 const MAX_POLL_ATTEMPTS = 60; // 60 * 2s = 120 seconds
 
+/**
+ * RunningHub Flux 2 Klein (/rhart-image/f-2-klein-9b/edit) custom dimension constraints:
+ * - customWidth: strictly 256 to 1536
+ * - customHight: strictly 256 to 1536
+ * - aspectRatio: 'custom'
+ * - outputFormat: 'png' | 'jpeg' | 'webp(lossless)' | 'webp(lossy)'
+ */
+/**
+ * RunningHub Flux 2 Klein (/rhart-image/f-2-klein-9b/edit) custom dimension constraints:
+ * - Scales target dimensions 1.5x for superior detail
+ * - customWidth: strictly 256 to 1536 (multiples of 16)
+ * - customHight: strictly 256 to 1536 (multiples of 16)
+ * - aspectRatio: 'custom'
+ * - outputFormat: 'png'
+ */
 function getCustomDimensions(width: number, height: number): { w: number, h: number } {
-  const MIN_SIZE = 256;
-  const MAX_SIZE = 1536;
+  const MIN_SIDE = 256;  // Strict minimum required by RunningHub API
+  const MAX_SIDE = 1536; // Strict maximum required by RunningHub API
+  const SCALE_FACTOR = 1.5;
 
-  let w = width;
-  let h = height;
+  const ratio = width / height;
+  let w = Math.round(width * SCALE_FACTOR);
+  let h = Math.round(height * SCALE_FACTOR);
 
-  // Scale down if larger than MAX_SIZE
-  if (w > MAX_SIZE || h > MAX_SIZE) {
-    const scale = MAX_SIZE / Math.max(w, h);
-    w = Math.round(w * scale);
-    h = Math.round(h * scale);
+  // Preserve aspect ratio if scaled dimension falls below minimum
+  if (h < MIN_SIDE) {
+    h = MIN_SIDE;
+    w = Math.round(h * ratio);
+  }
+  if (w < MIN_SIDE) {
+    w = MIN_SIDE;
+    h = Math.round(w / ratio);
   }
 
-  // Scale up if smaller than MIN_SIZE
-  if (w < MIN_SIZE && h < MIN_SIZE) {
-    const scale = MIN_SIZE / Math.min(w, h);
-    w = Math.round(w * scale);
-    h = Math.round(h * scale);
+  // Preserve aspect ratio if scaled dimension exceeds maximum
+  if (w > MAX_SIDE) {
+    w = MAX_SIDE;
+    h = Math.round(w / ratio);
+  }
+  if (h > MAX_SIDE) {
+    h = MAX_SIDE;
+    w = Math.round(h * ratio);
   }
 
-  // Final clamp to ensure boundary limits
-  w = Math.max(MIN_SIZE, Math.min(MAX_SIZE, w));
-  h = Math.max(MIN_SIZE, Math.min(MAX_SIZE, h));
+  // Snap to multiples of 16 for clean neural network diffusion processing
+  w = Math.floor(w / 16) * 16;
+  h = Math.floor(h / 16) * 16;
+
+  // Strict boundary clamp
+  w = Math.max(MIN_SIDE, Math.min(MAX_SIDE, w));
+  h = Math.max(MIN_SIDE, Math.min(MAX_SIDE, h));
 
   return { w, h };
+}
+
+/**
+ * RunningHub SeeDream V5 Pro (/seedream-v5-pro/image-to-image) dimensions:
+ * - Scales target dimensions 1.5x for superior resolution
+ * - width & height range: 256 - 8192 (minimum 256)
+ */
+function getSeedreamDimensions(width: number, height: number): { w: number, h: number } {
+  const MIN_SIDE = 256;  // Minimum 256 for clean processing
+  const MAX_SIDE = 8192; // Maximum required by RunningHub API
+  const SCALE_FACTOR = 1.5;
+
+  const ratio = width / height;
+  let w = Math.round(width * SCALE_FACTOR);
+  let h = Math.round(height * SCALE_FACTOR);
+
+  // Preserve aspect ratio if scaled dimension falls below minimum 256
+  if (h < MIN_SIDE) {
+    h = MIN_SIDE;
+    w = Math.round(h * ratio);
+  }
+  if (w < MIN_SIDE) {
+    w = MIN_SIDE;
+    h = Math.round(w / ratio);
+  }
+
+  // Preserve aspect ratio if scaled dimension exceeds maximum
+  if (w > MAX_SIDE) {
+    w = MAX_SIDE;
+    h = Math.round(w / ratio);
+  }
+  if (h > MAX_SIDE) {
+    h = MAX_SIDE;
+    w = Math.round(h * ratio);
+  }
+
+  // Snap to multiples of 16 for clean neural network diffusion processing
+  w = Math.floor(w / 16) * 16;
+  h = Math.floor(h / 16) * 16;
+
+  w = Math.max(MIN_SIDE, Math.min(MAX_SIDE, w));
+  h = Math.max(MIN_SIDE, Math.min(MAX_SIDE, h));
+
+  return { w, h };
+}
+
+/**
+ * Universal & Highly Flexible Master Prompt Engine:
+ * 100% Task-Agnostic — works seamlessly for products, fashion models, cosmetics, food,
+ * electronics, graphic banners, typography, and any commercial creative asset.
+ */
+function buildMasterSystemPrompt(
+  targetWidth: number,
+  targetHeight: number,
+  rhRatio: string,
+  model: string,
+  customPrompt?: string
+): string {
+  const ratio = targetWidth / targetHeight;
+  const userInstruction = customPrompt?.trim();
+
+  // 1. Reference & Goal
+  const goal = `Use the uploaded Image 1 as the primary visual reference. Adapt and outpaint the scene into a clean commercial ${rhRatio} format (${targetWidth}x${targetHeight} px).`;
+
+  // 2. Universal Fidelity Lock (Color, Texture, Subject, Typography)
+  const fidelity = `Preserve the exact subjects, products, models, typography, text, branding, materials, and authentic details from Image 1 with 100% fidelity. Strictly preserve the original color palette, background hues, lighting style, and overall visual aesthetic of Image 1 without any color shifting.`;
+
+  // 3. Dynamic Composition & Outpainting (Task-agnostic)
+  let layout = '';
+  if (ratio >= 2.0) {
+    layout = `Keep the complete main visual composition from Image 1 centered and intact as a unified subject. Seamlessly outpaint and expand the background scenery, environment, and ambient lighting horizontally to the left and right to naturally fill the wide frame with balanced negative space.`;
+  } else if (ratio <= 0.5) {
+    layout = `Keep the complete main visual composition from Image 1 intact and well-proportioned. Seamlessly outpaint and extend the background scenery, environment, and lighting vertically upwards and downwards to naturally fill the tall vertical frame.`;
+  } else {
+    layout = `Keep the main visual composition from Image 1 intact and centered, seamlessly extending the surrounding background environment to naturally fit the ${rhRatio} canvas.`;
+  }
+
+  // 4. Custom Directive / Creative styling
+  const customBlock = userInstruction
+    ? `Creative directive: ${userInstruction}. Apply this directive while strictly preserving the authentic core elements and color fidelity of Image 1.`
+    : `Seamlessly blend all expanded areas with the exact atmosphere, textures, and lighting of Image 1.`;
+
+  // 5. Commercial Quality & Constraints
+  const constraints = `Commercial advertising quality, 8K ultra-sharp details, high-end commercial retouching, no distortion, no borders or watermarks.`;
+
+  // Language suffix for Chinese-trained models (Flux / SeeDream)
+  const modelSuffix = (model === 'flux-2-edit' || model === 'seedream-v5-pro')
+    ? ` 严格保持Image 1原图主体、背景颜色、产品外观及文字完全一致，无缝扩展画面。`
+    : '';
+
+  return `${goal}\n\n${fidelity}\n\n${layout}\n\n${customBlock}\n\n${constraints}${modelSuffix}`;
 }
 
 export async function POST(request: NextRequest) {
@@ -49,41 +165,50 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const {
       imageUrl,
-      model = 'nano-banana-pro',
+      model = 'nano-banana-2',
       resolution = '1k',
       aspectRatio,
+      customPrompt,
     } = body;
 
-    // Resolve allowed aspect ratio for RunningHub (e.g. 1080:1350 -> 4:5)
+    let targetW = 1080;
+    let targetH = 1080;
     let rhAspectRatio = '1:1';
     let customWidth: number | undefined;
     let customHight: number | undefined;
-    
+    let seedreamW: number | undefined;
+    let seedreamH: number | undefined;
+
     if (aspectRatio) {
       const parts = aspectRatio.split(':');
       if (parts.length === 2) {
         const w = parseInt(parts[0], 10);
         const h = parseInt(parts[1], 10);
-        if (!isNaN(w) && !isNaN(h)) {
-          rhAspectRatio = mapToAllowedRatio(w, h);
+        if (!isNaN(w) && !isNaN(h) && w > 0 && h > 0) {
+          targetW = w;
+          targetH = h;
+          rhAspectRatio = mapToAllowedRatio(w, h, model);
           if (model === 'flux-2-edit') {
             const dims = getCustomDimensions(w, h);
             customWidth = dims.w;
             customHight = dims.h;
+          } else if (model === 'seedream-v5-pro') {
+            const sDims = getSeedreamDimensions(w, h);
+            seedreamW = sDims.w;
+            seedreamH = sDims.h;
           }
         }
       }
     }
 
-    // Dynamic, aspect-ratio-aware prompt
-    let prompt = body.prompt;
-    if (!prompt) {
-      if (model === 'flux-2-edit') {
-        prompt = `Please fill in the black area, seamlessly extend the background, match style and colors. 请补全黑色区域，无缝延伸背景，匹配风格和颜色。`;
-      } else {
-        prompt = `Extrapolate and fill the background of this image to a ${rhAspectRatio} aspect ratio. Maintain the subject, style, and lighting of the original. Keep the subject centered, seamlessly extend background areas that are cropped or missing. High resolution, seamless, photorealistic extension.`;
-      }
-    }
+    // Dynamic, intelligent universal master prompt system
+    const prompt = buildMasterSystemPrompt(
+      targetW,
+      targetH,
+      rhAspectRatio,
+      model,
+      customPrompt || body.prompt
+    );
 
     if (!imageUrl) {
       return NextResponse.json({ error: 'imageUrl is required' }, { status: 400 });
@@ -93,7 +218,9 @@ export async function POST(request: NextRequest) {
     const initialNodeInfoList = [
       { nodeId: 'INPUT', fieldName: 'aspectRatio', fieldValue: aspectRatio || '1:1' },
       { nodeId: 'INPUT', fieldName: 'model', fieldValue: model },
-      { nodeId: 'INPUT', fieldName: 'resolution', fieldValue: resolution }
+      { nodeId: 'INPUT', fieldName: 'resolution', fieldValue: resolution },
+      { nodeId: 'INPUT', fieldName: 'prompt', fieldValue: prompt },
+      ...(customPrompt ? [{ nodeId: 'INPUT', fieldName: 'customPrompt', fieldValue: customPrompt }] : [])
     ];
 
     await supabaseAdmin.from('tasks').insert({
@@ -108,66 +235,13 @@ export async function POST(request: NextRequest) {
       outputs: [],
     });
 
-    let finalImageUrl = imageUrl;
+    // Directly use the uploaded Image 1 without server-side black canvas padding
+    const finalImageUrl = imageUrl;
 
-    if (model === 'flux-2-edit' && customWidth && customHight) {
-      console.log(`[Social Resize] Pre-padding input image to custom dimensions ${customWidth}x${customHight} using solid black background...`);
-      try {
-        const imageRes = await fetch(imageUrl);
-        if (!imageRes.ok) throw new Error(`Failed to fetch input image for padding: ${imageRes.statusText}`);
-        const inputBuffer = Buffer.from(await imageRes.arrayBuffer());
+    console.log(`[Social Resize] Model: ${model} | Target: ${aspectRatio} (${targetW}x${targetH}) | RH Ratio: ${rhAspectRatio}`);
+    console.log(`[Social Resize] Universal Master Prompt:\n${prompt}`);
 
-        // sharp handles ALL formats: WebP, AVIF, JPEG, PNG, TIFF, etc.
-        const sourceMeta = await sharp(inputBuffer).metadata();
-        const srcW = sourceMeta.width ?? customWidth;
-        const srcH = sourceMeta.height ?? customHight;
-
-        // Scale to fit inside target canvas, maintaining aspect ratio
-        const scale = Math.min(customWidth / srcW, customHight / srcH);
-        const scaledW = Math.round(srcW * scale);
-        const scaledH = Math.round(srcH * scale);
-
-        const offsetX = Math.round((customWidth - scaledW) / 2);
-        const offsetY = Math.round((customHight - scaledH) / 2);
-
-        // Resize the source and place it centered on a black canvas
-        const resizedInput = await sharp(inputBuffer)
-          .resize(scaledW, scaledH, { fit: 'fill' })
-          .toFormat('png')
-          .toBuffer();
-
-        const paddedBuffer = await sharp({
-          create: {
-            width: customWidth,
-            height: customHight,
-            channels: 3,
-            background: { r: 0, g: 0, b: 0 },
-          },
-        })
-          .composite([{ input: resizedInput, left: offsetX, top: offsetY }])
-          .png()
-          .toBuffer();
-
-        const uploadResult = await uploadResource(paddedBuffer, 'padded_input.png', 'image/png');
-        if (uploadResult.code === 0 && uploadResult.data?.download_url) {
-          finalImageUrl = uploadResult.data.download_url;
-          console.log(`[Social Resize] ✓ Padded image uploaded:`, finalImageUrl.substring(0, 80) + '...');
-        } else {
-          console.error('[Social Resize] Padding upload failed, using original image:', uploadResult.message);
-        }
-      } catch (err: any) {
-        console.error('[Social Resize] Pre-padding failed, falling back to original:', err.message);
-      }
-    }
-
-    if (model === 'flux-2-edit') {
-      console.log(`[Social Resize] Target ratio: ${aspectRatio} -> Custom dimensions: ${customWidth}x${customHight}`);
-    } else {
-      console.log(`[Social Resize] Target ratio: ${aspectRatio} -> Mapped allowed ratio: ${rhAspectRatio}`);
-    }
-    console.log(`[Social Resize] Calling RunningHub I2I API directly with URL:`, finalImageUrl.substring(0, 80) + '...');
-
-    // ── Step 1: Call Standard Image API with the COS URL directly ────────────────
+    // ── Call RunningHub Standard I2I / Edit API ────────────────────────────────
     const result = await generateImageI2I({
       model,
       prompt,
@@ -175,12 +249,14 @@ export async function POST(request: NextRequest) {
       imageUrl: (model === 'grok-image' || model === 'flux-2-edit') ? finalImageUrl : undefined,
       resolution,
       aspectRatio: rhAspectRatio,
+      width: seedreamW,
+      height: seedreamH,
       customWidth,
       customHight,
       outputFormat: 'png',
     }, 'enterprise');
 
-    console.log(`[Social Resize] generateImageI2I raw response:`, JSON.stringify(result, null, 2));
+    console.log(`[Social Resize] generateImageI2I submission result:`, JSON.stringify(result, null, 2));
 
     // Update runninghub_task_id in Supabase
     if (result.taskId) {
@@ -189,7 +265,7 @@ export async function POST(request: NextRequest) {
       }).eq('id', localTaskId);
     }
 
-    // Handle immediate success (some models may return synchronously)
+    // Handle immediate success (if synchronous)
     if (result.status === 'SUCCESS' && result.results && result.results.length > 0) {
       const outputUrl = (result.results[0] as any)?.url || result.results[0];
       console.log(`[Social Resize] Immediate success: ${outputUrl}`);
@@ -202,8 +278,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ 
         imageUrl: outputUrl, 
         taskId: result.taskId,
-        width: customWidth,
-        height: customHight
+        width: customWidth || seedreamW,
+        height: customHight || seedreamH
       });
     }
 
@@ -216,9 +292,10 @@ export async function POST(request: NextRequest) {
       const apiError = (result as any).errorMessage || (result as any).message || (result as any).error || 'Unknown error';
       throw new Error(`RunningHub API Error: ${apiError}`);
     }
+
     console.log(`[Social Resize] Task submitted: ${taskId}. Polling...`);
 
-    // ── Step 2: Poll using queryTask ──
+    // ── Poll for task completion ──────────────────────────────────────────────
     for (let i = 0; i < MAX_POLL_ATTEMPTS; i++) {
       await new Promise(r => setTimeout(r, POLL_INTERVAL_MS));
 
@@ -226,7 +303,7 @@ export async function POST(request: NextRequest) {
       try {
         statusData = await queryTask(taskId, 'enterprise');
       } catch (pollErr) {
-        console.warn(`[Social Resize Poll] Attempt ${i + 1} query failed:`, pollErr);
+        console.warn(`[Social Resize Poll] Attempt ${i + 1} query error:`, pollErr);
         continue;
       }
 
@@ -251,8 +328,8 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ 
           imageUrl: outputUrl, 
           taskId,
-          width: customWidth,
-          height: customHight
+          width: customWidth || seedreamW,
+          height: customHight || seedreamH
         });
       }
 

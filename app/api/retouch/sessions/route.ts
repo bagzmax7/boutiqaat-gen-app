@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
       const fallbackQuery = supabaseAdmin
         .from('tasks')
         .select('*')
-        .eq('app_id', '2084718752813600769')
+        .in('app_id', ['2092179021774139394', '2092176601755762689', '2092104008407523329', '2084718752813600769'])
         .order('created_at', { ascending: false })
         .limit(100);
 
@@ -45,15 +45,15 @@ export async function GET(req: NextRequest) {
         }
         seenTaskIds.add(taskId);
 
-        const imageNode = t.node_info_list?.find((n: any) => n.nodeId === '51');
+        const imageNode = t.node_info_list?.find((n: any) => n.nodeId === '39' || n.nodeId === '51');
         const promptNode = t.node_info_list?.find((n: any) => n.nodeId === '54');
         const strengthNode = t.node_info_list?.find((n: any) => n.nodeId === '37');
 
         mapped.push({
           id: t.id,
           task_id: taskId,
-          prompt: promptNode?.fieldValue || 'Human, women model',
-          strength: strengthNode?.fieldValue || '0.55',
+          prompt: promptNode?.fieldValue || 'Studio Polish & Skin Tone',
+          strength: strengthNode?.fieldValue || '1.0',
           original_url: imageNode?.fieldValue || '',
           output_url: t.outputs?.[0]?.fileUrl || null,
           status: t.status || 'SUCCESS',
@@ -116,9 +116,7 @@ export async function POST(req: NextRequest) {
         .from('tasks')
         .update({
           node_info_list: [
-            { nodeId: '51', fieldName: 'image', fieldValue: original_url },
-            { nodeId: '54', fieldName: 'text', fieldValue: prompt },
-            { nodeId: '37', fieldName: 'value', fieldValue: strength }
+            { nodeId: '39', fieldName: 'image', fieldValue: original_url }
           ],
         })
         .eq('runninghub_task_id', task_id)
@@ -130,14 +128,12 @@ export async function POST(req: NextRequest) {
           id: id || `${Date.now()}-retouch`,
           runninghub_task_id: task_id,
           user_id: session?.userId || null,
-          app_id: '2084718752813600769',
+          app_id: '2092179021774139394',
           app_name: 'Auto Retouch Image',
           status,
           outputs: [],
           node_info_list: [
-            { nodeId: '51', fieldName: 'image', fieldValue: original_url },
-            { nodeId: '54', fieldName: 'text', fieldValue: prompt },
-            { nodeId: '37', fieldName: 'value', fieldValue: strength }
+            { nodeId: '39', fieldName: 'image', fieldValue: original_url }
           ],
         });
       }
@@ -188,6 +184,48 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (err: any) {
     console.error('[retouch/sessions PUT Error]:', err);
+    return NextResponse.json({ error: String(err) }, { status: 500 });
+  }
+}
+
+// DELETE /api/retouch/sessions — clear retouch history
+export async function DELETE(req: NextRequest) {
+  try {
+    const session = await getSessionFromRequest(req);
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const userId = session.userId;
+    const isGlobal = session.role === 'admin';
+
+    // 1. Delete from retouch_sessions if table exists
+    try {
+      let rsQuery = supabaseAdmin.from('retouch_sessions').delete();
+      if (!isGlobal && userId) {
+        rsQuery = rsQuery.eq('user_id', userId);
+      } else {
+        rsQuery = rsQuery.neq('id', '___none___');
+      }
+      await rsQuery;
+    } catch {}
+
+    // 2. Delete retouch tasks from tasks table
+    try {
+      let tQuery = supabaseAdmin
+        .from('tasks')
+        .delete()
+        .or('app_name.ilike.%retouch%,app_id.eq.2092179021774139394,app_id.eq.auto-retouch');
+
+      if (!isGlobal && userId) {
+        tQuery = tQuery.eq('user_id', userId);
+      }
+      await tQuery;
+    } catch {}
+
+    return NextResponse.json({ success: true, message: 'Retouch history cleared' });
+  } catch (err: any) {
+    console.error('[retouch/sessions DELETE Error]:', err);
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }

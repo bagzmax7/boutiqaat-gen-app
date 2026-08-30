@@ -4,11 +4,10 @@ import { useEffect, useState, useCallback } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import TopBar from '@/components/layout/TopBar';
 import {
-  RefreshCw, Download, Loader2, ChevronLeft,
-  ChevronRight, X, Copy, Eye, EyeOff, Check,
+  RefreshCw, Loader2,
+  X, Copy, Eye, EyeOff, Check,
   ExternalLink, Zap, DollarSign, Timer, Settings2,
-  CheckCircle2, XCircle, Clock, AlertCircle, Users,
-  BarChart3, UserCheck, TrendingUp, Sparkles, Filter, FileSpreadsheet
+  Users, BarChart3, UserCheck, Filter, FileSpreadsheet
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';

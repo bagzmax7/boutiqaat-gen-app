@@ -4,16 +4,16 @@ import { useEffect, useState } from 'react';
 import Sidebar from '@/components/layout/Sidebar';
 import TopBar from '@/components/layout/TopBar';
 import {
-  Shield, Users, CheckCircle2, XCircle, Loader2, Clock,
-  TrendingUp, Activity, DollarSign, Wallet, ArrowUpRight,
-  ExternalLink, RefreshCw, AlertTriangle, Key, Zap, Check,
-  ChevronRight, ArrowDownRight, Layers, Coins, Server, Sparkles,
-  UserCheck, Image as ImageIcon, ArrowRight
+  Shield, Users, CheckCircle2,
+  Activity, DollarSign, Wallet, ArrowUpRight,
+  RefreshCw, Key, ChevronRight, Coins,
+  Server, Sparkles, Image as ImageIcon, ArrowRight
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
-import { PRICING_MODELS_DATA, KWD_EXCHANGE_RATE } from '@/lib/pricing-data';
+import { PRICING_MODELS_DATA } from '@/lib/pricing-data';
+import AppControlsPanel from '@/components/admin/AppControlsPanel';
 
 interface AdminDashboardData {
   mainStudioWallet: {
@@ -166,7 +166,7 @@ export default function AdminPage() {
                   Main Studio Wallet
                 </span>
                 <span className="text-[10px] px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-400 font-bold">
-                  ● LIVE
+                  ● LIVE DEPOSIT
                 </span>
               </div>
               <div>
@@ -179,18 +179,20 @@ export default function AdminPage() {
               </div>
               <div className="pt-1 flex items-center justify-between text-[11px] font-mono text-zinc-500 border-t border-white/[0.06]">
                 <span>Cloud Channel:</span>
-                <span className="font-bold text-purple-300 uppercase">{wallet?.apiType || 'SHARED'}</span>
+                <span className="font-bold text-purple-300 uppercase">{wallet?.apiType || 'SHARED'} (Active Balance)</span>
               </div>
             </div>
 
-            {/* Card 2: Boutiqaat AI Studio Spend (Live Recorded Spend) */}
+            {/* Card 2: Boutiqaat AI Studio Spend (All-Time Total Spend) */}
             <div className="rounded-3xl bg-[#0e0f14] border border-white/[0.08] p-5 space-y-3 relative overflow-hidden group hover:border-emerald-400/30 transition-all">
               <div className="flex items-center justify-between text-xs font-mono font-semibold uppercase tracking-wider text-zinc-400">
                 <span className="flex items-center gap-1.5">
                   <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
                   Boutiqaat Studio Spend
                 </span>
-                <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="text-[10px] px-2 py-0.5 rounded-md bg-sky-500/20 text-sky-400 font-mono font-bold">
+                  ALL-TIME
+                </span>
               </div>
               <div>
                 <div className="text-2xl lg:text-3xl font-black text-emerald-400 font-mono">
@@ -294,6 +296,9 @@ export default function AdminPage() {
               </Link>
             </div>
           </div>
+
+          {/* APP & FEATURE REAL-TIME CONTROLS */}
+          <AppControlsPanel />
 
           {/* 3. RECENT LIVE GENERATIONS & ENGINE CHANNELS */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

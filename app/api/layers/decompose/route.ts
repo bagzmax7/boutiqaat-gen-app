@@ -2,47 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSessionFromRequest } from '@/lib/auth';
 import { supabaseAdmin } from '@/lib/supabase';
 import { CanvasLayerItem } from '@/lib/types';
-import { queryTaskOutputs } from '@/lib/runninghub';
+import { queryTaskOutputs, cleanRunningHubError, extractRunningHubErrorMessage } from '@/lib/runninghub';
 import sharp from 'sharp';
 
 export const maxDuration = 300; // 5 minutes for decomposition task
 
 const BASE_URL = process.env.RUNNINGHUB_BASE_URL || 'https://www.runninghub.ai';
 const API_KEY = process.env.RUNNINGHUB_API_KEY_ENTERPRISE || process.env.RUNNINGHUB_API_KEY_CONSUMER || process.env.RUNNINGHUB_API_KEY || '';
-
-function cleanErrorMessage(raw: string): string {
-  if (!raw) return 'Layer decomposition failed';
-  let msg = raw;
-  if (msg.includes('|')) {
-    const parts = msg.split('|').map(s => s.trim());
-    const englishPart = parts.find(p => /[a-zA-Z]/.test(p) && !/[\u4e00-\u9fa5]/.test(p));
-    if (englishPart) return englishPart;
-  }
-  msg = msg.replace(/[\u4e00-\u9fa5]/g, '').trim();
-  msg = msg.replace(/^[:\s|,-]+|[:\s|,-]+$/g, '').trim();
-  return msg || 'Layer decomposition request was rejected by AI service.';
-}
-
-function extractRunningHubErrorMessage(data: any): string {
-  if (data?.failedReason) {
-    if (typeof data.failedReason === 'string') return cleanErrorMessage(data.failedReason);
-    if (data.failedReason.text) return cleanErrorMessage(data.failedReason.text);
-    if (data.failedReason.message) return cleanErrorMessage(data.failedReason.message);
-    if (data.failedReason.error) return cleanErrorMessage(data.failedReason.error);
-    if (data.failedReason.reason) return cleanErrorMessage(data.failedReason.reason);
-    try {
-      const s = JSON.stringify(data.failedReason);
-      if (s !== '{}' && s !== 'null') return cleanErrorMessage(s);
-    } catch {}
-  }
-  if (data?.errorMessage && data.errorMessage.trim() !== '') {
-    return cleanErrorMessage(data.errorMessage);
-  }
-  if (data?.errorCode) {
-    return `RunningHub API Error Code (${data.errorCode})`;
-  }
-  return 'Layer decomposition failed or was rejected by AI security audit.';
-}
 
 async function pollRunningHubTask(taskId: string, maxWaitMs = 240000): Promise<any> {
   const startTime = Date.now();
@@ -264,7 +230,7 @@ export async function POST(req: NextRequest) {
         errorMsg = extractRunningHubErrorMessage(parsed) || errorMsg;
       } catch {}
       console.error('[Decompose API] Submit error:', errorMsg);
-      return NextResponse.json({ error: cleanErrorMessage(errorMsg) }, { status: submitRes.status });
+      return NextResponse.json({ error: cleanRunningHubError(errorMsg) }, { status: submitRes.status });
     }
 
     const submitData = await submitRes.json();
@@ -273,7 +239,7 @@ export async function POST(req: NextRequest) {
 
     if (!taskId) {
       const errorMsg = extractRunningHubErrorMessage(submitData) || 'Failed to obtain taskId from RunningHub';
-      return NextResponse.json({ error: cleanErrorMessage(errorMsg) }, { status: 500 });
+      return NextResponse.json({ error: cleanRunningHubError(errorMsg) }, { status: 500 });
     }
 
     // 3. Immediately record RUNNING task in Supabase
@@ -434,7 +400,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('[POST /api/layers/decompose error]', error);
 
-    const cleanErr = cleanErrorMessage(error.message || 'Decomposition failed');
+    const cleanErr = cleanRunningHubError(error.message || 'Decomposition failed');
 
     if (dbTaskId) {
       try {

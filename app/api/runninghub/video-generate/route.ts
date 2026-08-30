@@ -306,24 +306,32 @@ export async function POST(request: Request) {
       const { supabaseAdmin } = await import('@/lib/supabase');
       const session = await getSessionFromRequest(request as any);
       if (session && result?.taskId) {
-        await supabaseAdmin.from('tasks').insert({
-          id: `task_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-          runninghub_task_id: result.taskId,
-          user_id: session.userId,
-          app_id: 'video',
-          app_name: `Video: ${model}`,
-          status: 'RUNNING',
-          api_key_type: apiKeyType || 'enterprise',
-          node_info_list: [
-            { nodeId: 'INPUT', fieldName: 'prompt', fieldValue: prompt },
-            { nodeId: 'CONFIG', fieldName: 'model', fieldValue: model },
-            { nodeId: 'CONFIG', fieldName: 'ratio', fieldValue: cleanRatio },
-            { nodeId: 'CONFIG', fieldName: 'resolution', fieldValue: cleanQuality },
-            { nodeId: 'CONFIG', fieldName: 'duration', fieldValue: String(durationNum) },
-          ],
-          outputs: [],
-          created_at: new Date().toISOString(),
-        });
+        const { data: existing } = await supabaseAdmin
+          .from('tasks')
+          .select('id')
+          .eq('runninghub_task_id', result.taskId)
+          .maybeSingle();
+
+        if (!existing) {
+          await supabaseAdmin.from('tasks').insert({
+            id: `task_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+            runninghub_task_id: result.taskId,
+            user_id: session.userId,
+            app_id: 'video',
+            app_name: `Video: ${model}`,
+            status: 'RUNNING',
+            api_key_type: apiKeyType || 'enterprise',
+            node_info_list: [
+              { nodeId: 'INPUT', fieldName: 'prompt', fieldValue: prompt },
+              { nodeId: 'CONFIG', fieldName: 'model', fieldValue: model },
+              { nodeId: 'CONFIG', fieldName: 'ratio', fieldValue: cleanRatio },
+              { nodeId: 'CONFIG', fieldName: 'resolution', fieldValue: cleanQuality },
+              { nodeId: 'CONFIG', fieldName: 'duration', fieldValue: String(durationNum) },
+            ],
+            outputs: [],
+            created_at: new Date().toISOString(),
+          });
+        }
       }
     } catch (recordErr) {
       console.warn('[Video Generate] Failed to record task in DB:', recordErr);

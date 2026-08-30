@@ -1,6 +1,5 @@
 import { supabaseAdmin } from './supabase';
-import fs from 'fs';
-import path from 'path';
+import { readJsonStore, writeJsonStore } from './local-store';
 
 export interface FlowProject {
   id: string;
@@ -13,40 +12,14 @@ export interface FlowProject {
   thumbnailUrl?: string;
 }
 
-const DATA_DIR = path.join(process.cwd(), '.data');
-const DATA_FILE = path.join(DATA_DIR, 'flow_projects.json');
-
-function ensureDataFile() {
-  try {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
-    }
-    if (!fs.existsSync(DATA_FILE)) {
-      fs.writeFileSync(DATA_FILE, JSON.stringify({}), 'utf-8');
-    }
-  } catch (err) {
-    console.warn('[Flow projects data file init warning]', err);
-  }
-}
+const FLOW_PROJECTS_FILE = 'flow_projects.json';
 
 function readLocalStore(): Record<string, FlowProject[]> {
-  try {
-    ensureDataFile();
-    if (fs.existsSync(DATA_FILE)) {
-      const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-      return JSON.parse(raw || '{}');
-    }
-  } catch {}
-  return {};
+  return readJsonStore<Record<string, FlowProject[]>>(FLOW_PROJECTS_FILE, {});
 }
 
 function writeLocalStore(store: Record<string, FlowProject[]>) {
-  try {
-    ensureDataFile();
-    fs.writeFileSync(DATA_FILE, JSON.stringify(store, null, 2), 'utf-8');
-  } catch (err) {
-    console.warn('[Flow projects write local store error]', err);
-  }
+  writeJsonStore(FLOW_PROJECTS_FILE, store);
 }
 
 /**
@@ -56,10 +29,11 @@ function writeLocalStore(store: Record<string, FlowProject[]>) {
 export async function getFlowProjects(userId: string): Promise<FlowProject[]> {
   if (!userId) return [];
 
+  const defaultProjectId = `flow_proj_default_${userId}`;
   const localStore = readLocalStore();
   let userProjects: FlowProject[] = localStore[userId] || [];
 
-  // 1. Try fetching from Supabase tasks table (app_id = 'boutiqaat-flow-project')
+  // 1. Fetch from Supabase tasks table (app_id = 'boutiqaat-flow-project')
   try {
     const { data: dbProjects, error } = await supabaseAdmin
       .from('tasks')
@@ -68,42 +42,119 @@ export async function getFlowProjects(userId: string): Promise<FlowProject[]> {
       .eq('user_id', userId)
       .order('created_at', { ascending: false });
 
+    // Fetch user generations to compute accurate per-project item counts and latest thumbnails
+    const { data: userGenTasks } = await supabaseAdmin
+      .from('tasks')
+      .select('id, outputs, node_info_list, created_at')
+      .eq('user_id', userId)
+      .or('app_id.like.quick-create%,app_id.like.boutiqaat-flow%')
+      .neq('app_id', 'boutiqaat-flow-project')
+      .order('created_at', { ascending: false });
+
+    const projectCounts = new Map<string, number>();
+    const projectThumbs = new Map<string, string>();
+
+    (userGenTasks || []).forEach((t: any) => {
+      const pNode = (t.node_info_list || []).find((n: any) => n.fieldName === 'project_id');
+      // If task has no project_id or is marked default, assign to defaultProjectId
+      const pId = (pNode?.fieldValue && pNode.fieldValue !== 'NONE') ? pNode.fieldValue : defaultProjectId;
+
+      projectCounts.set(pId, (projectCounts.get(pId) || 0) + 1);
+
+      if (!projectThumbs.has(pId) && Array.isArray(t.outputs) && t.outputs.length > 0) {
+        const firstOut = t.outputs[0];
+        const thumb = typeof firstOut === 'string' ? firstOut : (firstOut.fileUrl || firstOut.url || firstOut.download_url);
+        if (thumb) projectThumbs.set(pId, thumb);
+      }
+    });
+
+    const projectMap = new Map<string, FlowProject>();
+
     if (!error && dbProjects && dbProjects.length > 0) {
-      const mapped: FlowProject[] = dbProjects.map((t: any) => {
+      dbProjects.forEach((t: any) => {
         let meta: any = {};
         const pNode = (t.node_info_list || []).find((n: any) => n.fieldName === 'project_meta');
         if (pNode?.fieldValue) {
           try { meta = JSON.parse(pNode.fieldValue); } catch {}
         }
-        return {
+
+        const thumb = projectThumbs.get(t.id) || meta.thumbnailUrl || (Array.isArray(t.outputs) && t.outputs[0]?.fileUrl) || undefined;
+        const count = projectCounts.get(t.id) ?? meta.itemCount ?? 0;
+
+        projectMap.set(t.id, {
           id: t.id,
           userId: t.user_id,
-          name: t.app_name || meta.name || 'Untitled Project',
+          name: t.app_name || meta.name || 'Main Studio Flow',
           description: meta.description || '',
           createdAt: t.created_at,
           updatedAt: t.updated_at || t.created_at,
-          itemCount: meta.itemCount || 0,
-          thumbnailUrl: meta.thumbnailUrl || (Array.isArray(t.outputs) && t.outputs[0]?.url) || undefined,
-        };
+          itemCount: count,
+          thumbnailUrl: thumb,
+        });
+      });
+    }
+
+    // Merge with local storage projects
+    userProjects.forEach(p => {
+      if (!projectMap.has(p.id)) {
+        projectMap.set(p.id, {
+          ...p,
+          itemCount: projectCounts.get(p.id) ?? p.itemCount,
+          thumbnailUrl: projectThumbs.get(p.id) || p.thumbnailUrl,
+        });
+      } else {
+        const existing = projectMap.get(p.id)!;
+        projectMap.set(p.id, {
+          ...existing,
+          itemCount: projectCounts.get(p.id) ?? existing.itemCount,
+          thumbnailUrl: projectThumbs.get(p.id) || existing.thumbnailUrl,
+        });
+      }
+    });
+
+    // Ensure default project exists
+    if (!projectMap.has(defaultProjectId)) {
+      const defThumb = projectThumbs.get(defaultProjectId);
+      const defCount = projectCounts.get(defaultProjectId) || 0;
+      projectMap.set(defaultProjectId, {
+        id: defaultProjectId,
+        userId,
+        name: 'Main Studio Flow',
+        description: 'Default campaign workspace',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        itemCount: defCount,
+        thumbnailUrl: defThumb,
       });
 
-      // Merge with local store
-      const projectMap = new Map<string, FlowProject>();
-      userProjects.forEach(p => projectMap.set(p.id, p));
-      mapped.forEach(p => projectMap.set(p.id, p));
-
-      userProjects = Array.from(projectMap.values()).sort(
-        (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      );
+      // Insert default project into DB
+      await supabaseAdmin.from('tasks').insert({
+        id: defaultProjectId,
+        runninghub_task_id: defaultProjectId,
+        user_id: userId,
+        app_id: 'boutiqaat-flow-project',
+        app_name: 'Main Studio Flow',
+        status: 'SUCCESS',
+        outputs: [],
+        node_info_list: [
+          {
+            nodeId: 'PROJECT',
+            fieldName: 'project_meta',
+            fieldValue: JSON.stringify({ name: 'Main Studio Flow', description: 'Default campaign workspace', isDefault: true }),
+          },
+        ],
+      });
     }
+
+    userProjects = Array.from(projectMap.values()).sort((a, b) => {
+      // Put default project first, then sort by date
+      if (a.id === defaultProjectId) return -1;
+      if (b.id === defaultProjectId) return 1;
+      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+    });
+
   } catch (err) {
     console.warn('[getFlowProjects DB fetch error]', err);
-  }
-
-  // 2. If no project exists for this user, auto-initialize a default project
-  if (userProjects.length === 0) {
-    const defaultProj = await createFlowProject(userId, 'Main Studio Flow', 'Default campaign workspace');
-    return [defaultProj];
   }
 
   // Update local cache
@@ -144,6 +195,7 @@ export async function createFlowProject(
   try {
     await supabaseAdmin.from('tasks').insert({
       id: projectId,
+      runninghub_task_id: projectId,
       user_id: userId,
       app_id: 'boutiqaat-flow-project',
       app_name: newProject.name,

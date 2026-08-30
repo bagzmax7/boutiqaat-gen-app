@@ -5,8 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import Sidebar from '@/components/layout/Sidebar';
 import { useTasks } from '@/hooks/useTasks';
 import {
-  Sparkles, Send, Plus, Image as ImageIcon, Film, X, ChevronDown,
-  Loader2, CheckCircle2, AlertCircle, Zap, RefreshCw, Download,
+  Sparkles, Plus, Image as ImageIcon, Film, X, ChevronDown,
+  Loader2, CheckCircle2, AlertCircle, Zap, Download,
   Upload, FileVideo, FileAudio, Clock, Settings2, User2, ArrowRight,
   RotateCcw, Maximize2, Layers, Info, Eye, FolderKanban, FolderPlus,
   Edit3, Trash2, Folder, Check, Search
@@ -269,6 +269,7 @@ function QuickCreateContent() {
 
   // Canvas Showcase items & Lightbox Preview state
   const [canvasItems, setCanvasItems] = useState<CanvasCardItem[]>([]);
+  const syncedSessionsRef = useRef<Map<string, string>>(new Map());
   const [selectedPreviewMedia, setSelectedPreviewMedia] = useState<{
     url: string;
     type: 'image' | 'video';
@@ -534,39 +535,63 @@ function QuickCreateContent() {
     }
   };
 
-  // Sync active task updates with dedicated database endpoint
+  // Sync active task updates with dedicated database endpoint (deduplicated)
   useEffect(() => {
-    if (tasks.length > 0) {
-      setCanvasItems(prev => {
-        const nextItems = prev.map(item => {
-          const match = tasks.find(t => t.id === item.taskId || t.taskId === item.taskId);
-          if (match && (match.status === 'SUCCESS' || match.status === 'FAILED')) {
-            if (item.status !== match.status || (match.outputs && match.outputs.length !== (item.outputs?.length || 0))) {
-              fetch('/api/boutiqaat-flow/sessions', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  id: item.id,
-                  task_id: item.taskId,
-                  project_id: activeProjectId,
-                  status: match.status,
-                  outputs: match.outputs || [],
-                  error: match.error || null,
-                })
-              }).catch(() => {});
+    if (tasks.length === 0) return;
 
-              return {
-                ...item,
+    let hasChanges = false;
+    const completedOrFailedToSync: { id: string; taskId: string; status: string; outputs: any[]; error: any }[] = [];
+
+    setCanvasItems(prev => {
+      const nextItems = prev.map(item => {
+        const match = tasks.find(t => t.id === item.taskId || t.taskId === item.taskId);
+        if (match && (match.status === 'SUCCESS' || match.status === 'FAILED')) {
+          const syncKey = `${match.status}_${match.outputs?.length || 0}`;
+          const lastSyncedKey = syncedSessionsRef.current.get(item.taskId);
+
+          if (item.status !== match.status || (match.outputs && match.outputs.length !== (item.outputs?.length || 0))) {
+            hasChanges = true;
+            if (lastSyncedKey !== syncKey) {
+              syncedSessionsRef.current.set(item.taskId, syncKey);
+              completedOrFailedToSync.push({
+                id: item.id,
+                taskId: item.taskId,
                 status: match.status,
                 outputs: match.outputs || [],
-                timestamp: Date.now(),
-              };
+                error: match.error || null,
+              });
             }
-          }
-          return item;
-        });
 
-        return [...nextItems].sort((a, b) => b.timestamp - a.timestamp);
+            return {
+              ...item,
+              status: match.status,
+              outputs: match.outputs || [],
+              timestamp: Date.now(),
+            };
+          }
+        }
+        return item;
+      });
+
+      if (!hasChanges) return prev;
+      return [...nextItems].sort((a, b) => b.timestamp - a.timestamp);
+    });
+
+    // Fire PUT requests cleanly once per task outside the React state reducer
+    if (completedOrFailedToSync.length > 0) {
+      completedOrFailedToSync.forEach(syncItem => {
+        fetch('/api/boutiqaat-flow/sessions', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: syncItem.id,
+            task_id: syncItem.taskId,
+            project_id: activeProjectId,
+            status: syncItem.status,
+            outputs: syncItem.outputs,
+            error: syncItem.error,
+          }),
+        }).catch(() => {});
       });
     }
   }, [tasks, activeProjectId]);
@@ -784,7 +809,19 @@ function QuickCreateContent() {
           if (!res.ok || !data.taskId) throw new Error(data.errorMessage || data.error || 'Image generation failed');
           taskId = data.taskId;
 
-          addTask(taskId, 'quick-create-image', `Image: ${currentPrompt.slice(0, 25)}...`, [{ nodeId: 'prompt', fieldName: 'text', fieldValue: processedPrompt }], 'enterprise');
+          addTask(
+            taskId,
+            `boutiqaat-flow-image`,
+            `Image: ${currentPrompt.slice(0, 25)}...`,
+            [
+              { nodeId: 'prompt', fieldName: 'prompt', fieldValue: currentPrompt },
+              { nodeId: 'text', fieldName: 'text', fieldValue: processedPrompt },
+              { nodeId: 'project', fieldName: 'project_id', fieldValue: activeProjectId || '' },
+              { nodeId: 'model', fieldName: 'model', fieldValue: selectedImageModel },
+              { nodeId: 'mode', fieldName: 'mode', fieldValue: 'image' },
+            ],
+            'enterprise'
+          );
         } else {
           const res = await fetch('/api/runninghub/video-generate', {
             method: 'POST',
@@ -808,7 +845,19 @@ function QuickCreateContent() {
           if (!res.ok || !data.taskId) throw new Error(data.errorMessage || data.error || 'Video generation failed');
           taskId = data.taskId;
 
-          addTask(taskId, 'quick-create-video', `Video: ${currentPrompt.slice(0, 25)}...`, [{ nodeId: 'prompt', fieldName: 'text', fieldValue: processedPrompt }], 'enterprise');
+          addTask(
+            taskId,
+            `boutiqaat-flow-video`,
+            `Video: ${currentPrompt.slice(0, 25)}...`,
+            [
+              { nodeId: 'prompt', fieldName: 'prompt', fieldValue: currentPrompt },
+              { nodeId: 'text', fieldName: 'text', fieldValue: processedPrompt },
+              { nodeId: 'project', fieldName: 'project_id', fieldValue: activeProjectId || '' },
+              { nodeId: 'model', fieldName: 'model', fieldValue: selectedVideoModel },
+              { nodeId: 'mode', fieldName: 'mode', fieldValue: 'video' },
+            ],
+            'enterprise'
+          );
         }
 
         const localId = `${Date.now()}-${b}-canvas`;

@@ -97,7 +97,41 @@ export default function HistoryPage() {
       
       if (tasksRes.ok) {
         const tasksData = await tasksRes.json();
-        setTasks(tasksData.tasks || []);
+        const raw = tasksData.tasks || [];
+        
+        // Deduplicate tasks by runninghub_task_id / id
+        const map = new Map<string, HistoryTask>();
+        for (const t of raw) {
+          const key = (t.runninghub_task_id && String(t.runninghub_task_id).trim()) || t.id;
+          if (!key) continue;
+          const existing = map.get(key);
+          if (!existing) {
+            map.set(key, t);
+          } else {
+            const shouldReplace = 
+              (!existing.outputs?.length && t.outputs?.length) ||
+              (t.status === 'SUCCESS' && existing.status !== 'SUCCESS') ||
+              (new Date(t.created_at).getTime() > new Date(existing.created_at).getTime());
+            if (shouldReplace) map.set(key, t);
+          }
+        }
+
+        // Deduplicate tasks sharing identical output media URLs
+        const urlMap = new Map<string, HistoryTask>();
+        const deduped: HistoryTask[] = [];
+        for (const t of Array.from(map.values())) {
+          const firstOut = t.outputs && t.outputs.length > 0 ? getOutputUrl(t.outputs[0]) : null;
+          if (firstOut && t.status === 'SUCCESS') {
+            if (!urlMap.has(firstOut)) {
+              urlMap.set(firstOut, t);
+              deduped.push(t);
+            }
+          } else {
+            deduped.push(t);
+          }
+        }
+
+        setTasks(deduped);
       }
       
       if (sessionsRes.ok) {
@@ -146,10 +180,11 @@ export default function HistoryPage() {
   const socialResizeTasks = tasks.filter(t => t.app_id === 'social-resize' || t.app_name === 'Social Resize');
   const flowTasks = tasks.filter(t => (t.app_id || '').includes('quick-create') || (t.app_id || '').includes('boutiqaat-flow') || t.app_name === 'Boutiqaat Flow');
   const consoleTasks = tasks.filter(t => {
-    const isBundling = t.app_name === 'Bundling Studio' || t.app_name === 'bundling';
+    const isBundling = t.app_id === 'bundling' || (t.app_name || '').toLowerCase().includes('bundling');
     const isSocialResize = t.app_id === 'social-resize' || t.app_name === 'Social Resize';
     const isFlow = (t.app_id || '').includes('quick-create') || (t.app_id || '').includes('boutiqaat-flow') || t.app_name === 'Boutiqaat Flow';
-    return !isBundling && !isSocialResize && !isFlow;
+    const isLayers = t.app_id === 'layers' || (t.app_name || '').toLowerCase().includes('layer');
+    return !isBundling && !isSocialResize && !isFlow && !isLayers;
   });
 
   // Filtered lists
@@ -175,18 +210,21 @@ export default function HistoryPage() {
   const filteredFlow = getFilteredTasksFor(flowTasks);
   const filteredConsole = getFilteredTasksFor(consoleTasks);
   const filteredAllTasks = getFilteredTasksFor(tasks);
+  // Studio & Flow tasks combined for "all" tab view without bundling duplicates
+  const studioAndFlowTasks = [...filteredConsole, ...filteredSocialResize, ...filteredFlow];
 
   const totalCount = bundlingSessions.length + tasks.length;
 
   const currentTabCount = useMemo(() => {
     switch (activeTab) {
-      case 'all': return filteredAllTasks.length + filteredSessions.length;
+      case 'all': return studioAndFlowTasks.length + filteredSessions.length + layerProjects.length;
+      case 'layers': return layerProjects.length;
       case 'bundling': return filteredSessions.length;
       case 'social-resize': return filteredSocialResize.length;
       case 'flow': return filteredFlow.length;
       case 'console': return filteredConsole.length;
     }
-  }, [activeTab, filteredAllTasks, filteredSessions, filteredSocialResize, filteredFlow, filteredConsole]);
+  }, [activeTab, studioAndFlowTasks, filteredSessions, layerProjects, filteredSocialResize, filteredFlow, filteredConsole]);
 
   const handleExport = () => {
     const exportList: { date: string; app: string; status: string; type: string; url: string }[] = [];
@@ -473,7 +511,7 @@ export default function HistoryPage() {
 
                 {/* 2. Tasks Grid Section */}
                 {(() => {
-                  const tasksToDisplay = activeTab === 'all' ? filteredAllTasks :
+                  const tasksToDisplay = activeTab === 'all' ? studioAndFlowTasks :
                                          activeTab === 'social-resize' ? filteredSocialResize :
                                          activeTab === 'flow' ? filteredFlow :
                                          activeTab === 'console' ? filteredConsole : [];

@@ -6,6 +6,7 @@ import TopBar from '@/components/layout/TopBar';
 import BatchVideoBgRemovalLauncher from '@/components/apps/BatchVideoBgRemovalLauncher';
 import BoutiqaatVideoGenLauncher from '@/components/apps/BoutiqaatVideoGenLauncher';
 import { useTasks } from '@/hooks/useTasks';
+import { useAppControls } from '@/hooks/useAppControls';
 import { AppDefinition } from '@/lib/types';
 import { Film, Zap, Clock, ArrowLeft, ChevronRight, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -127,6 +128,7 @@ const VIDEO_APPS: (AppDefinition & {
 
 export default function VideoStudioPage() {
   const { addTask } = useTasks();
+  const { isAppLocked, getAppBadgeLabel, isAdmin } = useAppControls();
   const [selectedApp, setSelectedApp] = useState<typeof VIDEO_APPS[0] | null>(null);
 
   function handleTaskStarted(
@@ -156,6 +158,32 @@ export default function VideoStudioPage() {
 
     toast.success('Task submitted successfully! Monitoring status...', { duration: 3000 });
   }
+
+  // Filter apps based on dynamic feature flags
+  const isVideoGenLocked = isAppLocked('boutiqaat-video-gen');
+  const isVideoGenLockedForUser = isVideoGenLocked && !isAdmin;
+
+  const liveApps = VIDEO_APPS.filter(app => {
+    if (app.id === 'boutiqaat-video-gen') {
+      return !isVideoGenLockedForUser;
+    }
+    return app.status === 'live';
+  });
+
+  const soonApps = VIDEO_APPS.filter(app => {
+    if (app.id === 'boutiqaat-video-gen') {
+      return isVideoGenLockedForUser;
+    }
+    return app.status === 'soon';
+  }).map(app => {
+    if (app.id === 'boutiqaat-video-gen' && isVideoGenLockedForUser) {
+      return {
+        ...app,
+        badge: getAppBadgeLabel('boutiqaat-video-gen'),
+      };
+    }
+    return app;
+  });
 
   return (
     <div className="flex h-screen bg-bg-primary overflow-hidden">
@@ -212,37 +240,48 @@ export default function VideoStudioPage() {
                 </div>
 
                 {/* Ready to Use Section */}
-                <div className="mb-8">
-                  <p className="text-[11px] font-bold text-text-muted uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <Zap className="w-3 h-3 text-accent-green" /> Ready to Use
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {VIDEO_APPS.filter(app => app.status === 'live').map(app => (
-                      <AppCard
-                        key={app.id}
-                        app={app}
-                        onClick={() => setSelectedApp(app)}
-                      />
-                    ))}
+                {liveApps.length > 0 && (
+                  <div className="mb-8">
+                    <p className="text-[11px] font-bold text-text-muted uppercase tracking-widest mb-4 flex items-center gap-2">
+                      <Zap className="w-3 h-3 text-accent-green" /> Ready to Use
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {liveApps.map(app => (
+                        <AppCard
+                          key={app.id}
+                          app={app}
+                          onClick={() => setSelectedApp(app)}
+                        />
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
 
-                {/* Coming Soon Section */}
-                <div>
-                  <p className="text-[11px] font-bold text-text-muted uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <Clock className="w-3 h-3 text-text-muted" /> Coming Soon
-                  </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {VIDEO_APPS.filter(app => app.status === 'soon').map(app => (
-                      <AppCard
-                        key={app.id}
-                        app={app}
-                        onClick={() => toast('Coming soon! This model is being integrated. 🚀', { icon: '🎬' })}
-                        disabled
-                      />
-                    ))}
+                {/* Coming Soon / Under Maintenance Section */}
+                {soonApps.length > 0 && (
+                  <div>
+                    <p className="text-[11px] font-bold text-text-muted uppercase tracking-widest mb-4 flex items-center gap-2">
+                      <Clock className="w-3 h-3 text-text-muted" /> Coming Soon / Maintenance
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {soonApps.map(app => (
+                        <AppCard
+                          key={app.id}
+                          app={app}
+                          onClick={() => {
+                            if (app.id === 'boutiqaat-video-gen' && isAdmin) {
+                              setSelectedApp(app);
+                              return;
+                            }
+                            const badge = app.badge || 'Coming Soon';
+                            toast(`This tool is currently ${badge.toLowerCase()}. 🚀`, { icon: '🎬' });
+                          }}
+                          disabled={!(app.id === 'boutiqaat-video-gen' && isAdmin)}
+                        />
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           )}
