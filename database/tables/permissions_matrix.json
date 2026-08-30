@@ -1,12 +1,6 @@
 {
   "version": "1.0.0",
   "release": "Release 1 (Image Suite)",
-  "scope_types": [
-    "Own",
-    "Team",
-    "All",
-    "None"
-  ],
   "roles": {
     "creator": {
       "scope": "Own Only",

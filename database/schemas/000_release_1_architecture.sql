@@ -1,17 +1,16 @@
 -- ============================================================================
 -- BOUTIQAAT CREATIVE AI STUDIO - RELEASE 1 DATABASE SCHEMA & RLS POLICIES
 -- Target: PostgreSQL 14+ / AWS RDS / Amazon Aurora Serverless v2 / Local DB
--- Specification: User Profiles, Permitted vs Forbidden Actions (Release 1)
 -- Date: August 2026
 -- ============================================================================
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- 1. DEPARTMENTS TABLE
+-- 1. DEPARTMENTS
 CREATE TABLE IF NOT EXISTS departments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  code VARCHAR(50) UNIQUE NOT NULL,             -- 'CONTENT', 'DIGITAL_MARKETING', 'MARKETING'
-  name VARCHAR(150) NOT NULL,                    -- 'Content Production Team'
+  code VARCHAR(50) UNIQUE NOT NULL,
+  name VARCHAR(150) NOT NULL,
   description TEXT,
   default_user_budget_usd DECIMAL(10,2) DEFAULT 100.00,
   monthly_budget_ceiling_usd DECIMAL(10,2) DEFAULT 500.00,
@@ -20,15 +19,15 @@ CREATE TABLE IF NOT EXISTS departments (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 2. USERS TABLE (Microsoft Graph SSO Account Store)
+-- 2. USERS (Microsoft Graph SSO)
 CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  ms_graph_id VARCHAR(100) UNIQUE,               -- Permanent Azure Entra Object ID (oid)
-  ms_tenant_id VARCHAR(100),                     -- Boutiqaat Tenant ID (tid)
-  email VARCHAR(255) UNIQUE NOT NULL,            -- Corporate email (userPrincipalName)
-  name VARCHAR(150) NOT NULL,                    -- Display Name from M365
+  ms_graph_id VARCHAR(100) UNIQUE,
+  ms_tenant_id VARCHAR(100),
+  email VARCHAR(255) UNIQUE NOT NULL,
+  name VARCHAR(150) NOT NULL,
   auth_provider VARCHAR(50) DEFAULT 'microsoft_graph',
-  avatar_url TEXT,                               -- Synced photo from Graph API
+  avatar_url TEXT,
   is_active BOOLEAN DEFAULT TRUE,
   last_login_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -38,11 +37,11 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_users_ms_graph_id ON users(ms_graph_id);
 
--- 3. ADMINS TABLE (Platform Super Admins - Scope: All)
+-- 3. ADMINS (Scope: All)
 CREATE TABLE IF NOT EXISTS admins (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email VARCHAR(255) UNIQUE NOT NULL,            -- Admin Email
-  ms_graph_id VARCHAR(100) UNIQUE,               -- Auto-linked upon login
+  email VARCHAR(255) UNIQUE NOT NULL,
+  ms_graph_id VARCHAR(100) UNIQUE,
   name VARCHAR(150) NOT NULL,
   title VARCHAR(100) DEFAULT 'Studio Admin',
   can_manage_billing BOOLEAN DEFAULT TRUE,
@@ -51,11 +50,11 @@ CREATE TABLE IF NOT EXISTS admins (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 4. MANAGERS TABLE (Department Leads - Scope: Own + Department Team)
+-- 4. MANAGERS (Scope: Team)
 CREATE TABLE IF NOT EXISTS managers (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email VARCHAR(255) UNIQUE NOT NULL,            -- Manager Email
-  ms_graph_id VARCHAR(100) UNIQUE,               -- Auto-linked upon login
+  email VARCHAR(255) UNIQUE NOT NULL,
+  ms_graph_id VARCHAR(100) UNIQUE,
   name VARCHAR(150) NOT NULL,
   department_id UUID NOT NULL REFERENCES departments(id) ON DELETE RESTRICT,
   monthly_budget_ceiling_usd DECIMAL(10,2) DEFAULT 500.00,
@@ -64,13 +63,11 @@ CREATE TABLE IF NOT EXISTS managers (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_managers_dept ON managers(department_id);
-
--- 5. CREATORS TABLE (Content Creators / Editors - Scope: Own Only)
+-- 5. CREATORS (Scope: Own)
 CREATE TABLE IF NOT EXISTS creators (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email VARCHAR(255) UNIQUE NOT NULL,            -- Creator Email
-  ms_graph_id VARCHAR(100) UNIQUE,               -- Auto-linked upon login
+  email VARCHAR(255) UNIQUE NOT NULL,
+  ms_graph_id VARCHAR(100) UNIQUE,
   name VARCHAR(150) NOT NULL,
   department_id UUID NOT NULL REFERENCES departments(id) ON DELETE RESTRICT,
   manager_id UUID REFERENCES managers(id) ON DELETE SET NULL,
@@ -80,18 +77,15 @@ CREATE TABLE IF NOT EXISTS creators (
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_creators_dept ON creators(department_id);
-CREATE INDEX IF NOT EXISTS idx_creators_mgr ON creators(manager_id);
-
--- 6. TASKS TABLE (Release 1 Image Suite: Social Resize, BG Remove, Retouch, Flow)
+-- 6. TASKS (Release 1 Image Suite: Social Resize, BG Remove, Retouch, Flow)
 CREATE TABLE IF NOT EXISTS tasks (
-  id VARCHAR(100) PRIMARY KEY,                   -- UUID v4
+  id VARCHAR(100) PRIMARY KEY,
   runninghub_task_id VARCHAR(100),
   user_id UUID REFERENCES users(id) ON DELETE SET NULL,
   department_id UUID REFERENCES departments(id) ON DELETE SET NULL,
-  module VARCHAR(50) NOT NULL,                   -- 'flow', 'social_resize', 'bg_remove', 'retouch'
+  module VARCHAR(50) NOT NULL,
   app_name VARCHAR(150) NOT NULL,
-  status VARCHAR(20) NOT NULL DEFAULT 'QUEUED',  -- 'QUEUED', 'RUNNING', 'SUCCESS', 'FAILED'
+  status VARCHAR(20) NOT NULL DEFAULT 'QUEUED',
   api_key_type VARCHAR(20) DEFAULT 'consumer',
   generation_params JSONB DEFAULT '{}',
   node_info_list JSONB DEFAULT '[]',
@@ -109,11 +103,11 @@ CREATE INDEX IF NOT EXISTS idx_tasks_user_date ON tasks(user_id, created_at DESC
 CREATE INDEX IF NOT EXISTS idx_tasks_dept_date ON tasks(department_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_tasks_module_status ON tasks(module, status, created_at DESC);
 
--- 7. DEPARTMENT BUDGETS (Pre-aggregated Monthly Ledgers)
+-- 7. DEPARTMENT BUDGETS
 CREATE TABLE IF NOT EXISTS department_budgets (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   department_id UUID NOT NULL REFERENCES departments(id) ON DELETE CASCADE,
-  month_year VARCHAR(7) NOT NULL,                -- 'YYYY-MM' (e.g. '2026-08')
+  month_year VARCHAR(7) NOT NULL,
   allocated_budget_usd DECIMAL(10,2) NOT NULL,
   actual_spend_usd DECIMAL(10,4) DEFAULT 0.0000,
   actual_coins_used DECIMAL(10,2) DEFAULT 0.00,
@@ -124,13 +118,13 @@ CREATE TABLE IF NOT EXISTS department_budgets (
   UNIQUE(department_id, month_year)
 );
 
--- 8. AUDIT LOGS TABLE (Governance & Action Tracking)
+-- 8. AUDIT LOGS
 CREATE TABLE IF NOT EXISTS audit_logs (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES users(id) ON DELETE SET NULL,
   department_id UUID REFERENCES departments(id) ON DELETE SET NULL,
-  action VARCHAR(50) NOT NULL,                   -- 'GENERATE', 'RETRY', 'DELETE', 'EXPORT', 'BUDGET_SET'
-  target_type VARCHAR(50) NOT NULL,              -- 'task', 'user', 'department'
+  action VARCHAR(50) NOT NULL,
+  target_type VARCHAR(50) NOT NULL,
   target_id VARCHAR(100),
   details JSONB DEFAULT '{}',
   ip_address VARCHAR(45),
@@ -139,75 +133,3 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 
 CREATE INDEX IF NOT EXISTS idx_audit_dept_date ON audit_logs(department_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_audit_user_date ON audit_logs(user_id, created_at DESC);
-
--- ============================================================================
--- ROW-LEVEL SECURITY (RLS) POLICIES ENFORCING PERMISSION MATRIX
--- ============================================================================
-
-ALTER TABLE tasks ENABLE ROW LEVEL SECURITY;
-ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
-ALTER TABLE department_budgets ENABLE ROW LEVEL SECURITY;
-
--- TASKS: SELECT / DOWNLOAD / HISTORY
--- Creator: user_id = auth.uid()
--- Manager: department_id = auth.dept_id()
--- Admin: TRUE
-CREATE POLICY tasks_select_policy ON tasks
-  FOR SELECT
-  USING (
-    auth.role() = 'admin'
-    OR (auth.role() = 'manager' AND department_id = auth.department_id())
-    OR (auth.role() = 'creator' AND user_id = auth.uid())
-  );
-
--- TASKS: INSERT / GENERATE
--- Dispatches always belong to current authenticated user
-CREATE POLICY tasks_insert_policy ON tasks
-  FOR INSERT
-  WITH CHECK (
-    user_id = auth.uid()
-  );
-
--- TASKS: UPDATE / RETRY
--- Creator: user_id = auth.uid()
--- Manager: department_id = auth.dept_id()
--- Admin: TRUE
-CREATE POLICY tasks_update_policy ON tasks
-  FOR UPDATE
-  USING (
-    auth.role() = 'admin'
-    OR (auth.role() = 'manager' AND department_id = auth.department_id())
-    OR (auth.role() = 'creator' AND user_id = auth.uid())
-  );
-
--- TASKS: DELETE
--- Creator & Manager: user_id = auth.uid() (Managers CANNOT delete team members' tasks!)
--- Admin: TRUE
-CREATE POLICY tasks_delete_policy ON tasks
-  FOR DELETE
-  USING (
-    auth.role() = 'admin'
-    OR user_id = auth.uid()
-  );
-
--- AUDIT LOGS: SELECT
--- Manager: department_id = auth.dept_id()
--- Admin: TRUE
--- Creator: FALSE
-CREATE POLICY audit_logs_select_policy ON audit_logs
-  FOR SELECT
-  USING (
-    auth.role() = 'admin'
-    OR (auth.role() = 'manager' AND department_id = auth.department_id())
-  );
-
--- BUDGETS: SELECT
--- Manager: department_id = auth.dept_id()
--- Admin: TRUE
--- Creator: FALSE
-CREATE POLICY department_budgets_select_policy ON department_budgets
-  FOR SELECT
-  USING (
-    auth.role() = 'admin'
-    OR (auth.role() = 'manager' AND department_id = auth.department_id())
-  );

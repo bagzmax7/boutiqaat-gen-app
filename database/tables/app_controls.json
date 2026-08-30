@@ -6,7 +6,7 @@
     "route_path": "/boutiqaat-flow",
     "status": "ACTIVE",
     "custom_message": "Online and operating normally.",
-    "updated_at": "2026-08-30T11:40:13.893Z"
+    "updated_at": "2026-08-30T12:06:16.775398+00:00"
   },
   {
     "id": "ctrl_resize",
@@ -15,7 +15,7 @@
     "route_path": "/studio/social-resize",
     "status": "ACTIVE",
     "custom_message": "Online and operating normally.",
-    "updated_at": "2026-08-30T11:40:13.893Z"
+    "updated_at": "2026-08-30T12:06:16.775398+00:00"
   },
   {
     "id": "ctrl_retouch",
@@ -24,7 +24,7 @@
     "route_path": "/studio/auto-retouch",
     "status": "ACTIVE",
     "custom_message": "Online and operating normally.",
-    "updated_at": "2026-08-30T11:40:13.893Z"
+    "updated_at": "2026-08-30T12:06:16.775398+00:00"
   },
   {
     "id": "ctrl_bg_remove",
@@ -33,7 +33,7 @@
     "route_path": "/studio",
     "status": "ACTIVE",
     "custom_message": "Online and operating normally.",
-    "updated_at": "2026-08-30T11:40:13.893Z"
+    "updated_at": "2026-08-30T12:06:16.775398+00:00"
   },
   {
     "id": "ctrl_layers",
@@ -42,7 +42,7 @@
     "route_path": "/layers",
     "status": "COMING_SOON",
     "custom_message": "This feature is currently in preparation and will be available in the next release.",
-    "updated_at": "2026-08-30T11:40:13.893Z"
+    "updated_at": "2026-08-30T12:06:16.775398+00:00"
   },
   {
     "id": "ctrl_bundling",
@@ -51,7 +51,7 @@
     "route_path": "/bundling",
     "status": "COMING_SOON",
     "custom_message": "This feature is currently in preparation and will be available in the next release.",
-    "updated_at": "2026-08-30T11:40:13.893Z"
+    "updated_at": "2026-08-30T12:06:16.775398+00:00"
   },
   {
     "id": "ctrl_video",
@@ -60,6 +60,6 @@
     "route_path": "/video",
     "status": "COMING_SOON",
     "custom_message": "This feature is currently in preparation and will be available in the next release.",
-    "updated_at": "2026-08-30T11:40:13.893Z"
+    "updated_at": "2026-08-30T12:06:16.775398+00:00"
   }
 ]
