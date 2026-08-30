@@ -1,22 +1,25 @@
 #!/usr/bin/env python3
 """
-Boutiqaat Creative AI Studio - Database Initializer
+Boutiqaat Creative AI Studio - Database Initializer & SQL Runner
 File: db.py
 Author: Boutiqaat AI Strategy & Innovation Team
 
 Description:
   Automates the initialization of the complete Release 1 database on any server or local environment.
-  Creates all 17 dataset tables, schema DDL, permission matrix, and storage bucket directories.
+  - Generates all 17 dataset tables in JSON format for the local database driver.
+  - Reads and copies the master 'schema.sql' for PostgreSQL / AWS RDS / Aurora deployments.
+  - Optionally runs 'schema.sql' directly against a PostgreSQL database via psycopg2 or psql.
 
 Usage:
-  python db.py
-  python db.py --path /custom/path/to/database
-  python db.py --help
+  python db.py                      # Build / update local JSON database & schema.sql
+  python db.py --path ./database    # Specify custom database directory
+  python db.py --pg-uri "postgresql://user:pass@host:5432/dbname" # Execute SQL directly to Postgres
 """
 
 import os
 import sys
 import json
+import shutil
 import argparse
 from datetime import datetime, timezone
 from pathlib import Path
@@ -24,7 +27,7 @@ from pathlib import Path
 def get_iso_now():
     return datetime.now(timezone.utc).isoformat()
 
-def build_database(target_root_dir):
+def build_database(target_root_dir, pg_uri=None):
     print("=" * 70)
     print("BOUTIQAAT CREATIVE AI STUDIO - DATABASE INITIALIZER (RELEASE 1)")
     print("=" * 70)
@@ -51,7 +54,6 @@ def build_database(target_root_dir):
 
     # 3. Define All 17 Database Tables
     database_tables = {
-        # --- 1. Identity & Role Layer ---
         "departments.json": [
             {
                 "id": "dept_content_01",
@@ -87,30 +89,22 @@ def build_database(target_root_dir):
                 "updated_at": now
             }
         ],
-        "admins.json": [],      # Clean registry for Super Admins
-        "managers.json": [],    # Clean registry for Supervisors
-        "creators.json": [],    # Clean registry for Editors / Creators
-        "users.json": [],       # Clean Microsoft Graph SSO Account Store
-
-        # --- 2. Core Generation Pipeline ---
-        "tasks.json": [],       # Clean 0 tasks
-
-        # --- 3. App-Specific Project Stores ---
-        "flow_projects.json": [],          # Boutiqaat Flow Studio
-        "retouch_projects.json": [],        # Auto-Retouch Projects
-        "retouch_sessions.json": [],        # Auto-Retouch Polish Sessions
-        "social_resize_projects.json": [],  # Social Resize Outpaint
-        "layers_projects.json": [],         # Layers Decomposition
-        "bundling_sessions.json": [],       # Bundling Studio Multi-SKU
-        "image_agent_sessions.json": [],    # Image Agent Workflows
-
-        # --- 4. Governance & Financial Layer ---
-        "department_budgets.json": [],   # Monthly Spend Ledgers
-        "audit_logs.json": [],           # Action Tracking
-        "team_creative_gallery.json": [],# Manager Starred Assets & Presets
-        "notifications.json": [],        # Notification Stream
-
-        # --- 5. System Controls ---
+        "admins.json": [],
+        "managers.json": [],
+        "creators.json": [],
+        "users.json": [],
+        "tasks.json": [],
+        "flow_projects.json": [],
+        "retouch_projects.json": [],
+        "retouch_sessions.json": [],
+        "social_resize_projects.json": [],
+        "layers_projects.json": [],
+        "bundling_sessions.json": [],
+        "image_agent_sessions.json": [],
+        "department_budgets.json": [],
+        "audit_logs.json": [],
+        "team_creative_gallery.json": [],
+        "notifications.json": [],
         "app_controls.json": [
             {
                 "id": "ctrl_flow",
@@ -176,8 +170,6 @@ def build_database(target_root_dir):
                 "updated_at": now
             }
         ],
-
-        # --- 6. Machine-Readable Permissions & RLS Matrix ---
         "permissions_matrix.json": {
             "version": "1.0.0",
             "release": "Release 1 (Image Suite)",
@@ -274,147 +266,35 @@ def build_database(target_root_dir):
         count_label = f"{len(content)} records" if isinstance(content, list) else "config"
         print(f"   [OK] {filename:<30} ({count_label})")
 
-    # 4. Write SQL Schema DDL (PostgreSQL / AWS RDS Ready)
-    sql_schema = """-- ============================================================================
--- BOUTIQAAT CREATIVE AI STUDIO - RELEASE 1 DATABASE SCHEMA & RLS POLICIES
--- Target: PostgreSQL 14+ / AWS RDS / Amazon Aurora Serverless v2 / Local DB
--- Date: August 2026
--- ============================================================================
+    # 4. Read & Copy master schema.sql
+    master_schema_file = Path("schema.sql")
+    dest_schema_file = schemas_path / "000_release_1_architecture.sql"
 
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    if master_schema_file.exists():
+        shutil.copyfile(master_schema_file, dest_schema_file)
+        print(f"\n[OK] Copied master 'schema.sql' -> {dest_schema_file}")
+    else:
+        print(f"\n[!] Notice: 'schema.sql' not found in current directory, using existing DDL.")
 
--- 1. DEPARTMENTS
-CREATE TABLE IF NOT EXISTS departments (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  code VARCHAR(50) UNIQUE NOT NULL,
-  name VARCHAR(150) NOT NULL,
-  description TEXT,
-  default_user_budget_usd DECIMAL(10,2) DEFAULT 100.00,
-  monthly_budget_ceiling_usd DECIMAL(10,2) DEFAULT 500.00,
-  is_active BOOLEAN DEFAULT TRUE,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- 2. USERS (Microsoft Graph SSO)
-CREATE TABLE IF NOT EXISTS users (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  ms_graph_id VARCHAR(100) UNIQUE,
-  ms_tenant_id VARCHAR(100),
-  email VARCHAR(255) UNIQUE NOT NULL,
-  name VARCHAR(150) NOT NULL,
-  auth_provider VARCHAR(50) DEFAULT 'microsoft_graph',
-  avatar_url TEXT,
-  is_active BOOLEAN DEFAULT TRUE,
-  last_login_at TIMESTAMPTZ,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
-CREATE INDEX IF NOT EXISTS idx_users_ms_graph_id ON users(ms_graph_id);
-
--- 3. ADMINS (Scope: All)
-CREATE TABLE IF NOT EXISTS admins (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email VARCHAR(255) UNIQUE NOT NULL,
-  ms_graph_id VARCHAR(100) UNIQUE,
-  name VARCHAR(150) NOT NULL,
-  title VARCHAR(100) DEFAULT 'Studio Admin',
-  can_manage_billing BOOLEAN DEFAULT TRUE,
-  can_manage_apikeys BOOLEAN DEFAULT TRUE,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- 4. MANAGERS (Scope: Team)
-CREATE TABLE IF NOT EXISTS managers (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email VARCHAR(255) UNIQUE NOT NULL,
-  ms_graph_id VARCHAR(100) UNIQUE,
-  name VARCHAR(150) NOT NULL,
-  department_id UUID NOT NULL REFERENCES departments(id) ON DELETE RESTRICT,
-  monthly_budget_ceiling_usd DECIMAL(10,2) DEFAULT 500.00,
-  can_export_reports BOOLEAN DEFAULT TRUE,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- 5. CREATORS (Scope: Own)
-CREATE TABLE IF NOT EXISTS creators (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email VARCHAR(255) UNIQUE NOT NULL,
-  ms_graph_id VARCHAR(100) UNIQUE,
-  name VARCHAR(150) NOT NULL,
-  department_id UUID NOT NULL REFERENCES departments(id) ON DELETE RESTRICT,
-  manager_id UUID REFERENCES managers(id) ON DELETE SET NULL,
-  monthly_quota_usd DECIMAL(10,2) DEFAULT 100.00,
-  is_active BOOLEAN DEFAULT TRUE,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- 6. TASKS (Release 1 Image Suite: Social Resize, BG Remove, Retouch, Flow)
-CREATE TABLE IF NOT EXISTS tasks (
-  id VARCHAR(100) PRIMARY KEY,
-  runninghub_task_id VARCHAR(100),
-  user_id UUID REFERENCES users(id) ON DELETE SET NULL,
-  department_id UUID REFERENCES departments(id) ON DELETE SET NULL,
-  module VARCHAR(50) NOT NULL,
-  app_name VARCHAR(150) NOT NULL,
-  status VARCHAR(20) NOT NULL DEFAULT 'QUEUED',
-  api_key_type VARCHAR(20) DEFAULT 'consumer',
-  generation_params JSONB DEFAULT '{}',
-  node_info_list JSONB DEFAULT '[]',
-  outputs JSONB DEFAULT '[]',
-  cost_usd DECIMAL(10,4) DEFAULT 0.0000,
-  coins_used DECIMAL(10,2) DEFAULT 0.00,
-  duration_seconds INTEGER DEFAULT 0,
-  error_message TEXT,
-  is_deleted BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_tasks_user_date ON tasks(user_id, created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_tasks_dept_date ON tasks(department_id, created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_tasks_module_status ON tasks(module, status, created_at DESC);
-
--- 7. DEPARTMENT BUDGETS
-CREATE TABLE IF NOT EXISTS department_budgets (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  department_id UUID NOT NULL REFERENCES departments(id) ON DELETE CASCADE,
-  month_year VARCHAR(7) NOT NULL,
-  allocated_budget_usd DECIMAL(10,2) NOT NULL,
-  actual_spend_usd DECIMAL(10,4) DEFAULT 0.0000,
-  actual_coins_used DECIMAL(10,2) DEFAULT 0.00,
-  total_task_count INTEGER DEFAULT 0,
-  success_task_count INTEGER DEFAULT 0,
-  failed_task_count INTEGER DEFAULT 0,
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(department_id, month_year)
-);
-
--- 8. AUDIT LOGS
-CREATE TABLE IF NOT EXISTS audit_logs (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES users(id) ON DELETE SET NULL,
-  department_id UUID REFERENCES departments(id) ON DELETE SET NULL,
-  action VARCHAR(50) NOT NULL,
-  target_type VARCHAR(50) NOT NULL,
-  target_id VARCHAR(100),
-  details JSONB DEFAULT '{}',
-  ip_address VARCHAR(45),
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_audit_dept_date ON audit_logs(department_id, created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_audit_user_date ON audit_logs(user_id, created_at DESC);
-"""
-    sql_file_path = schemas_path / "000_release_1_architecture.sql"
-    with open(sql_file_path, "w", encoding="utf-8") as f:
-        f.write(sql_schema)
-    print(f"\n[OK] Generated SQL DDL schema: {sql_file_path}")
+    # 5. Optional PostgreSQL Execution
+    if pg_uri:
+        print(f"\nConnecting to PostgreSQL: {pg_uri.split('@')[-1]} ...")
+        try:
+            import psycopg2
+            conn = psycopg2.connect(pg_uri)
+            cur = conn.cursor()
+            with open(dest_schema_file, "r", encoding="utf-8") as f:
+                sql_content = f.read()
+            cur.execute(sql_content)
+            conn.commit()
+            cur.close()
+            conn.close()
+            print("[OK] Executed 'schema.sql' against PostgreSQL database successfully!")
+        except ImportError:
+            print("[!] psycopg2 is not installed. To execute directly against PostgreSQL, run:")
+            print(f"    psql \"{pg_uri}\" -f \"{dest_schema_file}\"")
+        except Exception as err:
+            print(f"[ERROR] Failed to execute SQL against PostgreSQL: {err}")
 
     print("\n" + "=" * 70)
     print("SUCCESS: All 17 database tables & schemas created successfully!")
@@ -425,7 +305,12 @@ if __name__ == "__main__":
     parser.add_argument(
         "--path",
         default="./database",
-        help="Target folder for database creation (Default: ./database)"
+        help="Target folder for local database creation (Default: ./database)"
+    )
+    parser.add_argument(
+        "--pg-uri",
+        default=os.environ.get("DATABASE_URL"),
+        help="Optional PostgreSQL connection URI (e.g. postgresql://user:pass@host:5432/dbname)"
     )
     args = parser.parse_args()
-    build_database(args.path)
+    build_database(args.path, args.pg_uri)
